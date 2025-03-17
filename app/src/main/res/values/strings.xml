@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CalendarHours</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="monday">пн</string>
+    <string name="atantion">"Запишите событие, а потом внесите! "</string>
+    <string name="file_exist">В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!</string>
+
+</resources>

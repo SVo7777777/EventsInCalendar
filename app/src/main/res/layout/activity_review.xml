@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Wheat"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:paddingBottom="2dp"
+        android:text="2025"
+        android:textColor="@color/Purple2"
+        android:textColorHint="#FFF"
+        android:textStyle="bold" />
+
+    <TextView
+
+        android:id="@+id/month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="0dp"
+        android:paddingBottom="2dp"
+        android:text="ФЕВРАЛЬ"
+        android:textColor="@color/Purple2"
+        android:textColorHint="#FFF"
+        android:textStyle="bold" />
+
+    <TextView
+
+        android:id="@+id/number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="-18dp"
+        android:gravity="center|top"
+        android:text="16"
+        android:textColor="@color/Purple2"
+        android:textColorHint="#FFF"
+        android:textSize="60sp"
+        android:textStyle="bold" />
+
+    <TextView
+
+        android:id="@+id/day_of_weeks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="0dp"
+        android:paddingBottom="5dp"
+        android:text="ВОСКРЕСЕНЬЕ"
+        android:textColor="@color/Purple2"
+        android:textColorHint="#FFF"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Всего часов:"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editTextNumberDecimal"
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/event_edit_border"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="hours"
+        android:focusableInTouchMode="true"
+        android:inputType="numberDecimal"
+        android:textSize="24sp" />
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ВНЕСТИ" />
+
+        <Button
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="close" />
+
+    </LinearLayout>
+
+    <androidx.gridlayout.widget.GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:columnCount="3"
+        app:rowCount="4">
+
+        <Button
+            android:id="@+id/num1"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="1"
+            app:layout_column="0"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/num2"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="2"
+            app:layout_column="1"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/num3"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="3"
+            app:layout_column="2"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/num4"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="4"
+            app:layout_column="0"
+            app:layout_row="1" />
+
+        <Button
+            android:id="@+id/num5"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="5"
+            app:layout_column="1"
+            app:layout_row="1" />
+
+        <Button
+            android:id="@+id/num6"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="6"
+            app:layout_column="2"
+            app:layout_row="1" />
+
+        <Button
+            android:id="@+id/num7"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="7"
+            app:layout_column="0"
+            app:layout_row="2" />
+
+        <Button
+            android:id="@+id/num8"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="8"
+            app:layout_column="1"
+            app:layout_row="2" />
+
+        <Button
+            android:id="@+id/num9"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="9"
+            app:layout_column="2"
+            app:layout_row="2" />
+
+        <Button
+            android:id="@+id/backspace"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="bs"
+            app:layout_column="0"
+            app:layout_row="3" />
+
+        <Button
+            android:id="@+id/num0"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="0"
+            app:layout_column="1"
+            app:layout_row="3" />
+
+        <Button
+            android:id="@+id/point"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="."
+            app:layout_column="2"
+            app:layout_row="3" />
+    </androidx.gridlayout.widget.GridLayout>
+
+</LinearLayout>
