@@ -503,8 +503,15 @@ public class HomeFragment extends Fragment {
                                 String h =(String) events[i][j].getText();
                                 if (!h.isEmpty()){
                                     System.out.println(days[i][j].getText() + "-" + h);
-                                    sum += Float.parseFloat(h);
-                                    hours.append("-").append(h);
+                                    try {
+                                        sum += Float.parseFloat(h);
+                                        hours.append("-").append(h);
+                                    } catch (NumberFormatException e) {
+                                        Toast.makeText(getActivity(), "Это не число!", Toast.LENGTH_SHORT).show();
+                                        hours.append("-").append("0");
+                                    }
+
+
                                 }else{
                                     System.out.println(days[i][j].getText() + "-" + ".");
                                     hours.append("-").append(".");
