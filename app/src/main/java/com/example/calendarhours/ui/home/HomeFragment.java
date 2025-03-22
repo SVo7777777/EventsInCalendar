@@ -136,9 +136,6 @@ public class HomeFragment extends Fragment {
 
             }
 
-//        for (int i = 1; i < 7; i++){
-//            onWeekMonthClick(number_of_week[i]);
-//        }i
 
 
 
