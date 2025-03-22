@@ -58,9 +58,6 @@ public class HomeFragment extends Fragment {
     public int current_day = calendar.get(Calendar.DATE);
     String[] split;
     private DatabaseHelper mydb ;
-    private static final String APP_SD_PATH = "/data/data/com.example.calendarhours/files/hours.txt";
-
-
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -81,7 +78,7 @@ public class HomeFragment extends Fragment {
         int e = 0;
         while (e < 7) {
             String weekId = "numweek_" + e;
-            int weID = getResources().getIdentifier(weekId, "id", getActivity().getPackageName());
+            int weID = getResources().getIdentifier(weekId, "id", requireActivity().getPackageName());
             number_of_week[e] = root.findViewById(weID);
             e++;
         }
@@ -91,8 +88,8 @@ public class HomeFragment extends Fragment {
                 String llButtonId = "calendar_" + i + j;
                 String dayId = "day_" + i + j;
                 String eventId = "event_" + i + j;
-                int bID = getResources().getIdentifier(llButtonId, "id", getActivity().getPackageName());
-                int dID = getResources().getIdentifier(dayId, "id", getActivity().getPackageName());
+                int bID = getResources().getIdentifier(llButtonId, "id", requireActivity().getPackageName());
+                int dID = getResources().getIdentifier(dayId, "id", requireActivity().getPackageName());
                 int eID = getResources().getIdentifier(eventId, "id", getActivity().getPackageName());
                 //buttons[i][j] = String.valueOf(findViewById(gameID));
                 buttons[i][j] = root.findViewById(bID);
@@ -115,8 +112,8 @@ public class HomeFragment extends Fragment {
         System.out.println(day_of_week);
 
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
-        String month_name = month_date.format(calendar.getTime());
+
+
         String month2 = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("ru"));
         System.out.println(month2);
 
@@ -125,7 +122,7 @@ public class HomeFragment extends Fragment {
         System.out.println("max_pred="+max_pred);
 
 
-        showCalendar(month3, current_year, week_of_year, max_pred, day_of_week, dateEnd, "");
+        showCalendar(month3, current_year, week_of_year, max_pred, day_of_week, dateEnd);
 
 
         for (int i = 1; i < 7; i++)
@@ -154,7 +151,7 @@ public class HomeFragment extends Fragment {
 
 
     @SuppressLint("SetTextI18n")
-    private void showCalendar(String mon, int yea, int wee, int mpred, int dayOfWeekOfFirstDayOfMonth, int dateEnd, String chas) {
+    private void showCalendar(String mon, int yea, int wee, int mpred, int dayOfWeekOfFirstDayOfMonth, int dateEnd) {
         month.setText(mon);
         year.setText(Integer.toString(yea));
         String mont = String.valueOf(month.getText());
@@ -192,10 +189,10 @@ public class HomeFragment extends Fragment {
                 } else {
                     if (d < dateEnd + 1) {
                         days[i][j].setText(Integer.toString(d));
-                        if (chas.isEmpty()){
+                        if ("".isEmpty()){
                             events[i][j].setText("0");
                         }else {
-                            split = chas.split("-");
+                            split = "".split("-");
                             System.out.println(Arrays.toString(split));
 
 
@@ -323,7 +320,7 @@ public class HomeFragment extends Fragment {
         c.add(Calendar.MONTH, -1);
         int max_pred = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        showCalendar(new_month, _year, week_of_year, max_pred, day_of_week, dateEnd,"");
+        showCalendar(new_month, _year, week_of_year, max_pred, day_of_week, dateEnd);
     }
     public void onNextMonthClick(View view)
     {
@@ -350,7 +347,7 @@ public class HomeFragment extends Fragment {
         c.add(Calendar.MONTH, -1);
         int max_pred = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        showCalendar(new_month, _year, week_of_year, max_pred, day_of_week, dateEnd,"");
+        showCalendar(new_month, _year, week_of_year, max_pred, day_of_week, dateEnd);
     }
     public void onPreviousYearClick(View view)
     {
@@ -371,7 +368,7 @@ public class HomeFragment extends Fragment {
         c.add(Calendar.MONTH, -1);
         int max_pred = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        showCalendar(old_month, new_year, week_of_year, max_pred, day_of_week, dateEnd,"");
+        showCalendar(old_month, new_year, week_of_year, max_pred, day_of_week, dateEnd);
     }
     public void onNextYearClick(View view)
     {
@@ -393,7 +390,7 @@ public class HomeFragment extends Fragment {
         int max_pred = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 
 
-        showCalendar(old_month, new_year, week_of_year, max_pred, day_of_week, dateEnd,"");
+        showCalendar(old_month, new_year, week_of_year, max_pred, day_of_week, dateEnd);
     }
 
     private void setOnClick(LinearLayout btn, TextView day1, TextView event1,  String day_week) {
