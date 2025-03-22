@@ -37,6 +37,9 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     Button previous_month;
+    Button next_month;
+    Button previous_year;
+    Button next_year;
     public Button month;
     public Button year;
     LinearLayout view;
@@ -53,10 +56,6 @@ public class HomeFragment extends Fragment {
     public int current_year = calendar.get(Calendar.YEAR);
     public int current_month = calendar.get(Calendar.MONTH);
     public int current_day = calendar.get(Calendar.DATE);
-    public int i_start = 0;
-    public int j_start = 0;
-    public int i_end = 0;
-    public int j_end = 0;
     String[] split;
     private DatabaseHelper mydb ;
     private static final String APP_SD_PATH = "/data/data/com.example.calendarhours/files/hours.txt";
@@ -75,7 +74,9 @@ public class HomeFragment extends Fragment {
         year = root.findViewById(R.id.year);
         previous_month = root.findViewById(R.id.previous_month);
         text_home = root.findViewById(R.id.text_home);
-
+        next_month = root.findViewById(R.id.next_month);
+        previous_year = root.findViewById(R.id.previous_year);
+        next_year = root.findViewById(R.id.next_year);
 
         int e = 0;
         while (e < 7) {
@@ -220,8 +221,7 @@ public class HomeFragment extends Fragment {
                         }
                         d += 1;
                     } else {
-                        i_end = i;
-                        j_end = j;
+
                         buttons[i][j].setBackgroundColor(LTGRAY);
                         days[i][j].setText(Integer.toString(d2));
                         days[i][j].setTextColor(GRAY);
