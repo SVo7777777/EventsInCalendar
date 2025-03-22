@@ -59,15 +59,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public int numberOfRows(){
         SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, TABLE);
+        int numRows;
+        numRows = (int) DatabaseUtils.queryNumEntries(db, TABLE);
         return numRows;
     }
-    public boolean updateContact (Integer id, String month_year, String hours) {
+    public boolean updateHours (Integer id, String month_year, String hours) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("month_year", month_year);
         contentValues.put("hour", hours);
         db.update("hours", contentValues, "id = ? ", new String[]{Integer.toString(id)});
+
         return true;
     }
     public Integer deleteContact (Integer id) {

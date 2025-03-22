@@ -5,9 +5,6 @@ import static android.graphics.Color.GRAY;
 import static android.graphics.Color.LTGRAY;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,16 +25,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.calendarhours.DatabaseHelper;
-import com.example.calendarhours.FileEmpty;
 import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentHomeBinding;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
@@ -66,7 +57,7 @@ public class HomeFragment extends Fragment {
     public int j_start = 0;
     public int i_end = 0;
     public int j_end = 0;
-    String stroka;
+    String[] split;
     private DatabaseHelper mydb ;
     private static final String APP_SD_PATH = "/data/data/com.example.calendarhours/files/hours.txt";
 
@@ -203,6 +194,9 @@ public class HomeFragment extends Fragment {
                         if (chas.isEmpty()){
                             events[i][j].setText("0");
                         }else {
+                            split = chas.split("-");
+                            System.out.println(Arrays.toString(split));
+
 
                         }
                         events[i][j].setTypeface(null, Typeface.BOLD);
@@ -255,9 +249,10 @@ public class HomeFragment extends Fragment {
                     System.out.println(days[i][j].getText() + "-" + h);
                     sum += Float.parseFloat(h);
                     hours += "-"+h;
+
                 }else{
                     System.out.println(days[i][j].getText() + "-" + ".");
-                    hours += ".";
+                    hours += "-"+".";
                 }
             }
         }
@@ -271,6 +266,7 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
             String h = mydb.getHours(data);
             System.out.println("за "+data+" часы: "+h);
+            addHoursInCalendar(h);
         }else {
             mydb.insertContact(data, hours);
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
@@ -279,6 +275,29 @@ public class HomeFragment extends Fragment {
 //        ArrayList<String> allRows = mydb.getAllRows();
 //        System.out.println(allRows);
     }
+    private void addHoursInCalendar(String h) {
+        split = h.split("-");
+        System.out.println(h);
+        int d = 1;
+        System.out.println("split[0=]"+split[0]);
+        System.out.println("split[1=]"+split[1]);
+        System.out.println(split[d]);
+        System.out.println(Arrays.toString(split));
+        for (int i = 1; i < 7; i++) {
+            for (int j = 1; j < 8; j++) {
+                if (split[d].equals(".")){
+                    events[i][j].setText("");
+                }else {
+                    events[i][j].setText(split[d]);
+                }
+
+                d += 1;
+            }
+        }
+
+
+    }
+
     public void onPreviousMonthClick1(View view)
     {
         String mon = (String) month.getText();
@@ -488,7 +507,7 @@ public class HomeFragment extends Fragment {
                                     hours.append("-").append(h);
                                 }else{
                                     System.out.println(days[i][j].getText() + "-" + ".");
-                                    hours.append(".");
+                                    hours.append("-").append(".");
                                 }
 
 
@@ -496,6 +515,11 @@ public class HomeFragment extends Fragment {
                        }
                         System.out.println(hours);
                         System.out.println(month_year+" "+hours);
+                        int id = mydb.numberOfRows();
+                        boolean updatehourse = mydb.updateHours(id, month_year, String.valueOf(hours));
+                        if (updatehourse){
+                            Toast.makeText(getActivity(), "Часы изменены!", Toast.LENGTH_SHORT).show();
+                        }
                         text_home.setText(String.valueOf(sum));
                         //SaveNewHours.fileChangeLine1(month_year,hours);
 //                        mydb = new DatabaseHelper(getContext());
