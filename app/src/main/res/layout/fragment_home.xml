@@ -14,8 +14,47 @@
         android:layout_height="wrap_content"
         android:background="@color/purple_200"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="0sp"
         tools:ignore="SmallSp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="TextView"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:insetTop="0dp"
+            android:insetBottom="6dp"
+            android:text="@string/salary"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:gravity="center|center_vertical"
+            android:hint="введите цену за час"
+            android:inputType="number"
+            android:textSize="17dp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/year_month"
@@ -30,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_weight="1"
-            android:onClick="onPreviousMonthClick"
+            android:insetTop="0dp"
             android:paddingStart="35dp"
             android:paddingTop="0dp"
             android:paddingEnd="1dp"
@@ -45,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_weight="1"
-            android:onClick="onReviewMonthClick"
+            android:insetTop="0dp"
             android:paddingStart="1dp"
             android:paddingTop="0dp"
             android:paddingEnd="1dp"
@@ -60,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_weight="1"
-            android:onClick="onNextMonthClick"
+            android:insetTop="0dp"
             android:paddingStart="0dp"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
@@ -74,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_weight="1"
-            android:onClick="onPreviousYearClick"
+            android:insetTop="0dp"
             android:paddingStart="35dp"
             android:paddingTop="0dp"
             android:paddingEnd="0dp"
@@ -89,6 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_weight="1"
+            android:insetTop="0dp"
             android:paddingStart="0dp"
             android:paddingTop="0dp"
             android:paddingEnd="1dp"
@@ -102,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_weight="1"
-            android:onClick="onNextYearClick"
+            android:insetTop="0dp"
             android:paddingStart="1dp"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
@@ -376,7 +416,7 @@
                             android:text="31"
                             android:textColor="@color/Purple2"
                             android:textSize="35sp"
-                            tools:ignore="HardcodedText" />
+                            tools:ignore="HardcodedText,RtlHardcoded" />
 
                         <TextView
                             android:id="@+id/event_12"
@@ -414,7 +454,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
 
                         <TextView
                             android:id="@+id/event_13"
@@ -452,7 +493,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
 
                         <TextView
                             android:id="@+id/event_14"
@@ -491,7 +533,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
 
                         <TextView
                             android:id="@+id/event_15"
@@ -536,7 +579,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="#ffffff"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
 
                         <TextView
                             android:id="@+id/event_16"
@@ -576,7 +620,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="#ffffff"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
 
                         <TextView
                             android:id="@+id/event_17"
@@ -615,7 +660,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_21"
                             android:layout_width="wrap_content"
@@ -651,7 +697,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_22"
                             android:layout_width="wrap_content"
@@ -687,7 +734,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_23"
                             android:layout_width="wrap_content"
@@ -723,7 +771,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_24"
                             android:layout_width="wrap_content"
@@ -759,7 +808,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_25"
                             android:layout_width="wrap_content"
@@ -798,7 +848,9 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="#ffffff"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_26"
                             android:layout_width="wrap_content"
@@ -836,7 +888,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="#ffffff"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_27"
                             android:layout_width="wrap_content"
@@ -873,7 +926,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_31"
                             android:layout_width="wrap_content"
@@ -910,7 +964,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage,TooManyViews" />
                         <TextView
                             android:id="@+id/event_32"
                             android:layout_width="wrap_content"
@@ -947,7 +1002,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_33"
                             android:layout_width="wrap_content"
@@ -984,7 +1040,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_34"
                             android:layout_width="wrap_content"
@@ -1020,7 +1077,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="@color/Purple2"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_35"
                             android:layout_width="wrap_content"
@@ -1058,7 +1116,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="#ffffff"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_36"
                             android:layout_width="wrap_content"
@@ -1096,7 +1155,8 @@
                             android:gravity="right"
                             android:text="31"
                             android:textColor="#ffffff"
-                            android:textSize="35dp" />
+                            android:textSize="35dp"
+                            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                         <TextView
                             android:id="@+id/event_37"
                             android:layout_width="wrap_content"

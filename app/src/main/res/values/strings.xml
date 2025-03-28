@@ -6,5 +6,6 @@
     <string name="monday">пн</string>
     <string name="atantion">"Запишите событие, а потом внесите! "</string>
     <string name="file_exist">В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!</string>
+    <string name="salary">salary</string>
 
 </resources>
