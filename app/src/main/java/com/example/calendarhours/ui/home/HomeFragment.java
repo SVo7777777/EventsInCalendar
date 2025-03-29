@@ -379,7 +379,7 @@ public class HomeFragment extends Fragment {
     }
     private void setOnClick(LinearLayout btn, TextView day1, TextView event1,  String day_week) {
         btn.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
+            @SuppressLint({"SetTextI18n", "InflateParams"})
             @Override
             public void onClick(View v) {
                 String mon = (String) month.getText();
