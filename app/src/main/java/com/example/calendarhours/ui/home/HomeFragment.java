@@ -2,12 +2,11 @@ package com.example.calendarhours.ui.home;
 
 import static android.graphics.Color.GRAY;
 import static android.graphics.Color.LTGRAY;
-import static android.view.KeyEvent.KEYCODE_ENTER;
 
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,11 +160,10 @@ public class HomeFragment extends Fragment {
         button2.setOnClickListener(v -> {
             String h = String.valueOf(textView3.getText());
             String price = String.valueOf(editTextNumber.getText());
-            float p = 0.0F;
-            p = Float.parseFloat(h) * Float.parseFloat(price);
-
-
-
+            float p = Float.parseFloat(h) * Float.parseFloat(price);
+            System.out.println(p);
+            String salary = String.valueOf(p);
+            button2.setText(salary);
         });
     }
 
