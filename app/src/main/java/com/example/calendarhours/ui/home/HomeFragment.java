@@ -2,10 +2,12 @@ package com.example.calendarhours.ui.home;
 
 import static android.graphics.Color.GRAY;
 import static android.graphics.Color.LTGRAY;
+import static android.view.KeyEvent.KEYCODE_ENTER;
 
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +58,9 @@ public class HomeFragment extends Fragment {
     public int current_day = calendar.get(Calendar.DATE);
     String[] split;
     private DatabaseHelper mydb ;
-     public TextView textView3;
-     public EditText editTextNumber;
+    public TextView textView3;
+    public EditText editTextNumber;
+    public Button button2;
 
 
     @SuppressLint("WrongViewCast")
@@ -84,6 +87,8 @@ public class HomeFragment extends Fragment {
         textView3.setText("Всего: 0.0");
         editTextNumber = root.findViewById(R.id.editTextNumber);
         editTextNumber.setPaintFlags(View.INVISIBLE);
+        button2 = root.findViewById(R.id.button2);
+        salaryShowOnButtonClick(button2);
 
 
 
@@ -151,6 +156,19 @@ public class HomeFragment extends Fragment {
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
+
+    private void salaryShowOnButtonClick(Button button2) {
+        button2.setOnClickListener(v -> {
+            String h = String.valueOf(textView3.getText());
+            String price = String.valueOf(editTextNumber.getText());
+            float p = 0.0F;
+            p = Float.parseFloat(h) * Float.parseFloat(price);
+
+
+
+        });
+    }
+
     @SuppressLint("SetTextI18n")
     private void showCalendar(String mon, int yea, int wee, int mpred, int dayOfWeekOfFirstDayOfMonth, int dateEnd) {
         month.setText(mon);
@@ -542,6 +560,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
