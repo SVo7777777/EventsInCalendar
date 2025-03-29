@@ -56,6 +56,7 @@ public class HomeFragment extends Fragment {
     public int current_month = calendar.get(Calendar.MONTH);
     public int current_day = calendar.get(Calendar.DATE);
     String[] split;
+    String[] split2;
     private DatabaseHelper mydb ;
     public TextView textView3;
     public EditText editTextNumber;
@@ -159,8 +160,13 @@ public class HomeFragment extends Fragment {
     private void salaryShowOnButtonClick(Button button2) {
         button2.setOnClickListener(v -> {
             String h = String.valueOf(textView3.getText());
+            split2 = h.split(" ");
+            System.out.println(Arrays.toString(split2));
+            System.out.println(split2[0]);
+            System.out.println(split2[1]);
             String price = String.valueOf(editTextNumber.getText());
-            float p = Float.parseFloat(h) * Float.parseFloat(price);
+            String hours = split2[1];
+            float p = Float.parseFloat(hours) * Float.parseFloat(price);
             System.out.println(p);
             String salary = String.valueOf(p);
             button2.setText(salary);
