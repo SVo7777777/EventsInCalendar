@@ -7,5 +7,9 @@
     <string name="atantion">"Запишите событие, а потом внесите! "</string>
     <string name="file_exist">В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!</string>
     <string name="salary">salary</string>
+    <string name="hours">my_hours</string>
+    <string name="my_hours">real</string>
+    <string name="my_hours1">plan1</string>
+    <string name="my_hours2">plan2</string>
 
 </resources>

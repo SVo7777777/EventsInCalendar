@@ -158,7 +158,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/days_week"
+        android:id="@+id/hours"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="fill"
@@ -199,7 +199,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="fill"
             android:layout_weight="1"
-            android:paddingLeft="6dp"
+            android:paddingLeft="4dp"
             android:text="ср"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -211,7 +211,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="fill"
             android:layout_weight="1"
-            android:paddingStart="10dp"
+            android:paddingStart="8dp"
             android:text="чт"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -222,7 +222,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingLeft="14dp"
+            android:paddingLeft="12dp"
             android:text="пт"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -233,7 +233,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingLeft="16dp"
+            android:paddingLeft="14dp"
             android:text="сб"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -244,7 +244,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingStart="20dp"
+            android:paddingStart="14dp"
             android:text="вс"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -261,9 +261,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="560dp"
+                android:layout_height="557dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 tools:ignore="UselessParent,TextSizeCheck">
@@ -397,7 +398,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="17dp"
                             android:textStyle="bold"
-                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded"/>
+                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -437,7 +438,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="17dp"
                             android:textStyle="bold"
-                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded"/>
+                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -477,7 +478,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="17dp"
                             android:textStyle="bold"
-                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded"/>
+                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -517,7 +518,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="17dp"
                             android:textStyle="bold"
-                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded"/>
+                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -558,7 +559,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="17dp"
                             android:textStyle="bold"
-                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded"/>
+                            tools:ignore="HardcodedText,SpUsage,RtlHardcoded" />
 
 
                     </LinearLayout>
@@ -610,8 +611,8 @@
                         android:id="@+id/calendar_17"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#8E6427"
                         android:layout_marginEnd="2dp"
+                        android:background="#8E6427"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"
@@ -663,6 +664,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="1"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_21"
                             android:layout_width="wrap_content"
@@ -673,6 +675,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_21"
                             android:layout_width="wrap_content"
@@ -684,6 +687,7 @@
                             android:textStyle="bold"
                             tools:ignore="SpUsage,TextSizeCheck" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_22"
                         android:layout_width="wrap_content"
@@ -701,6 +705,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="1"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_22"
                             android:layout_width="wrap_content"
@@ -711,6 +716,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_22"
                             android:layout_width="wrap_content"
@@ -722,6 +728,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_23"
                         android:layout_width="wrap_content"
@@ -739,6 +746,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="1"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_23"
                             android:layout_width="wrap_content"
@@ -749,6 +757,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_23"
                             android:layout_width="wrap_content"
@@ -760,6 +769,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_24"
                         android:layout_width="wrap_content"
@@ -777,6 +787,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="1"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_24"
                             android:layout_width="wrap_content"
@@ -787,6 +798,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_24"
                             android:layout_width="wrap_content"
@@ -798,6 +810,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_25"
                         android:layout_width="wrap_content"
@@ -815,6 +828,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="1"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_25"
                             android:layout_width="wrap_content"
@@ -825,6 +839,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_25"
                             android:layout_width="wrap_content"
@@ -856,6 +871,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="1"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_26"
                             android:layout_width="wrap_content"
@@ -866,6 +882,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_26"
                             android:layout_width="wrap_content"
@@ -876,6 +893,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_27"
                         android:layout_width="wrap_content"
@@ -895,6 +913,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="1"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_27"
                             android:layout_width="wrap_content"
@@ -905,6 +924,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_27"
                             android:layout_width="wrap_content"
@@ -933,6 +953,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="2"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_31"
                             android:layout_width="wrap_content"
@@ -943,6 +964,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_31"
                             android:layout_width="wrap_content"
@@ -972,6 +994,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="2"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_32"
                             android:layout_width="wrap_content"
@@ -982,6 +1005,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage,TooManyViews" />
+
                         <TextView
                             android:id="@+id/event_32"
                             android:layout_width="wrap_content"
@@ -1011,6 +1035,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="2"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_33"
                             android:layout_width="wrap_content"
@@ -1021,6 +1046,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_33"
                             android:layout_width="wrap_content"
@@ -1050,6 +1076,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="2"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_34"
                             android:layout_width="wrap_content"
@@ -1060,6 +1087,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_34"
                             android:layout_width="wrap_content"
@@ -1071,6 +1099,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_35"
                         android:layout_width="wrap_content"
@@ -1088,6 +1117,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="2"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_35"
                             android:layout_width="wrap_content"
@@ -1098,6 +1128,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_35"
                             android:layout_width="wrap_content"
@@ -1109,6 +1140,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_36"
                         android:layout_width="wrap_content"
@@ -1128,6 +1160,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="2"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_36"
                             android:layout_width="wrap_content"
@@ -1138,6 +1171,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_36"
                             android:layout_width="wrap_content"
@@ -1148,6 +1182,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_37"
                         android:layout_width="wrap_content"
@@ -1167,6 +1202,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="2"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_37"
                             android:layout_width="wrap_content"
@@ -1177,6 +1213,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_37"
                             android:layout_width="wrap_content"
@@ -1205,6 +1242,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="3"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_41"
                             android:layout_width="wrap_content"
@@ -1215,6 +1253,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_41"
                             android:layout_width="wrap_content"
@@ -1226,6 +1265,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_42"
                         android:layout_width="wrap_content"
@@ -1243,6 +1283,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="3"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_42"
                             android:layout_width="wrap_content"
@@ -1253,6 +1294,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_42"
                             android:layout_width="wrap_content"
@@ -1264,6 +1306,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_43"
                         android:layout_width="wrap_content"
@@ -1281,6 +1324,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="3"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_43"
                             android:layout_width="wrap_content"
@@ -1291,6 +1335,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_43"
                             android:layout_width="wrap_content"
@@ -1302,6 +1347,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_44"
                         android:layout_width="wrap_content"
@@ -1319,6 +1365,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="3"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_44"
                             android:layout_width="wrap_content"
@@ -1329,6 +1376,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_44"
                             android:layout_width="wrap_content"
@@ -1340,6 +1388,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_45"
                         android:layout_width="wrap_content"
@@ -1357,6 +1406,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="3"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_45"
                             android:layout_width="wrap_content"
@@ -1367,6 +1417,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_45"
                             android:layout_width="wrap_content"
@@ -1378,6 +1429,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_46"
                         android:layout_width="wrap_content"
@@ -1397,6 +1449,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="3"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_46"
                             android:layout_width="wrap_content"
@@ -1407,6 +1460,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_46"
                             android:layout_width="wrap_content"
@@ -1417,6 +1471,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_47"
                         android:layout_width="wrap_content"
@@ -1436,6 +1491,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="3"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_47"
                             android:layout_width="wrap_content"
@@ -1446,6 +1502,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_47"
                             android:layout_width="wrap_content"
@@ -1474,6 +1531,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="4"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_51"
                             android:layout_width="wrap_content"
@@ -1484,6 +1542,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_51"
                             android:layout_width="wrap_content"
@@ -1495,6 +1554,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_52"
                         android:layout_width="wrap_content"
@@ -1512,6 +1572,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="4"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_52"
                             android:layout_width="wrap_content"
@@ -1522,6 +1583,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_52"
                             android:layout_width="wrap_content"
@@ -1533,6 +1595,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_53"
                         android:layout_width="wrap_content"
@@ -1550,6 +1613,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="4"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_53"
                             android:layout_width="wrap_content"
@@ -1560,6 +1624,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_53"
                             android:layout_width="wrap_content"
@@ -1571,6 +1636,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_54"
                         android:layout_width="wrap_content"
@@ -1588,6 +1654,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="4"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_54"
                             android:layout_width="wrap_content"
@@ -1598,6 +1665,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_54"
                             android:layout_width="wrap_content"
@@ -1609,6 +1677,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_55"
                         android:layout_width="wrap_content"
@@ -1626,6 +1695,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="4"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_55"
                             android:layout_width="wrap_content"
@@ -1636,6 +1706,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_55"
                             android:layout_width="wrap_content"
@@ -1647,6 +1718,7 @@
                             android:textStyle="bold"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_56"
                         android:layout_width="wrap_content"
@@ -1666,6 +1738,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="4"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_56"
                             android:layout_width="wrap_content"
@@ -1676,6 +1749,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_56"
                             android:layout_width="wrap_content"
@@ -1686,6 +1760,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_57"
                         android:layout_width="wrap_content"
@@ -1705,6 +1780,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="4"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_57"
                             android:layout_width="wrap_content"
@@ -1715,6 +1791,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_57"
                             android:layout_width="wrap_content"
@@ -1743,6 +1820,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="5"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_61"
                             android:layout_width="wrap_content"
@@ -1753,6 +1831,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_61"
                             android:layout_width="wrap_content"
@@ -1763,6 +1842,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_62"
                         android:layout_width="wrap_content"
@@ -1780,6 +1860,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="5"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_62"
                             android:layout_width="wrap_content"
@@ -1790,6 +1871,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_62"
                             android:layout_width="wrap_content"
@@ -1800,6 +1882,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_63"
                         android:layout_width="wrap_content"
@@ -1817,6 +1900,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="5"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_63"
                             android:layout_width="wrap_content"
@@ -1827,6 +1911,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_63"
                             android:layout_width="wrap_content"
@@ -1837,6 +1922,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_64"
                         android:layout_width="wrap_content"
@@ -1854,6 +1940,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="5"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_64"
                             android:layout_width="wrap_content"
@@ -1864,6 +1951,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_64"
                             android:layout_width="wrap_content"
@@ -1874,6 +1962,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_65"
                         android:layout_width="wrap_content"
@@ -1891,6 +1980,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="5"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_65"
                             android:layout_width="wrap_content"
@@ -1901,6 +1991,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_65"
                             android:layout_width="wrap_content"
@@ -1911,6 +2002,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_66"
                         android:layout_width="wrap_content"
@@ -1930,6 +2022,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="5"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_66"
                             android:layout_width="wrap_content"
@@ -1940,6 +2033,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_66"
                             android:layout_width="wrap_content"
@@ -1950,6 +2044,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/calendar_67"
                         android:layout_width="wrap_content"
@@ -1969,6 +2064,7 @@
                         app:layout_gravity="fill"
                         app:layout_row="5"
                         app:layout_rowWeight="1">
+
                         <TextView
                             android:id="@+id/day_67"
                             android:layout_width="wrap_content"
@@ -1979,6 +2075,7 @@
                             android:textColor="#ffffff"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_67"
                             android:layout_width="wrap_content"
@@ -1993,6 +2090,13 @@
                 </androidx.gridlayout.widget.GridLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:text="" />
+
         </LinearLayout>
     </ScrollView>
 

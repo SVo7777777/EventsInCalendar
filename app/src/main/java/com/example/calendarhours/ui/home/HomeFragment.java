@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +45,8 @@ public class HomeFragment extends Fragment {
     LinearLayout view;
     //String[][] buttons = new String[3][3];
     LinearLayout[][] buttons= new LinearLayout[7][8];
-    TextView[][] days= new TextView[7][8];
-    TextView[][] events= new TextView[7][8];
+    public TextView[][] days= new TextView[7][8];
+    public TextView[][] events= new TextView[7][8];
     TextView[] number_of_week= new TextView[7];
     TextView text_home;
 
@@ -200,6 +201,7 @@ public class HomeFragment extends Fragment {
                 if (i == 1 && j < dayOfWeekOfFirstDayOfMonth-1) {
                     buttons[i][j].setBackgroundColor(LTGRAY);
                     days[i][j].setText(Integer.toString(m));
+                    days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
                     buttons[i][j].setEnabled(false);
                     days[i][j].setTextColor(GRAY);
                     events[i][j].setText("");
@@ -207,7 +209,9 @@ public class HomeFragment extends Fragment {
                 } else {
                     if (d < dateEnd + 1) {
                         days[i][j].setText(Integer.toString(d));
+                        days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
                         events[i][j].setText("0");
+                        events[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
                         events[i][j].setTypeface(null, Typeface.BOLD);
                         buttons[i][j].setEnabled(true);
                         @SuppressLint("SimpleDateFormat")
@@ -221,7 +225,7 @@ public class HomeFragment extends Fragment {
                         }else {
                             buttons[i][j].setBackgroundColor(buttons[i][j].getContext().getResources().getColor(R.color.work_day));
                             events[i][j].setTextColor(events[i][j].getContext().getResources().getColor(R.color.red));
-                            events[i][j].setTextSize(20);
+                            events[i][j].setTextSize(26);
                             days[i][j].setTextColor(days[i][j].getContext().getResources().getColor(R.color.Purple2));
                         }
                         if (sDate.equals(sDate_now)){
@@ -232,6 +236,7 @@ public class HomeFragment extends Fragment {
 
                         buttons[i][j].setBackgroundColor(LTGRAY);
                         days[i][j].setText(Integer.toString(d2));
+                        days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
                         days[i][j].setTextColor(GRAY);
                         buttons[i][j].setEnabled(false);
                         events[i][j].setText("");
@@ -263,11 +268,11 @@ public class HomeFragment extends Fragment {
         textView3.setText("Всего: "+ sum);
         String data = mont+" "+y;
         mydb = new DatabaseHelper(getContext());
-        boolean search = mydb.checkDataExistOrNot(data);
+        boolean search = mydb.checkDataExistOrNot(data, DatabaseHelper.TABLE);
         System.out.println("search: "+search);
         if (search) {
             Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
-            String h = mydb.getHours(data);
+            String h = mydb.getHours(data, DatabaseHelper.TABLE);
             //String s = mydb.getSum(data);
             System.out.println("за "+data+" часы: "+h);
             System.out.println("s="+sum);
@@ -275,7 +280,7 @@ public class HomeFragment extends Fragment {
         }else {
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
-            mydb.insertContact(data, hours.toString());
+            mydb.insertContact(data, hours.toString(), "hours");
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -303,7 +308,7 @@ public class HomeFragment extends Fragment {
         System.out.println(sum);
         textView3.setText("Всего: "+ sum);
     }
-    private void previousMonthOnButtonClick(Button btn) {
+    public void previousMonthOnButtonClick(Button btn) {
         btn.setOnClickListener(v -> {
             String mon = (String) month.getText();
             int ind = Arrays.asList(monthNames).indexOf(mon);
@@ -330,7 +335,7 @@ public class HomeFragment extends Fragment {
             showCalendar(new_month, _year, week_of_year, max_pred, day_of_week, dateEnd);
         });
     }
-    private void nextMonthOnButtonClick(Button btn) {
+    public void nextMonthOnButtonClick(Button btn) {
         btn.setOnClickListener(v -> {
             String mon = (String) month.getText();
             int ind = Arrays.asList(monthNames).indexOf(mon);
@@ -357,7 +362,7 @@ public class HomeFragment extends Fragment {
             showCalendar(new_month, _year, week_of_year, max_pred, day_of_week, dateEnd);
         });
     }
-    private void previousYearOnButtonClick(Button btn) {
+    public void previousYearOnButtonClick(Button btn) {
         btn.setOnClickListener(view -> {
             String old_month = (String) month.getText();
             int ind = Arrays.asList(monthNames).indexOf(old_month);
@@ -378,7 +383,7 @@ public class HomeFragment extends Fragment {
             showCalendar(old_month, new_year, week_of_year, max_pred, day_of_week, dateEnd);
         });
     }
-    private void nextYearOnButtonClick(Button btn) {
+    public void nextYearOnButtonClick(Button btn) {
         btn.setOnClickListener(view -> {
             String old_month = (String) month.getText();
             int ind = Arrays.asList(monthNames).indexOf(old_month);
@@ -399,7 +404,7 @@ public class HomeFragment extends Fragment {
             showCalendar(old_month, new_year, week_of_year, max_pred, day_of_week, dateEnd);
         });
     }
-    private void setOnClick(LinearLayout btn, TextView day1, TextView event1,  String day_week) {
+    public void setOnClick(LinearLayout btn, TextView day1, TextView event1,  String day_week) {
         btn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint({"SetTextI18n", "InflateParams"})
             @Override
@@ -485,10 +490,10 @@ public class HomeFragment extends Fragment {
                         System.out.println(month_year+" "+hours);
                         String data;
                         data = month_year;
-                        int id = mydb.GetId(data);
+                        int id = mydb.GetId(data, DatabaseHelper.TABLE);
                         System.out.println("id="+id);
                         System.out.println("month_year="+month_year);
-                        boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours));
+                        boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours");
                         if (update_hours){
                             Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
                         }
