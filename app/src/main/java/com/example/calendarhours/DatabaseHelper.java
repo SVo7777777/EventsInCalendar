@@ -11,11 +11,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
     private static final String DATABASE_NAME = "hours.db"; // название бд
     private static final int SCHEMA = 1; // версия базы данных
     public static final String TABLE = "hours"; // название таблицы в бд
-    public static final String TABLE2 = "plan1"; // название таблицы в бд
-    public static final String TABLE3 = "plan2"; // название таблицы в бд
+    public static final String TABLE1 = "plan1"; // название таблицы в бд
+    public static final String TABLE2 = "plan2"; // название таблицы в бд
     // названия столбцов
     //public static final String COLUMN_ID = "_id";
     public static final String COLUMN_MONTH_YEAR = "month_year";
@@ -111,11 +112,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return array_list;
     }
 
-    public boolean checkDataExistOrNot(String value, String TABLE1) {
+    public boolean checkDataExistOrNot(String value, String TABLE3) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         //String query = "SELECT * FROM " + TABLE + " WHERE " + COLUMN_MONTH_YEAR + " = " + value;
         //String query = "select * from hours" + " where " + COLUMN_MONTH_YEAR + " like ?";
-        String query = "SELECT * FROM " + TABLE1 + " WHERE " + COLUMN_MONTH_YEAR + " like ?";
+        String query = "SELECT * FROM " + TABLE3 + " WHERE " + COLUMN_MONTH_YEAR + " like ?";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{"%" + value + "%"});
         //Cursor cursor = sqLiteDatabase.rawQuery(query, null);
@@ -127,10 +128,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;  // return true if value exists in database
     }
 
-    public String getHours(String month_year, String TABLE1) {
+    public String getHours(String month_year, String TABLE3) {
         SQLiteDatabase db = this.getReadableDatabase();
         //String query = "select * from hours" + " where " + COLUMN_MONTH_YEAR + " like ?";
-        String query = "SELECT * FROM " + TABLE1 + " WHERE "+ COLUMN_MONTH_YEAR + " like ?";
+        String query = "SELECT * FROM " + TABLE3 + " WHERE "+ COLUMN_MONTH_YEAR + " like ?";
         Cursor cursor = db.rawQuery(query, new String[]{"%" + month_year + "%"});
         if (cursor.getCount() < 1) {
             cursor.close();
@@ -145,10 +146,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return hours;
     }
-    public int GetId(String currentNote, String TABLE1) {
+    public int GetId(String currentNote, String TABLE3) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         @SuppressLint("Recycle")
-        Cursor getNoteId = myDB.rawQuery("select id from'"+ TABLE1 +"' where month_year = '" + currentNote + "'", null);
+        Cursor getNoteId = myDB.rawQuery("select id from'"+ TABLE3 +"' where month_year = '" + currentNote + "'", null);
         //Cursor getNoteId = myDB.rawQuery("select id from notepadData where notepad like + "'" + currentNote + "'", null);
         if (getNoteId != null && getNoteId.moveToFirst()) {
             return getNoteId.getInt(0);

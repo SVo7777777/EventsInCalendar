@@ -158,19 +158,25 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    @SuppressLint("SetTextI18n")
     private void salaryShowOnButtonClick(Button button2) {
         button2.setOnClickListener(v -> {
             String h = String.valueOf(textView3.getText());
-            split2 = h.split(" ");
-            System.out.println(Arrays.toString(split2));
-            System.out.println(split2[0]);
-            System.out.println(split2[1]);
-            String price = String.valueOf(editTextNumber.getText());
-            String hours = split2[1];
-            float p = Float.parseFloat(hours) * Float.parseFloat(price);
-            System.out.println(p);
-            String salary = String.valueOf(p);
-            button2.setText(salary);
+            try {
+                split2 = h.split(" ");
+                System.out.println(Arrays.toString(split2));
+                System.out.println(split2[0]);
+                System.out.println(split2[1]);
+                String price = String.valueOf(editTextNumber.getText());
+                String hours = split2[1];
+                float p = Float.parseFloat(hours) * Float.parseFloat(price);
+                System.out.println(p);
+                String salary = String.valueOf(p);
+                button2.setText(salary);
+            }catch (NumberFormatException e) {
+                Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
+            }
+
         });
     }
 
@@ -180,6 +186,7 @@ public class HomeFragment extends Fragment {
         year.setText(Integer.toString(yea));
         String mont = String.valueOf(month.getText());
         String y = String.valueOf(year.getText());
+        button2.setText("salary");
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
@@ -201,7 +208,7 @@ public class HomeFragment extends Fragment {
                 if (i == 1 && j < dayOfWeekOfFirstDayOfMonth-1) {
                     buttons[i][j].setBackgroundColor(LTGRAY);
                     days[i][j].setText(Integer.toString(m));
-                    days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
+                    days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                     buttons[i][j].setEnabled(false);
                     days[i][j].setTextColor(GRAY);
                     events[i][j].setText("");
@@ -211,7 +218,7 @@ public class HomeFragment extends Fragment {
                         days[i][j].setText(Integer.toString(d));
                         days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
                         events[i][j].setText("0");
-                        events[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
+                        events[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                         events[i][j].setTypeface(null, Typeface.BOLD);
                         buttons[i][j].setEnabled(true);
                         @SuppressLint("SimpleDateFormat")
@@ -225,7 +232,7 @@ public class HomeFragment extends Fragment {
                         }else {
                             buttons[i][j].setBackgroundColor(buttons[i][j].getContext().getResources().getColor(R.color.work_day));
                             events[i][j].setTextColor(events[i][j].getContext().getResources().getColor(R.color.red));
-                            events[i][j].setTextSize(26);
+                            events[i][j].setTextSize(20);
                             days[i][j].setTextColor(days[i][j].getContext().getResources().getColor(R.color.Purple2));
                         }
                         if (sDate.equals(sDate_now)){
@@ -236,7 +243,7 @@ public class HomeFragment extends Fragment {
 
                         buttons[i][j].setBackgroundColor(LTGRAY);
                         days[i][j].setText(Integer.toString(d2));
-                        days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
+                        days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                         days[i][j].setTextColor(GRAY);
                         buttons[i][j].setEnabled(false);
                         events[i][j].setText("");
@@ -281,6 +288,8 @@ public class HomeFragment extends Fragment {
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
             mydb.insertContact(data, hours.toString(), "hours");
+            mydb.insertContact(data, hours.toString(), "plan1");
+            mydb.insertContact(data, hours.toString(), "plan2");
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
     }

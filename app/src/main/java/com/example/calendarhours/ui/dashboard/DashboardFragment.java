@@ -92,6 +92,8 @@ public class DashboardFragment extends Fragment {
         previous_year = root.findViewById(R.id.previous_year);
         next_year = root.findViewById(R.id.next_year);
         textView3 = root.findViewById(R.id.textView3);
+        editTextNumber = root.findViewById(R.id.editTextNumber);
+        editTextNumber.setPaintFlags(View.INVISIBLE);
         result = root.findViewById(R.id.result);
         result1 = root.findViewById(R.id.result1);
         result2 = root.findViewById(R.id.result2);
@@ -101,9 +103,10 @@ public class DashboardFragment extends Fragment {
         nextYearOnButtonClick(next_year);
         plan1 = root.findViewById(R.id.plan1);
         plan2 = root.findViewById(R.id.plan2);
+        button2 = root.findViewById(R.id.button2);
+        salaryShowOnButtonClick(button2);
 
-        planOnClick(plan2, my_hours2_of_days);
-        planOnClick(plan1, my_hours1_of_days);
+
 
         hours1 = "";
         // обращаемся к методу фрагмента HomeFragment
@@ -122,9 +125,9 @@ public class DashboardFragment extends Fragment {
         gridTable();
             for (int j = 0; j < 32; j++) {
                 try {
-                    setOnClick(my_hours_of_days[j], number_of_days[j]);
-//                    setOnClick(my_hours1_of_days[j], number_of_days[j]);
-//                    setOnClick(my_hours2_of_days[j], number_of_days[j]);
+                    setOnClick(my_hours_of_days[j], number_of_days[j], my_hours_of_days);
+                    setOnClick(my_hours1_of_days[j], number_of_days[j], my_hours1_of_days);
+                    setOnClick(my_hours2_of_days[j], number_of_days[j], my_hours2_of_days);
                     //ne: NullPointerException
                 } catch (Exception ignored) {
 
@@ -162,21 +165,27 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
-
-    private void planOnClick(TextView btn, Button[] my_plan_of_days) {
-        btn.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint({"SetTextI18n", "InflateParams"})
-            @Override
-            public void onClick(View v) {
-                String mon = (String) month.getText();
-                String ye = (String) year.getText();
+    @SuppressLint("SetTextI18n")
+    private void salaryShowOnButtonClick(Button button2) {
+        button2.setOnClickListener(v -> {
+            String h = String.valueOf(textView3.getText());
+            try {
+                split2 = h.split(" ");
+                System.out.println(Arrays.toString(split2));
+                System.out.println(split2[0]);
+                System.out.println(split2[1]);
+                String price = String.valueOf(editTextNumber.getText());
+                String hours = split2[1];
+                float p = Float.parseFloat(hours) * Float.parseFloat(price);
+                System.out.println(p);
+                String salary = String.valueOf(p);
+                button2.setText(salary);
+            }catch (NumberFormatException e) {
+                Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
             }
+
         });
-
     }
-
-
-
     @SuppressLint("SetTextI18n")
     private void showCalendar(String mon, int yea, int wee, int mpred, int dayOfWeekOfFirstDayOfMonth, int dateEnd) {
         month.setText(mon);
@@ -282,8 +291,8 @@ public class DashboardFragment extends Fragment {
         if (search) {
             Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
             String h = mydb.getHours(data, DatabaseHelper.TABLE);
-            String h1 = mydb.getHours(data, DatabaseHelper.TABLE2);
-            String h2 = mydb.getHours(data, DatabaseHelper.TABLE3);
+            String h1 = mydb.getHours(data, DatabaseHelper.TABLE1);
+            String h2 = mydb.getHours(data, DatabaseHelper.TABLE2);
             //String s = mydb.getSum(data);
             hours1 = h;
             System.out.println("hours1="+hours1);
@@ -324,9 +333,9 @@ public class DashboardFragment extends Fragment {
             System.out.println(hours);
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
+            mydb.insertContact(data, hours.toString(), "plan1");
+            mydb.insertContact(data, hours.toString(), "plan2");
             mydb.insertContact(data, hours.toString(), "hours");
-//            mydb.insertContact(data, hours.toString(), "plan1");
-//            mydb.insertContact(data, hours.toString(), "plan2");
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -490,7 +499,7 @@ public class DashboardFragment extends Fragment {
         });
     }
 
-    private void setOnClick(Button myHoursOfDay, TextView numberOfDay) {
+    private void setOnClick(Button myHoursOfDay, TextView numberOfDay, Button[] hours_of_days) {
         myHoursOfDay.setOnClickListener(new View.OnClickListener() {
             @SuppressLint({"SetTextI18n", "InflateParams"})
             @Override
@@ -557,6 +566,7 @@ public class DashboardFragment extends Fragment {
                         }
                     }
                     private void addHours() {
+                        String h0 = "";
                         String month_year = mon + " " + ye;
                         StringBuilder hours = new StringBuilder();
                         float sum = 0.0F;
@@ -565,7 +575,17 @@ public class DashboardFragment extends Fragment {
                             if (i < day_OfWeekOfFirstDayOfMonth-1){
                                 hours.append("-" + ".");
                             }else {
-                                String h =(String) my_hours_of_days[d-1].getText();
+                                if (Arrays.equals(hours_of_days, my_hours2_of_days)) {
+                                    h0 = (String) DashboardFragment.this.my_hours2_of_days[d - 1].getText();
+                                } else if (Arrays.equals(hours_of_days, my_hours_of_days)) {
+                                    h0 = (String) DashboardFragment.this.my_hours_of_days[d - 1].getText();
+                                } else if (Arrays.equals(hours_of_days, my_hours1_of_days)) {
+                                    h0 = (String) DashboardFragment.this.my_hours1_of_days[d - 1].getText();
+                                } else {
+                                    System.out.println("---INVALID---");
+                                }
+
+                                String h = h0;
                                 if (d < date_End + 1) {
                                     try {
                                         sum += Float.parseFloat(h);
@@ -603,17 +623,38 @@ public class DashboardFragment extends Fragment {
                         System.out.println(month_year+" "+hours);
                         String data;
                         data = month_year;
-                        int id = mydb.GetId(data, DatabaseHelper.TABLE);
-                        System.out.println("id="+id);
-                        System.out.println("month_year="+month_year);
-                        boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours");
-                        if (update_hours){
-                            Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                        if (Arrays.equals(hours_of_days, my_hours2_of_days)) {
+                            int id = mydb.GetId(data, DatabaseHelper.TABLE2);
+                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan2");
+                            if (update_hours){
+                                Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                            }
+                            DashboardFragment.this.my_hours2_of_days[31].setText(String.valueOf(sum));
+                            result2.setText(String.valueOf(sum));
+                        } else if (Arrays.equals(hours_of_days, my_hours_of_days)) {
+                            int id = mydb.GetId(data, DatabaseHelper.TABLE);
+                            System.out.println("id="+id);
+                            System.out.println("month_year="+month_year);
+                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours");
+                            if (update_hours){
+                                Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                            }
+                            String s = String.valueOf(sum);
+                            DashboardFragment.this.my_hours_of_days[31].setText(String.valueOf(sum));
+                            result.setText(String.valueOf(sum));
+                            textView3.setText(String.format("Всего: %s", s));
+                        } else if (Arrays.equals(hours_of_days, my_hours1_of_days)) {
+                            int id = mydb.GetId(data, DatabaseHelper.TABLE1);
+                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan1");
+                            if (update_hours){
+                                Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                            }
+                            DashboardFragment.this.my_hours1_of_days[31].setText(String.valueOf(sum));
+                            result1.setText(String.valueOf(sum));
+                        } else {
+                            System.out.println("---INVALID---");
                         }
-                        String s = String.valueOf(sum);
-                        my_hours_of_days[31].setText(String.valueOf(sum));
-                        result.setText(String.valueOf(sum));
-                        textView3.setText(String.format("Всего: %s", s));
+
 
                     }
                 });
@@ -749,15 +790,6 @@ public class DashboardFragment extends Fragment {
         System.out.println(Arrays.toString(number_of_days));
 
     }
-    public void removeTable() {
-        for (int i = 0; i < 32; i++) {
-            days_month.removeView(number_of_days[i]);
-            my_hours.removeView(my_hours_of_days[i]);
-            my_hours1.removeView(my_hours1_of_days[i]);
-            my_hours2.removeView(my_hours2_of_days[i]);
-        }
-    }
-
             @Override
     public void onDestroyView() {
         super.onDestroyView();
