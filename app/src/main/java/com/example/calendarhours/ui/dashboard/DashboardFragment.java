@@ -179,6 +179,7 @@ public class DashboardFragment extends Fragment {
                 float p = Float.parseFloat(hours) * Float.parseFloat(price);
                 System.out.println(p);
                 String salary = String.valueOf(p);
+
                 button2.setText(salary);
             }catch (NumberFormatException e) {
                 Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
@@ -194,6 +195,7 @@ public class DashboardFragment extends Fragment {
         String y = String.valueOf(year.getText());
         date_End = dateEnd;
         day_OfWeekOfFirstDayOfMonth = dayOfWeekOfFirstDayOfMonth;
+
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
@@ -211,6 +213,14 @@ public class DashboardFragment extends Fragment {
         for (int j = 0; j < 32; j++) {
             number_of_days[j].setEnabled(true);
             my_hours_of_days[j].setEnabled(true);
+            my_hours_of_days[j].setBackgroundColor(0);
+            my_hours1_of_days[j].setBackgroundColor(0);
+            my_hours2_of_days[j].setBackgroundColor(0);
+            my_hours_of_days[j].setTextColor(my_hours_of_days[j].getContext().getResources().getColor(R.color.purple_700));
+            my_hours1_of_days[j].setTextColor(my_hours_of_days[j].getContext().getResources().getColor(R.color.purple_700));
+            my_hours2_of_days[j].setTextColor(my_hours_of_days[j].getContext().getResources().getColor(R.color.purple_700));
+
+
             @SuppressLint("SimpleDateFormat")
             final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Calendar c = Calendar.getInstance();
@@ -219,10 +229,21 @@ public class DashboardFragment extends Fragment {
             String sDate = sdf.format(c.getTime());
             number_of_days[j].setText("");
             number_of_days[j].setText(( String.valueOf(j+1) + " " + String.valueOf(day_weeks[day_of_week])));
+            number_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.work_day));
+            number_of_days[j].setTextColor(number_of_days[j].getContext().getResources().getColor(R.color.black));
 
-                if (day_of_week == 1 || day_of_week == 7) {
+
+
+            if (day_of_week == 1 || day_of_week == 7) {
                     number_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.weekend_day));
-                    //days[i][j].setTextColor(days[i][j].getContext().getResources().getColor(R.color.white));
+                    number_of_days[j].setTextColor(number_of_days[j].getContext().getResources().getColor(R.color.white));
+                    my_hours1_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.weekend_day));
+                    my_hours1_of_days[j].setTextColor(number_of_days[j].getContext().getResources().getColor(R.color.white));
+                    my_hours_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.weekend_day));
+                    my_hours_of_days[j].setTextColor(number_of_days[j].getContext().getResources().getColor(R.color.white));
+                    my_hours2_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.weekend_day));
+                    my_hours2_of_days[j].setTextColor(number_of_days[j].getContext().getResources().getColor(R.color.white));
+
                 } else {
                     number_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.work_day));
 //                    events[i][j].setTextColor(events[i][j].getContext().getResources().getColor(R.color.red));
@@ -333,11 +354,28 @@ public class DashboardFragment extends Fragment {
             System.out.println(hours);
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
-            mydb.insertContact(data, hours.toString(), "plan1");
-            mydb.insertContact(data, hours.toString(), "plan2");
-            mydb.insertContact(data, hours.toString(), "hours");
+            mydb.insertContact(data, hours.toString(), "0.0", "0.0","plan1");
+            mydb.insertContact(data, hours.toString(), "0.0", "0.0", "plan2");
+            mydb.insertContact(data, hours.toString(),"0.0","0.0", "hours");
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
+    }
+    public String summerHours(String h) {
+        split = h.split("-");
+        System.out.println(Arrays.toString(split));
+        int d = 1;
+        float sum = 0.0F;
+        for (int i = 0; i < 42; i++) {
+            if (split[d].equals(".")) {
+                System.out.println("point");
+            } else {
+                sum += Float.parseFloat(split[d]);
+
+            }
+            d += 1;
+        }
+        System.out.println(sum);
+        return String.valueOf(sum);
     }
     private StringBuilder zeroHours(int dateEnd, int dayOfWeekOfFirstDayOfMonth){
         StringBuilder hours = new StringBuilder();
@@ -625,7 +663,7 @@ public class DashboardFragment extends Fragment {
                         data = month_year;
                         if (Arrays.equals(hours_of_days, my_hours2_of_days)) {
                             int id = mydb.GetId(data, DatabaseHelper.TABLE2);
-                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan2");
+                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan2", String.valueOf(sum));
                             if (update_hours){
                                 Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
                             }
@@ -635,7 +673,7 @@ public class DashboardFragment extends Fragment {
                             int id = mydb.GetId(data, DatabaseHelper.TABLE);
                             System.out.println("id="+id);
                             System.out.println("month_year="+month_year);
-                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours");
+                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours", String.valueOf(sum));
                             if (update_hours){
                                 Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
                             }
@@ -645,7 +683,7 @@ public class DashboardFragment extends Fragment {
                             textView3.setText(String.format("Всего: %s", s));
                         } else if (Arrays.equals(hours_of_days, my_hours1_of_days)) {
                             int id = mydb.GetId(data, DatabaseHelper.TABLE1);
-                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan1");
+                            boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan1", String.valueOf(sum));
                             if (update_hours){
                                 Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
                             }
@@ -745,6 +783,7 @@ public class DashboardFragment extends Fragment {
             my_hours_of_days[i].setWidth(160);
             my_hours_of_days[i].setTextColor(my_hours_of_days[i].getContext().getResources().getColor(R.color.purple_700));
             my_hours_of_days[i].setGravity(Gravity.CENTER);
+            my_hours_of_days[i].setBackgroundColor(0);
 
             my_hours1_of_days[i]=new Button(getContext());
             my_hours1_of_days[i].setId(i + 1);
@@ -753,6 +792,7 @@ public class DashboardFragment extends Fragment {
             my_hours1_of_days[i].setWidth(160);
             my_hours1_of_days[i].setTextColor(my_hours_of_days[i].getContext().getResources().getColor(R.color.purple_700));
             my_hours1_of_days[i].setGravity(Gravity.CENTER);
+            my_hours1_of_days[i].setBackgroundColor(0);
 
             my_hours2_of_days[i]=new Button(getContext());
             my_hours2_of_days[i].setId(i + 1);
@@ -761,6 +801,7 @@ public class DashboardFragment extends Fragment {
             my_hours2_of_days[i].setTextColor(my_hours_of_days[i].getContext().getResources().getColor(R.color.purple_700));
             my_hours2_of_days[i].setWidth(160);
             my_hours2_of_days[i].setGravity(Gravity.CENTER);
+            my_hours2_of_days[i].setBackgroundColor(0);
 
 
 

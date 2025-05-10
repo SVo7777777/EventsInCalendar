@@ -162,6 +162,9 @@ public class HomeFragment extends Fragment {
     private void salaryShowOnButtonClick(Button button2) {
         button2.setOnClickListener(v -> {
             String h = String.valueOf(textView3.getText());
+            String mon = (String) month.getText();
+            String ye = (String) year.getText();
+            String month_year = mon + " " + ye;
             try {
                 split2 = h.split(" ");
                 System.out.println(Arrays.toString(split2));
@@ -172,6 +175,13 @@ public class HomeFragment extends Fragment {
                 float p = Float.parseFloat(hours) * Float.parseFloat(price);
                 System.out.println(p);
                 String salary = String.valueOf(p);
+                int id = mydb.GetId(month_year, DatabaseHelper.TABLE);
+                System.out.println("id="+id);
+                System.out.println("month_year="+month_year);
+                boolean update_hours = mydb.updateSalary(id, month_year, String.valueOf(salary), "hours");
+                if (update_hours){
+                    Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+salary, Toast.LENGTH_SHORT).show();
+                }
                 button2.setText(salary);
             }catch (NumberFormatException e) {
                 Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
@@ -287,9 +297,9 @@ public class HomeFragment extends Fragment {
         }else {
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
-            mydb.insertContact(data, hours.toString(), "hours");
-            mydb.insertContact(data, hours.toString(), "plan1");
-            mydb.insertContact(data, hours.toString(), "plan2");
+            mydb.insertContact(data, hours.toString(), "0.0","0.0","hours");
+            mydb.insertContact(data, hours.toString(), "0.0","0.0","plan1");
+            mydb.insertContact(data, hours.toString(), "0.0","0.0","plan2");
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -502,7 +512,7 @@ public class HomeFragment extends Fragment {
                         int id = mydb.GetId(data, DatabaseHelper.TABLE);
                         System.out.println("id="+id);
                         System.out.println("month_year="+month_year);
-                        boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours");
+                        boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours", String.valueOf(sum));
                         if (update_hours){
                             Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
                         }

@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "hours.db"; // название бд
+    private static final String DATABASE_NAME = "hours22.db"; // название бд
     private static final int SCHEMA = 1; // версия базы данных
     public static final String TABLE = "hours"; // название таблицы в бд
     public static final String TABLE1 = "plan1"; // название таблицы в бд
@@ -21,7 +21,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //public static final String COLUMN_ID = "_id";
     public static final String COLUMN_MONTH_YEAR = "month_year";
     public static final String COLUMN_HOURS = "hour";
-    //public static final String COLUMN_QUANTITY_HOURS = "quantity_hour";
+    public static final String  COLUMN_QUANTITY_HOURS = "quantity_hour";
+    public static final String COLUMN_SALARY = "salary";
 
 
     public DatabaseHelper(Context context) {
@@ -34,14 +35,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(
                 "create table hours " +
-                        "(id integer primary key, month_year text, hour text)");
+                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary text)");
 
         db.execSQL(
                 "create table plan1 " +
-                        "(id integer primary key, month_year text, hour text)");
+                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary text)");
         db.execSQL(
                 "create table plan2 " +
-                        "(id integer primary key, month_year text, hour text)");
+                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary trxt)");
 
 
     }
@@ -49,15 +50,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE);
-//        switch (oldVersion) {
-//            case 2:
-//                db.execSQL("DROP TABLE IF EXISTS " + TABLE);
+//      switch (oldVersion) {
+//        case 1:
+//            db.execSQL(SQL_MY_TABLE);
 //
-//            case 3:
-//                db.execSQL("DROP TABLE IF EXISTS " + TABLE2);
-//                db.execSQL("DROP TABLE IF EXISTS " + TABLE3);
-//                break;
-//        }
+//        case 2:
+//            db.execSQL("ALTER TABLE "hours" ADD COLUMN myNewColumn TEXT");
 
 
         onCreate(db);
@@ -67,30 +65,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getWritableDatabase();
         db.execSQL(
                 "create table if not exists'" + name_table +
-                        "'(id integer primary key, month_year text, hour text)");
+                        "'(id integer primary key, month_year text, hour text, quantity_hour text, salary trxt)");
 
         //db.execSQL(CreateTableString);//CreateTableString is the SQL Command String
     }
 
-    public void insertContact(String month_year, String hours, String table_name) {
+    public void insertContact(String month_year, String hours, String salary, String quantity_hour, String table_name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("month_year", month_year);
         contentValues.put("hour", hours);
-        //contentValues.put("quantity_hour", quantity_hour);
+        contentValues.put("quantity_hour", quantity_hour);
+        contentValues.put("salary", salary);
         db.insert(table_name, null, contentValues);
     }
 
-    public boolean updateHours(Integer id, String month_year, String hours, String table_name) {
+    public boolean updateHours(Integer id, String month_year, String hours, String table_name, String quantity_hour) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("month_year", month_year);
         contentValues.put("hour", hours);
+        contentValues.put("quantity_hour", quantity_hour);
         //contentValues.put("quantity_hour", quantity_hour);
         db.update(table_name, contentValues, "id = ? ", new String[]{Integer.toString(id)});
-
         return true;
     }
+    public boolean updateSalary(Integer id, String month_year, String salary, String table_name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("month_year", month_year);
+        contentValues.put("salary", salary);
+        //contentValues.put("quantity_hour", quantity_hour);
+        db.update(table_name, contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        return true;
+    }
+
 
     public Integer deleteContact(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -99,15 +108,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{Integer.toString(id)});
     }
 
-    public ArrayList<String> getAllRows() {
-        ArrayList<String> array_list = new ArrayList<>();
+    public ArrayList<ArrayList<String>> getAllRows() {
+        ArrayList<ArrayList<String>>  array_list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        int i = 0;
+        //int j = 0;
         @SuppressLint("Recycle")
         Cursor res = db.rawQuery("select * from hours", null);
         res.moveToFirst();
-        while (!res.isAfterLast()) {
-            array_list.add(res.getString(res.getColumnIndex(String.valueOf(1))));
-            res.moveToNext();
+//        while (!res.isAfterLast()) {
+//
+//            array_list.add(res.getString(res.getColumnIndex(String.valueOf(0))));
+//
+//            res.moveToNext();
+//        }
+
+        if(res.getCount() > 0) {
+            if (res.moveToFirst()) {
+                do {
+                    ArrayList<String> row = new ArrayList<String>();
+                    row.add(res.getString(1));
+                    row.add(res.getString(2));
+                    row.add(res.getString(3));
+                    row.add(res.getString(4));
+                    array_list.add(row);
+                    //array_list.add(String.valueOf(res.getColumnIndex(COLUMN_MONTH_YEAR)));
+
+                } while (res.moveToNext());
+                res.close();
+            }
+
         }
         return array_list;
     }
@@ -143,6 +173,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         String hours = cursor.getString(cursor.getColumnIndex(COLUMN_HOURS));
+        cursor.close();
+        return hours;
+    }
+    public String getQuantityHours(String month_year, String TABLE3) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        //String query = "select * from hours" + " where " + COLUMN_MONTH_YEAR + " like ?";
+        String query = "SELECT * FROM " + TABLE3 + " WHERE "+ COLUMN_MONTH_YEAR + " like ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"%" + month_year + "%"});
+        if (cursor.getCount() < 1) {
+            cursor.close();
+            return "DOES NOT EXIST";
+        }
+        cursor.moveToFirst();
+        while (!Objects.equals(month_year, cursor.getString(1))) {
+            cursor.moveToNext();
+        }
+
+        String hours = cursor.getString(cursor.getColumnIndex(COLUMN_QUANTITY_HOURS));
+        cursor.close();
+        return hours;
+    }
+    public String getSalary(String month_year, String TABLE3) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        //String query = "select * from hours" + " where " + COLUMN_MONTH_YEAR + " like ?";
+        String query = "SELECT * FROM " + TABLE3 + " WHERE "+ COLUMN_MONTH_YEAR + " like ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"%" + month_year + "%"});
+        if (cursor.getCount() < 1) {
+            cursor.close();
+            return "DOES NOT EXIST";
+        }
+        cursor.moveToFirst();
+        while (!Objects.equals(month_year, cursor.getString(1))) {
+            cursor.moveToNext();
+        }
+
+        String hours = cursor.getString(cursor.getColumnIndex(COLUMN_SALARY));
         cursor.close();
         return hours;
     }
