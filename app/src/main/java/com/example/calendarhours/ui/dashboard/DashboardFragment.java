@@ -169,6 +169,9 @@ public class DashboardFragment extends Fragment {
     private void salaryShowOnButtonClick(Button button2) {
         button2.setOnClickListener(v -> {
             String h = String.valueOf(textView3.getText());
+            String mon = (String) month.getText();
+            String ye = (String) year.getText();
+            String month_year = mon + " " + ye;
             try {
                 split2 = h.split(" ");
                 System.out.println(Arrays.toString(split2));
@@ -179,6 +182,14 @@ public class DashboardFragment extends Fragment {
                 float p = Float.parseFloat(hours) * Float.parseFloat(price);
                 System.out.println(p);
                 String salary = String.valueOf(p);
+                int id = mydb.GetId(month_year, DatabaseHelper.TABLE);
+                System.out.println("id="+id);
+                System.out.println("month_year="+month_year);
+                boolean update_hours = mydb.updateSalary(id, month_year, String.valueOf(salary), "hours");
+                if (update_hours){
+                    Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+salary, Toast.LENGTH_SHORT).show();
+                }
+                button2.setText(salary);
 
                 button2.setText(salary);
             }catch (NumberFormatException e) {
