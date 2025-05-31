@@ -1,10 +1,6 @@
 package com.example.calendarhours.ui.notifications;
 
-import static android.os.ParcelFileDescriptor.MODE_APPEND;
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,19 +8,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
-import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
+import android.os.FileUtils;
+import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -41,15 +37,15 @@ import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentNotificationsBinding;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.Calendar;
 
 
 public class NotificationsFragment extends Fragment {
@@ -71,6 +67,11 @@ public class NotificationsFragment extends Fragment {
     private Bitmap bitmap;
     private ImageView imageView;
     private int width, height;
+    Calendar calendar = Calendar.getInstance();
+    public int current_year = calendar.get(Calendar.YEAR);
+    public int current_month = calendar.get(Calendar.MONTH);
+    public int current_day = calendar.get(Calendar.DATE);
+    String current_data = "_"+String.valueOf(current_day)+"-"+String.valueOf(current_month+1)+"-"+String.valueOf(current_year);
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -92,22 +93,13 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("size", "" + linear.getWidth() + " " + linear.getWidth());
-                //bitmap = loadBitmapFromView(linear, linear.getWidth(), linear.getHeight());
-                //createPdf();
-                //convertXmlToPdf();
-                onWindowFocusChanged(true);
-                //createPdfFile();
-                //createPDF();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    creatPDF(true);
+                }
+
             }
         });
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("size"," "+llPdf.getWidth() +"  "+llPdf.getWidth());
-//                bitmap = loadBitmapFromView(llPdf, llPdf.getWidth(), llPdf.getHeight());
-//                createPdfFile();
-//            }
-//        });
+
 
         mydb = new DatabaseHelper(getContext());
         ArrayList<ArrayList<String>> str = mydb.getAllRows();
@@ -147,18 +139,10 @@ public class NotificationsFragment extends Fragment {
         System.out.println("summer=" + summer);
         button2.setText(String.format("всего заработано: %s", summer));
 
-//        for (ArrayList<String> list : str) {
-//            System.out.println("размер массива: "+list.size());
-//        }
-//        Collections.sort(str);
-//        System.out.println(Arrays.toString(str.toArray()));
-
-
-        //final TextView textView = binding.textNotifications;
-        //notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
-    public  void onWindowFocusChanged(boolean hasFocus) {
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public  void creatPDF(boolean hasFocus) {
         super.onHiddenChanged(hasFocus);
         width = linear.getWidth();
         height = linear.getHeight();
@@ -173,10 +157,10 @@ public class NotificationsFragment extends Fragment {
         Canvas c = p.getCanvas();
         c.drawBitmap(b, 0, 0, new Paint());
         pd.finishPage(p);
-        try (FileOutputStream fos = getActivity().openFileOutput("a-computer-engineer-pdf-test.pdf", Context.MODE_PRIVATE);
-             //try (FileOutputStream fos = new FileOutputStream("exampleXML.pdf", true);
-             // outputStream = new FileOutputStream (new File(patternDirectory.getAbsolutePath().toString()), true); // true will be same as Context.MODE_APPEND
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
+        //сохраняем итоги в папке  DOWNLOADS на телефоне
+        try (FileOutputStream fos = new FileOutputStream(downloadsDir +"/itogi_results"+current_data+".pdf");
              OutputStreamWriter osw = new OutputStreamWriter(fos)) {
             //String data = String.valueOf(textMultiline.getText());
             pd.writeTo(fos);
@@ -190,73 +174,49 @@ public class NotificationsFragment extends Fragment {
         }
 
         pd.close();
+        String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+        String storage = Environment.getExternalStorageDirectory().toString() + "/Documents/itodi_results.pdf";
+        String pdf_file = "a-computer-engineer-pdf-test.pdf";
+        System.out.println("Environment.getExternalStorageDirectory().toString()="+Environment.getExternalStorageDirectory().toString());
+        System.out.println(downloadDir);
+        System.out.println("Environment.getExternalStorageDirectory().getAbsolutePath()="+Environment.getExternalStorageDirectory().getAbsolutePath());
+        @SuppressLint("SdCardPath")
+        //final String APP_SD_PATH = "/storage/emulated/0/data/data/com.example.calendarofevents";
+        String path = getActivity().getApplicationInfo().dataDir;
+        String sFolder =  path + "/files";
+        String sFile=sFolder+"/"+pdf_file;
+        //boolean copy = copyFile(sFile, downloadDir);
 
-        openPdf1();
+        System.out.println("=path="+path);
+//        if (copy)
+//            Toast.makeText(getActivity(), "Copied Successfully!!!", Toast.LENGTH_SHORT).show();            //вывод диалогового окна, что запись внесена
+//        else
+//            Toast.makeText(getActivity(), "Error!!!", Toast.LENGTH_SHORT).show();            //вывод диалогового окна, что запись внесена
+//
+
+        //copyFile2(new File(sFile), new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/a-computer-engineer-pdf-test.pdf"));
+        openPdf();
     }
+    // @RequiresApi(api = Build.VERSION_CODES.Q)
     private void openPdf () {
-        //File file = new File("/sdcard/Documents/page.pdf");
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "a-computer-engineer-pdf-test.pdf");
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
-        //FileOutputStream file = getActivity().openFileInput("exampleXML.pdf", Context.MODE_PRIVATE);
-        if (!file.exists()) {
-            return;
-        }
+        String path1 = getActivity().getApplicationInfo().dataDir;
+        String sFolder =  path1 + "/files";
+        String sFile=sFolder+"/"+"/itogi_results"+current_data+".pdf";
+
+        //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
+        File path = new File(sFile);
+        Uri uri = Uri.fromFile(path);
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(file);
-        intent.setDataAndType(uri, "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setDataAndType(uri, "text/plain");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), "No Application for pdf view", Toast.LENGTH_SHORT).show();
-        }
     }
-
-    protected void openPdf1()
-    {
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        String path =  Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
-//        File file = new File(path, "a-computer-engineer-pdf-test.pdf");
-//        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-//        startActivity(intent);
-
-        String storage = Environment.getExternalStorageDirectory().toString() + "/a-computer-engineer-pdf-test.txt";
-        File file = new File(storage);
-        Uri uri;
-        if (Build.VERSION.SDK_INT < 24) {
-            uri = Uri.fromFile(file);
-        } else {
-            uri = Uri.parse(file.getPath()); // My work-around for SDKs up to 29.
-        }
-        Intent viewFile = new Intent(Intent.ACTION_VIEW);
-        viewFile.setDataAndType(uri, "text/plain");
-        startActivity(viewFile);
-    }
-
-
-    private void openGeneratedPDFFile(){
-        File file = new File("/sdcard/pdffromlayout.pdf");
-        if (file.exists())
-        {
-            Intent i=new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.fromFile(file);
-            i.setDataAndType(uri, "application/pdf");
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            try
-            {
-                startActivity(i);
-            }
-            catch(ActivityNotFoundException e)
-            {
-                Toast.makeText(getActivity(), "No pdf view available", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-
-
+    //@SuppressLint("ObsoleteSdkInt")
     public void convertXmlToPdf() {
         // Inflate the XML layout file
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_dashboard, null);
@@ -297,36 +257,6 @@ public class NotificationsFragment extends Fragment {
         // Finish the page
         document.finishPage(page);
 
-        // Specify the path and filename of the output PDF file
-        //File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-//        String fileName = "exampleXML.pdf";
-//        File filePath = new File(fileName);
-//
-//        if(filePath.exists()){
-//            Toast.makeText(getApplicationContext(), "FileFound",
-//                    Toast.LENGTH_LONG).show();
-//            System.out.println("FileFound");
-//        } else {
-//
-//            Toast.makeText(getApplicationContext(), "No file found",
-//                    Toast.LENGTH_LONG).show();
-//            System.out.println("File not Found");
-//        }
-
-//        try {
-//            // Save the document to a file
-//            FileOutputStream fos = new FileOutputStream(filePath);
-//            document.writeTo(fos);
-//            document.close();
-//            fos.close();
-//            // PDF conversion successful
-//            Toast.makeText(this, "XML to PDF Conversion Successful", Toast.LENGTH_LONG).show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
-//            System.out.println(e.toString());
-//            // Error occurred while converting to PDF
-//        }
         try (FileOutputStream fos = getActivity().openFileOutput("exampleXML.pdf", Context.MODE_PRIVATE);
              //try (FileOutputStream fos = new FileOutputStream("exampleXML.pdf", true);
              // outputStream = new FileOutputStream (new File(patternDirectory.getAbsolutePath().toString()), true); // true will be same as Context.MODE_APPEND
@@ -344,12 +274,7 @@ public class NotificationsFragment extends Fragment {
         }
         document.close();
     }
-
-
-
-
-
-        public String summerHours (String h){
+    public String summerHours (String h){
             split = h.split("-");
             System.out.println(Arrays.toString(split));
             int d = 1;
@@ -364,12 +289,11 @@ public class NotificationsFragment extends Fragment {
             }
             System.out.println(sum);
             return String.valueOf(sum);
-        }
-
+    }
 
         @Override
         public void onDestroyView () {
             super.onDestroyView();
             binding = null;
-        }
     }
+}
