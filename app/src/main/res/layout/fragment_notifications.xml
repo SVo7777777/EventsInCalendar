@@ -31,7 +31,7 @@
 
             <LinearLayout
                 android:id="@+id/number"
-                android:layout_width="65dp"
+                android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 tools:ignore="UselessLeaf">
@@ -47,7 +47,7 @@
 
             <LinearLayout
                 android:id="@+id/data"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 tools:ignore="UselessLeaf">
@@ -94,6 +94,22 @@
                     android:text="з/п"
                     android:textSize="20sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                tools:ignore="UselessLeaf">
+
+                <TextView
+                    android:id="@+id/pr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="цена"
+                    android:textSize="20sp" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <LinearLayout
@@ -114,12 +130,21 @@
             tools:ignore="RtlHardcoded,TouchTargetSizeCheck,VisualLintButtonSize" />
 
     </LinearLayout>
+
     <ImageButton
         android:id="@+id/btnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="#FF5722"
-        app:srcCompat="@android:drawable/stat_sys_download" />
+        app:srcCompat="@drawable/pdf_generate_icon_216173" />
+
+    <ImageButton
+        android:id="@+id/btn_open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="#FF5722"
+        app:srcCompat="@drawable/open_envelope_svgrepo_com" />
 
 </LinearLayout>

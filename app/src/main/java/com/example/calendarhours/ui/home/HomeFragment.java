@@ -153,6 +153,21 @@ public class HomeFragment extends Fragment {
                 }
 
             }
+        String data = month.getText() + " " + year.getText();
+        System.out.println(data);
+        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+        System.out.println(price);
+        String sal = mydb.getSalary(data, DatabaseHelper.TABLE);
+        System.out.println(sal);
+        //boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
+        if (price.equals("0.0")){
+            button2.setText("salary");
+            editTextNumber.setText("");
+        }else {
+            button2.setText(String.valueOf(sal));
+            editTextNumber.setText(price);
+        }
+
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
@@ -178,9 +193,14 @@ public class HomeFragment extends Fragment {
                 int id = mydb.GetId(month_year, DatabaseHelper.TABLE);
                 System.out.println("id="+id);
                 System.out.println("month_year="+month_year);
+
                 boolean update_hours = mydb.updateSalary(id, month_year, String.valueOf(salary), "hours");
                 if (update_hours){
                     Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+salary, Toast.LENGTH_SHORT).show();
+                }
+                boolean update_price = mydb.updatePrice(id, month_year, String.valueOf(price), "hours");
+                if (update_price){
+                    Toast.makeText(getActivity(), "Цена за час в этом месяце: "+price+" сохранена!", Toast.LENGTH_SHORT).show();
                 }
                 button2.setText(salary);
             }catch (NumberFormatException e) {
@@ -297,9 +317,9 @@ public class HomeFragment extends Fragment {
         }else {
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
-            mydb.insertContact(data, hours.toString(), "0.0","0.0","hours");
-            mydb.insertContact(data, hours.toString(), "0.0","0.0","plan1");
-            mydb.insertContact(data, hours.toString(), "0.0","0.0","plan2");
+            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","hours");
+            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan1");
+            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan2");
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -518,6 +538,23 @@ public class HomeFragment extends Fragment {
                         }
                         String s = String.valueOf(sum);
                         textView3.setText(String.format("Всего: %s", s));
+
+                        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+                        float sal = (Float.parseFloat(s)*Float.parseFloat(price));
+                        System.out.println(sal);
+                        boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "hours");
+
+                        if (price.equals("0.0")){
+                            button2.setText("salary");
+                            editTextNumber.setText("");
+                        }else {
+                            button2.setText(String.valueOf(sal));
+                            editTextNumber.setText(price);
+                            if (update_salary){
+                                Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+sal, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
                     }
                 });
                 close.setOnClickListener(v1 -> alertDialog.dismiss());

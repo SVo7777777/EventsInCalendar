@@ -44,10 +44,10 @@ public class DashboardFragment extends Fragment {
     LinearLayout my_hours;
     LinearLayout my_hours1;
     LinearLayout my_hours2;
-    TextView[] number_of_days= new TextView[32];
-    Button[] my_hours_of_days= new Button[32];
-    Button[] my_hours1_of_days= new Button[32];
-    Button[] my_hours2_of_days= new Button[32];
+    TextView[] number_of_days= new TextView[33];
+    Button[] my_hours_of_days= new Button[33];
+    Button[] my_hours1_of_days= new Button[33];
+    Button[] my_hours2_of_days= new Button[33];
     String[] monthNames = new String[]{"ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"};
     String[] day_of_weeks2 = new String[]{"","ВОСКРЕСЕНЬЕ", "ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА" };
     String[] day_weeks = new String[]{"","вс", "пн", "вт", "ср", "чт", "пт", "сб"};
@@ -104,6 +104,7 @@ public class DashboardFragment extends Fragment {
         plan1 = root.findViewById(R.id.plan1);
         plan2 = root.findViewById(R.id.plan2);
         button2 = root.findViewById(R.id.button2);
+        //button2.setText("salary");
         salaryShowOnButtonClick(button2);
 
 
@@ -140,6 +141,7 @@ public class DashboardFragment extends Fragment {
         Calendar c = Calendar.getInstance();
         c.set(current_year, current_month, 1);
         int day_of_week = c.get(Calendar.DAY_OF_WEEK);
+        System.out.println("day_of_week="+day_of_week);
         int dateEnd = c.getActualMaximum(Calendar.DAY_OF_MONTH);
         System.out.println(dateEnd);
         int dayOfWeekOfFirstDayOfMonth = c.get(Calendar.DAY_OF_WEEK);
@@ -161,6 +163,20 @@ public class DashboardFragment extends Fragment {
 
         showCalendar(month3, current_year, week_of_year, max_pred, day_of_week, dateEnd);
 
+        String data = month.getText() + " " + year.getText();
+        System.out.println(data);
+        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+        System.out.println(price);
+        String sal = mydb.getSalary(data, DatabaseHelper.TABLE);
+        System.out.println(sal);
+        //boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
+        if (price.equals("0.0")){
+            button2.setText("salary");
+            editTextNumber.setText("");
+        }else {
+            button2.setText(String.valueOf(sal));
+            editTextNumber.setText(price);
+        }
         final TextView textView = binding.textHome;
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
@@ -190,8 +206,11 @@ public class DashboardFragment extends Fragment {
                     Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+salary, Toast.LENGTH_SHORT).show();
                 }
                 button2.setText(salary);
+                boolean update_price = mydb.updatePrice(id, month_year, String.valueOf(price), "hours");
+                if (update_price){
+                    Toast.makeText(getActivity(), "Цена за час в этом месяце: "+price+" сохранена!", Toast.LENGTH_SHORT).show();
+                }
 
-                button2.setText(salary);
             }catch (NumberFormatException e) {
                 Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
             }
@@ -215,7 +234,7 @@ public class DashboardFragment extends Fragment {
         String sDate_now = sdf1.format(calendar.getTime());
         System.out.println("sDate_now="+sDate_now);
         if (dayOfWeekOfFirstDayOfMonth == 1){
-            dayOfWeekOfFirstDayOfMonth = 8;
+            day_OfWeekOfFirstDayOfMonth = 8;
         }
         int m = mpred - dayOfWeekOfFirstDayOfMonth+3;
         int d = 1;
@@ -365,9 +384,9 @@ public class DashboardFragment extends Fragment {
             System.out.println(hours);
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
-            mydb.insertContact(data, hours.toString(), "0.0", "0.0","plan1");
-            mydb.insertContact(data, hours.toString(), "0.0", "0.0", "plan2");
-            mydb.insertContact(data, hours.toString(),"0.0","0.0", "hours");
+            mydb.insertContact(data, hours.toString(), "0.0", "0.0","0.0","plan1");
+            mydb.insertContact(data, hours.toString(), "0.0", "0.0","0.0", "plan2");
+            mydb.insertContact(data, hours.toString(),"0.0","0.0","0.0", "hours");
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -433,16 +452,26 @@ public class DashboardFragment extends Fragment {
 
 
         }
+        String data = month.getText()+" "+year.getText();
+        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+        System.out.println(data);
+        System.out.println(price);
+
         hours_of_days[31].setText(String.valueOf(sum));
         if (Arrays.equals(hours_of_days, my_hours2_of_days)) {
             result2.setText(String.valueOf(sum));
+            hours_of_days[32].setText(String.valueOf(sum*Float.parseFloat(price)));
             System.out.println(sum);
         } else if (Arrays.equals(hours_of_days, my_hours_of_days)) {
             result.setText(String.valueOf(sum));
+            hours_of_days[32].setText(String.valueOf(sum*Float.parseFloat(price)));
             System.out.println(sum);
             textView3.setText("Всего: " + sum);
+            button2.setText(String.valueOf(sum*Float.parseFloat(price)));
+            editTextNumber.setText(price);
         } else if (Arrays.equals(hours_of_days, my_hours1_of_days)) {
             result1.setText(String.valueOf(sum));
+            hours_of_days[32].setText(String.valueOf(sum*Float.parseFloat(price)));
             System.out.println(sum);
         } else {
             System.out.println("---INVALID---");
@@ -635,7 +664,7 @@ public class DashboardFragment extends Fragment {
                                 }
 
                                 String h = h0;
-                                if (d < date_End + 1) {
+                                if (d < date_End+1)  {
                                     try {
                                         sum += Float.parseFloat(h);
                                         hours.append("-").append(h);
@@ -676,30 +705,83 @@ public class DashboardFragment extends Fragment {
                             int id = mydb.GetId(data, DatabaseHelper.TABLE2);
                             boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan2", String.valueOf(sum));
                             if (update_hours){
-                                Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Часы plan2 изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
                             }
                             DashboardFragment.this.my_hours2_of_days[31].setText(String.valueOf(sum));
                             result2.setText(String.valueOf(sum));
+
+                            String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+                            float sal = (Float.parseFloat(String.valueOf(sum)) * Float.parseFloat(price));
+                            System.out.println(sal);
+                            boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan2");
+                            if (price.equals("0.0")){
+                                button2.setText("salary");
+                                editTextNumber.setText("");
+                            }else {
+                                button2.setText(String.valueOf(sal));
+                                editTextNumber.setText(price);
+                                if (update_salary) {
+                                    Toast.makeText(getActivity(), "Зарплата plan2 изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            DashboardFragment.this.my_hours_of_days[32].setText(String.valueOf(sal));
+
+
                         } else if (Arrays.equals(hours_of_days, my_hours_of_days)) {
                             int id = mydb.GetId(data, DatabaseHelper.TABLE);
-                            System.out.println("id="+id);
-                            System.out.println("month_year="+month_year);
+                            System.out.println("id=" + id);
+                            System.out.println("month_year=" + month_year);
                             boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours", String.valueOf(sum));
-                            if (update_hours){
-                                Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                            if (update_hours) {
+                                Toast.makeText(getActivity(), "Часы real изменены! Всего часов: " + sum, Toast.LENGTH_SHORT).show();
                             }
                             String s = String.valueOf(sum);
                             DashboardFragment.this.my_hours_of_days[31].setText(String.valueOf(sum));
                             result.setText(String.valueOf(sum));
                             textView3.setText(String.format("Всего: %s", s));
+
+                            String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+                            float sal = (Float.parseFloat(s) * Float.parseFloat(price));
+                            System.out.println(sal);
+                            boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "hours");
+
+                            if (price.equals("0.0")){
+                                button2.setText("salary");
+                                editTextNumber.setText("");
+                            }else {
+                                button2.setText(String.valueOf(sal));
+                                editTextNumber.setText(price);
+                                if (update_salary) {
+                                    Toast.makeText(getActivity(), "Зарплата real изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            DashboardFragment.this.my_hours_of_days[32].setText(String.valueOf(sal));
+
                         } else if (Arrays.equals(hours_of_days, my_hours1_of_days)) {
                             int id = mydb.GetId(data, DatabaseHelper.TABLE1);
                             boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan1", String.valueOf(sum));
                             if (update_hours){
-                                Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Часы pian1 изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
                             }
+
                             DashboardFragment.this.my_hours1_of_days[31].setText(String.valueOf(sum));
                             result1.setText(String.valueOf(sum));
+                            String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+                            float sal = (Float.parseFloat(String.valueOf(sum)) * Float.parseFloat(price));
+                            System.out.println(sal);
+                            boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
+                            if (price.equals("0.0")){
+                                button2.setText("salary");
+                                editTextNumber.setText("");
+                            }else {
+                                button2.setText(String.valueOf(sal));
+                                editTextNumber.setText(price);
+                                if (update_salary) {
+                                    Toast.makeText(getActivity(), "Зарплата plan1 изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            DashboardFragment.this.my_hours_of_days[32].setText(String.valueOf(sal));
+
                         } else {
                             System.out.println("---INVALID---");
                         }
@@ -778,7 +860,7 @@ public class DashboardFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     public void gridTable(){
-        for (int i = 0; i < 32; i++){
+        for (int i = 0; i < 33; i++){
             number_of_days[i]=new TextView(getContext());
             number_of_days[i].setText(Integer.toString(i + 1)); // Set text or other properties as needed
             number_of_days[i].setId(i + 1);
@@ -827,9 +909,14 @@ public class DashboardFragment extends Fragment {
                 my_hours_of_days[i].setWidth(200);
                 my_hours1_of_days[i].setWidth(200);
                 my_hours2_of_days[i].setWidth(200);
-
-
-
+            }
+            if (i == 32) {
+                number_of_days[i].setText("З/п");
+                number_of_days[i].setWidth(250);
+                number_of_days[i].setBackgroundColor(number_of_days[i].getContext().getResources().getColor(R.color.purple_200));
+                my_hours_of_days[i].setWidth(250);
+                my_hours1_of_days[i].setWidth(250);
+                my_hours2_of_days[i].setWidth(250);
             }
 
             days_month.addView(number_of_days[i]);

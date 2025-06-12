@@ -31,7 +31,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.appcompat.app.AlertDialog;
 
+import com.example.calendarhours.CustomDialogFragment;
 import com.example.calendarhours.DatabaseHelper;
 import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentNotificationsBinding;
@@ -56,11 +58,13 @@ public class NotificationsFragment extends Fragment {
     LinearLayout data;
     LinearLayout hours;
     LinearLayout salary;
+    LinearLayout price;
     private LinearLayout linear;
     TextView num;
     TextView dat;
     TextView hou;
     TextView sal;
+    TextView pr;
     String[] split;
     Button button2;
     private ImageButton btn;
@@ -85,9 +89,11 @@ public class NotificationsFragment extends Fragment {
         data = root.findViewById(R.id.data);
         hours = root.findViewById(R.id.hours);
         salary = root.findViewById(R.id.salary);
+        price = root.findViewById(R.id.price);
         button2 = root.findViewById(R.id.button2);
         linear = root.findViewById(R.id.lineard);
         btn = root.findViewById(R.id.btnd);
+
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +105,17 @@ public class NotificationsFragment extends Fragment {
 
             }
         });
+        ImageButton btnop = root.findViewById(R.id.btn_open);
+        btnop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("size", "" + linear.getWidth() + " " + linear.getWidth());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    openPdf();
+                }
 
+            }
+        });
 
         mydb = new DatabaseHelper(getContext());
         ArrayList<ArrayList<String>> str = mydb.getAllRows();
@@ -115,9 +131,11 @@ public class NotificationsFragment extends Fragment {
             dat = new TextView(getContext());
             hou = new TextView(getContext());
             sal = new TextView(getContext());
+            pr = new TextView(getContext());
             String da = str.get(i).get(0);
             String sa = str.get(i).get(3);
             String h = str.get(i).get(2);
+            String p = str.get(i).get(4);
             summer += Float.parseFloat(sa);
             num.setText(String.valueOf(i + 1));
             num.setGravity(Gravity.CENTER);
@@ -129,16 +147,22 @@ public class NotificationsFragment extends Fragment {
             sal.setText(sa);
             sal.setId(j + 1);
             sal.setGravity(Gravity.CENTER);
+            pr.setGravity(Gravity.CENTER);
+            pr.setText(p);
+            pr.setId(j+1);
             number.addView(num);
             data.addView(dat);
             hours.addView(hou);
             salary.addView(sal);
+            price.addView(pr);
             j += 1;
 
         }
         System.out.println("summer=" + summer);
         button2.setText(String.format("всего заработано: %s", summer));
-
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            creatPDF(true);
+//        }
         return root;
     }
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -160,16 +184,31 @@ public class NotificationsFragment extends Fragment {
         File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
         //сохраняем итоги в папке  DOWNLOADS на телефоне
-        try (FileOutputStream fos = new FileOutputStream(downloadsDir +"/itogi_results"+current_data+".pdf");
+        try (FileOutputStream fos = new FileOutputStream(downloadsDir + "/itogi_results" + current_data + ".pdf");
              OutputStreamWriter osw = new OutputStreamWriter(fos)) {
             //String data = String.valueOf(textMultiline.getText());
             pd.writeTo(fos);
             Log.d("PDF", "PDF saved to external storage");
-            Toast.makeText(getActivity(), "Written Successfully!!!", Toast.LENGTH_SHORT).show();            //вывод диалогового окна, что запись внесена
+            String attention = "Итоги загружены в телефон в папку Загрузки. Written Successfully!!!)";
+            CustomDialogFragment dialog = new CustomDialogFragment();
+            Bundle args = new Bundle();
+            args.putString("attention", attention);
+            dialog.setArguments(args);
+            dialog.show(getParentFragmentManager(), "custom");
+            Toast.makeText(getActivity(), "Итоги успешно загружены в телефон в папку Загрузки!!!", Toast.LENGTH_LONG).show();            //вывод диалогового окна, что запись внесена
 
         } catch (IOException e) {
-            Toast.makeText(getActivity(), "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), "Something wrong: включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь часов-->Разрешение-->Память--> Разрешить)" + e.toString(), Toast.LENGTH_LONG).show();
             System.out.println(e.toString());
+            //вывод диалогового окна, что запись внесена
+//            CustomDialogFragment dialog2 = new CustomDialogFragment();
+//            dialog2.show(getParentFragmentManager(), "custom");
+            String attention = "Включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь часов-->Разрешение-->Память--> Разрешить)";
+            CustomDialogFragment dialog = new CustomDialogFragment();
+            Bundle args = new Bundle();
+            args.putString("attention", attention);
+            dialog.setArguments(args);
+            dialog.show(getParentFragmentManager(), "custom");
             //throw new RuntimeException(e);
         }
 
@@ -177,34 +216,28 @@ public class NotificationsFragment extends Fragment {
         String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
         String storage = Environment.getExternalStorageDirectory().toString() + "/Documents/itodi_results.pdf";
         String pdf_file = "a-computer-engineer-pdf-test.pdf";
-        System.out.println("Environment.getExternalStorageDirectory().toString()="+Environment.getExternalStorageDirectory().toString());
+        System.out.println("Environment.getExternalStorageDirectory().toString()=" + Environment.getExternalStorageDirectory().toString());
         System.out.println(downloadDir);
-        System.out.println("Environment.getExternalStorageDirectory().getAbsolutePath()="+Environment.getExternalStorageDirectory().getAbsolutePath());
+        System.out.println("Environment.getExternalStorageDirectory().getAbsolutePath()=" + Environment.getExternalStorageDirectory().getAbsolutePath());
         @SuppressLint("SdCardPath")
         //final String APP_SD_PATH = "/storage/emulated/0/data/data/com.example.calendarofevents";
         String path = getActivity().getApplicationInfo().dataDir;
-        String sFolder =  path + "/files";
-        String sFile=sFolder+"/"+pdf_file;
+        String sFolder = path + "/files";
+        String sFile = sFolder + "/" + pdf_file;
         //boolean copy = copyFile(sFile, downloadDir);
 
-        System.out.println("=path="+path);
-//        if (copy)
-//            Toast.makeText(getActivity(), "Copied Successfully!!!", Toast.LENGTH_SHORT).show();            //вывод диалогового окна, что запись внесена
-//        else
-//            Toast.makeText(getActivity(), "Error!!!", Toast.LENGTH_SHORT).show();            //вывод диалогового окна, что запись внесена
-//
-
-        //copyFile2(new File(sFile), new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/a-computer-engineer-pdf-test.pdf"));
-        openPdf();
+        System.out.println("=path=" + path);
+        //openPdf();
     }
-    // @RequiresApi(api = Build.VERSION_CODES.Q)
     private void openPdf () {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
         String path1 = getActivity().getApplicationInfo().dataDir;
+        String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+
         String sFolder =  path1 + "/files";
-        String sFile=sFolder+"/"+"/itogi_results"+current_data+".pdf";
+        String sFile=downloadDir+"/itogi_results"+current_data+".pdf";
 
         //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
         File path = new File(sFile);

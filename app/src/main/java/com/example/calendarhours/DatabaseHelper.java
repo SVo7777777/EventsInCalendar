@@ -12,8 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "hours22.db"; // название бд
-    private static final int SCHEMA = 1; // версия базы данных
+    private static final String DATABASE_NAME = "hours33.db"; // название бд
+    private static final int SCHEMA = 2; // версия базы данных
     public static final String TABLE = "hours"; // название таблицы в бд
     public static final String TABLE1 = "plan1"; // название таблицы в бд
     public static final String TABLE2 = "plan2"; // название таблицы в бд
@@ -23,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_HOURS = "hour";
     public static final String  COLUMN_QUANTITY_HOURS = "quantity_hour";
     public static final String COLUMN_SALARY = "salary";
+    public static final String COLUMN_PRICE = "price";
 
 
     public DatabaseHelper(Context context) {
@@ -35,27 +36,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(
                 "create table hours " +
-                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary text)");
+                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary text, price text)");
 
         db.execSQL(
                 "create table plan1 " +
-                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary text)");
+                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary text, price text)");
         db.execSQL(
                 "create table plan2 " +
-                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary trxt)");
+                        "(id integer primary key, month_year text, hour text, quantity_hour text, salary trxt, price text)");
 
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
-//      switch (oldVersion) {
-//        case 1:
-//            db.execSQL(SQL_MY_TABLE);
-//
-//        case 2:
-//            db.execSQL("ALTER TABLE "hours" ADD COLUMN myNewColumn TEXT");
+        //db.execSQL("DROP TABLE IF EXISTS " + TABLE);
+      switch (oldVersion) {
+        case 1:
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE);
+
+        case 2:
+            db.execSQL("ALTER TABLE hours ADD COLUMN price TEXT");
+            }
 
 
         onCreate(db);
@@ -70,13 +72,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //db.execSQL(CreateTableString);//CreateTableString is the SQL Command String
     }
 
-    public void insertContact(String month_year, String hours, String salary, String quantity_hour, String table_name) {
+    public void insertContact(String month_year, String hours, String salary, String price, String quantity_hour, String table_name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("month_year", month_year);
         contentValues.put("hour", hours);
         contentValues.put("quantity_hour", quantity_hour);
         contentValues.put("salary", salary);
+        contentValues.put("price", price);
         db.insert(table_name, null, contentValues);
     }
 
@@ -99,7 +102,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(table_name, contentValues, "id = ? ", new String[]{Integer.toString(id)});
         return true;
     }
-
+    public boolean updatePrice(Integer id, String month_year, String price, String table_name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("month_year", month_year);
+        contentValues.put("price", price);
+        //contentValues.put("quantity_hour", quantity_hour);
+        db.update(table_name, contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        return true;
+    }
 
     public Integer deleteContact(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -131,6 +142,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     row.add(res.getString(2));
                     row.add(res.getString(3));
                     row.add(res.getString(4));
+                    row.add(res.getString(5));
                     array_list.add(row);
                     //array_list.add(String.valueOf(res.getColumnIndex(COLUMN_MONTH_YEAR)));
 
@@ -209,6 +221,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         String hours = cursor.getString(cursor.getColumnIndex(COLUMN_SALARY));
+        cursor.close();
+        return hours;
+    }
+    public String getPrice(String month_year, String TABLE3) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        //String query = "select * from hours" + " where " + COLUMN_MONTH_YEAR + " like ?";
+        String query = "SELECT * FROM " + TABLE3 + " WHERE "+ COLUMN_MONTH_YEAR + " like ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"%" + month_year + "%"});
+        if (cursor.getCount() < 1) {
+            cursor.close();
+            return "DOES NOT EXIST";
+        }
+        cursor.moveToFirst();
+        while (!Objects.equals(month_year, cursor.getString(1))) {
+            cursor.moveToNext();
+        }
+
+        String hours = cursor.getString(cursor.getColumnIndex(COLUMN_PRICE));
         cursor.close();
         return hours;
     }
