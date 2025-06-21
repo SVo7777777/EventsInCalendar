@@ -109,7 +109,7 @@ public class NotificationsFragment extends Fragment {
         btnop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("size", "" + linear.getWidth() + " " + linear.getWidth());
+                Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     openPdf();
                 }
@@ -189,7 +189,7 @@ public class NotificationsFragment extends Fragment {
             //String data = String.valueOf(textMultiline.getText());
             pd.writeTo(fos);
             Log.d("PDF", "PDF saved to external storage");
-            String attention = "Итоги загружены в телефон в папку Загрузки. Written Successfully!!!)";
+            String attention = "Итоги загружены в телефон в папку Загрузки.)";
             CustomDialogFragment dialog = new CustomDialogFragment();
             Bundle args = new Bundle();
             args.putString("attention", attention);

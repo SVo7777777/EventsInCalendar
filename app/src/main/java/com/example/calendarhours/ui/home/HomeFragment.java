@@ -495,13 +495,18 @@ public class HomeFragment extends Fragment {
                     public void onClick(View view) {
                         String data = String.valueOf(event.getText());
                         System.out.println("data="+data);
-                        if (!data.isEmpty()){
+
+
+
+                        if ((!data.isEmpty()) && (Integer.parseInt(data) < 25)){
                             event1.setText(data);
                             alertDialog.dismiss();
                             addHours();
+
                         }else {
-                            Toast.makeText(getActivity(), "Введите часы!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Введите часы меньше 24-ёх!", Toast.LENGTH_LONG).show();
                         }
+
                     }
                     private void addHours() {
                         String month_year = mon + " " + ye;

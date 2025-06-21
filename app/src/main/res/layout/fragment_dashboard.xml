@@ -187,16 +187,18 @@
                         android:layout_height="wrap_content"
                         android:text="@string/hours"
                         android:textSize="30sp"
+                        android:textStyle="bold"
                         tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/textView1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/Wheat"
+                        android:background="@color/work_day"
                         android:gravity="center"
                         android:text="@string/my_hours"
                         android:textSize="28sp"
+                        android:textStyle="bold"
                         tools:ignore="HardcodedText" />
 
                     <TextView
@@ -210,10 +212,11 @@
                         android:id="@+id/plan1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/Wheat"
+                        android:background="@color/work_day"
                         android:gravity="center"
                         android:text="@string/my_hours1"
                         android:textSize="28sp"
+                        android:textStyle="bold"
                         tools:ignore="HardcodedText" />
 
                     <TextView
@@ -227,10 +230,11 @@
                         android:id="@+id/plan2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/Wheat"
+                        android:background="@color/work_day"
                         android:gravity="center"
                         android:text="@string/my_hours2"
                         android:textSize="28sp"
+                        android:textStyle="bold"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
 
@@ -332,7 +336,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/Wheat"
+                        android:background="@color/work_day"
                         android:gravity="center"
                         android:textColor="@color/red" />
 
@@ -347,7 +351,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/Wheat"
+                        android:background="@color/work_day"
                         android:gravity="center"
                         android:textColor="@color/red" />
 
@@ -362,7 +366,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/Wheat"
+                        android:background="@color/work_day"
                         android:gravity="center"
                         android:textColor="@color/red" />
                 </LinearLayout>

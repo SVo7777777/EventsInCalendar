@@ -12,5 +12,13 @@
     <string name="my_hours">real</string>
     <string name="my_hours1">plan1</string>
     <string name="my_hours2">plan2</string>
+    <string name="name">Календарь моих рабочих часов</string>
+    <string name="widget_name">My first widget</string>
+    <string name="widget_text">Text in widget</string>
+    <string name="widget_name2">My second widget</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+    <string name="ok">Ok</string>
 
 </resources>
