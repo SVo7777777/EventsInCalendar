@@ -3,6 +3,5 @@
     android:initialLayout="@layout/widget"
     android:minHeight="40dp"
     android:minWidth="110dp"
-    android:configure="com.example.calendarhours.ConfigActivity"
     android:updatePeriodMillis="2400000">
 </appwidget-provider>

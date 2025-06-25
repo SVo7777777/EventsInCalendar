@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.calendarhours"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.calendarhours"
@@ -39,6 +39,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+    //noinspection GradleDependency
+    implementation("androidx.work:work-runtime:2.10.2")
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)

@@ -13,12 +13,48 @@
     <string name="my_hours1">plan1</string>
     <string name="my_hours2">plan2</string>
     <string name="name">Календарь моих рабочих часов</string>
-    <string name="widget_name">My first widget</string>
-    <string name="widget_text">Text in widget</string>
+    <string name="widget_name">Календарь рабочих часов</string>
+    <string name="widget_text">Календарь моих рабочих часов</string>
     <string name="widget_name2">My second widget</string>
     <string name="red">Red</string>
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="ok">Ok</string>
+    <string name="my_hours_widget">мои рабочие часы</string>
+
+    <string-array name="months">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+
+    <string-array name="days_of_week">
+        <item>Воскресенье</item>
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+    </string-array>
+
+    <string-array name="days_of_week_short">
+        <item>Вс</item>
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+    </string-array>
 
 </resources>

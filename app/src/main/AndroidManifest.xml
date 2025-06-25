@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -42,25 +44,44 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <activity
-            android:name=".ConfigActivity"
-            android:action="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+
 
         <receiver
             android:name="MyWidget"
             android:exported="true"
-            android:icon="@android:drawable/star_big_on"
+            android:permission="android.permission.BROADCAST_APPWIDGET"
+
+            android:icon="@mipmap/ic_launcher_foreground"
             android:label="@string/widget_name">
+
             <intent-filter>
-                <action
-                    android:name="android.appwidget.action.APPWIDGET_UPDATE">
-                </action>
+
+                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                    <action android:name="com.example.calendarhours.ACTION_WIDGET_CLICK" />
+                    <action android:name="com.example.calendarhours.ACTION_OPEN_CALENDAR" />
+
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_metadata">
             </meta-data>
         </receiver>
+        <receiver android:name="com.example.calendarhours.DayWidgetUpdateReceiver"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_APPWIDGET">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.example.calendarhours.BootReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 
