@@ -724,7 +724,7 @@ public class DashboardFragment extends Fragment {
                                     Toast.makeText(getActivity(), "Зарплата plan2 изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
                                 }
                             }
-                            DashboardFragment.this.my_hours_of_days[32].setText(String.valueOf(sal));
+                            DashboardFragment.this.my_hours2_of_days[32].setText(String.valueOf(sal));
 
 
                         } else if (Arrays.equals(hours_of_days, my_hours_of_days)) {
@@ -780,7 +780,7 @@ public class DashboardFragment extends Fragment {
                                     Toast.makeText(getActivity(), "Зарплата plan1 изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
                                 }
                             }
-                            DashboardFragment.this.my_hours_of_days[32].setText(String.valueOf(sal));
+                            DashboardFragment.this.my_hours1_of_days[32].setText(String.valueOf(sal));
 
                         } else {
                             System.out.println("---INVALID---");

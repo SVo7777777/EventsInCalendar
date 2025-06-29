@@ -184,6 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
 
+        @SuppressLint("Range")
         String hours = cursor.getString(cursor.getColumnIndex(COLUMN_HOURS));
         cursor.close();
         return hours;
@@ -202,6 +203,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
 
+        @SuppressLint("Range")
         String hours = cursor.getString(cursor.getColumnIndex(COLUMN_QUANTITY_HOURS));
         cursor.close();
         return hours;
@@ -220,6 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
 
+        @SuppressLint("Range")
         String hours = cursor.getString(cursor.getColumnIndex(COLUMN_SALARY));
         cursor.close();
         return hours;
@@ -238,6 +241,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
 
+        @SuppressLint("Range")
         String hours = cursor.getString(cursor.getColumnIndex(COLUMN_PRICE));
         cursor.close();
         return hours;

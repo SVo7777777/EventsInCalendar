@@ -26,7 +26,7 @@ public class DayWidgetUpdateWorker extends Worker {
         int[] widgetIds = appWidgetManager.getAppWidgetIds(widget);
 
         for (int widgetId : widgetIds) {
-            MyWidget.updateAppWidget(context, appWidgetManager, widgetId);
+            MyWidget.updateAppWidget2(context, appWidgetManager, widgetId);
         }
 
         return Result.success();

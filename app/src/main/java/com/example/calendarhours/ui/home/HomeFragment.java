@@ -4,6 +4,7 @@ import static android.graphics.Color.GRAY;
 import static android.graphics.Color.LTGRAY;
 
 import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -503,6 +504,7 @@ public class HomeFragment extends Fragment {
                             alertDialog.dismiss();
                             addHours();
 
+
                         }else {
                             Toast.makeText(getActivity(), "Введите часы меньше 24-ёх!", Toast.LENGTH_LONG).show();
                         }
@@ -543,6 +545,8 @@ public class HomeFragment extends Fragment {
                         }
                         String s = String.valueOf(sum);
                         textView3.setText(String.format("Всего: %s", s));
+
+
 
                         String price = mydb.getPrice(data, DatabaseHelper.TABLE);
                         float sal = (Float.parseFloat(s)*Float.parseFloat(price));

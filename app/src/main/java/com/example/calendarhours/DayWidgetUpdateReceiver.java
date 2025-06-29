@@ -20,7 +20,7 @@ public class DayWidgetUpdateReceiver extends BroadcastReceiver {
         int[] widgetIds = appWidgetManager.getAppWidgetIds(componentName);
 
         for (int widgetId : widgetIds) {
-            MyWidget.updateAppWidget(context, appWidgetManager, widgetId);
+            MyWidget.updateAppWidget2(context, appWidgetManager, widgetId);
         }
     }
 }

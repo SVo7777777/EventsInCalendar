@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
@@ -13,13 +15,16 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 
 import androidx.work.Constraints;
@@ -30,10 +35,25 @@ import androidx.work.WorkManager;
 public class MyWidget extends AppWidgetProvider {
 
     static final String LOG_TAG = "myLogs";
+    private static final String ACTION_UPDATE_CLICK_NEXT = "action.UPDATE_CLICK_NEXT";
+    private static final String ACTION_UPDATE_CLICK_PREVIOUS = "action.UPDATE_CLICK_PREVIOUS";
     //public static DatabaseHelper mydb ;
 //    String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
 //// textView is the TextView view that should display it
 //textView.setText(currentDateTimeString);
+
+    //для отображения виджета на экране блокировки
+//    AppWidgetManager appWidgetManager;
+//    int widgetId;
+//    Bundle myOptions = appWidgetManager.getAppWidgetOptions (widgetId);
+//
+//    // Get the value of OPTION_APPWIDGET_HOST_CATEGORY
+//    int category = myOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
+//
+//    // If the value is WIDGET_CATEGORY_KEYGUARD, it's a lockscreen widget
+//    boolean isKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD;
+//
+//    int baseLayout = isKeyguard ? R.layout.widget : R.layout.widget;
 
     @Override
     public void onEnabled(Context context) {
@@ -45,11 +65,142 @@ public class MyWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
 
-        scheduleAlarm(context);
-        //scheduleWork(context);
+//        //scheduleAlarm(context);
+//        //scheduleWork(context);
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            //updateAppWidget2(context, appWidgetManager, appWidgetId);
+            String number = String.format("%03d", (new Random().nextInt(900) + 100));
+
+//            ArrayList<ArrayList<String>> str;
+//            try (DatabaseHelper mydb = new DatabaseHelper(context)) {
+//                str = mydb.getAllRows();
+//            }
+//            System.out.println(str);
+//
+//            Calendar calendar = Calendar.getInstance();
+//            int current_year = calendar.get(Calendar.YEAR);
+//            int current_month = calendar.get(Calendar.MONTH);
+//            int current_day = calendar.get(Calendar.DATE);
+//            @SuppressLint("SimpleDateFormat")
+//            SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
+//            String month_name = month_date.format(calendar.getTime());
+//            System.out.println(current_day);
+//            System.out.println(month_name);
+//            System.out.println(current_year);
+//
+//            Calendar cldr = Calendar.getInstance(Locale.ROOT);
+//
+//            int dayInd = loadDayId(context, appWidgetId);
+//            switch (dayInd) {
+//                case 0:
+//                    cldr.add(Calendar.DATE, 2);
+//                    break;
+//                case 1:
+//                    cldr.add(Calendar.DATE, 1);
+//                    break;
+//                case 2:
+//                    break;
+//                case 3:
+//                    cldr.add(Calendar.DATE, -1);
+//                    break;
+//                case 4:
+//                    cldr.add(Calendar.DATE, -2);
+//                    break;
+//            }
+//
+//            Date date = cldr.getTime();
+//
+//            int dayOfWeek = cldr.get(Calendar.DAY_OF_WEEK);
+//            String[] daysOfWeek = context.getResources().getStringArray(R.array.days_of_week_short);
+//            String[] month = context.getResources().getStringArray(R.array.months);
+//
+//            // Define the desired date format
+//            @SuppressLint("SimpleDateFormat")
+//            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+//            String data =  sdf.format(date);
+//            String weekday =  daysOfWeek[dayOfWeek-1];
+//            System.out.println(month[current_month]+" "+String.valueOf(current_year));
+//            String searchElement = month[current_month]+" "+String.valueOf(current_year);
+//            System.out.println("searchElement="+searchElement);
+//            int index_i = 0;
+//            int size = str.size();
+//            for (int i = 0; i < size; i++) {
+//                if (searchElement.equals(str.get(i).get(0))) {
+//                    // Если элемент найден, установить флаг found в true и выйти из цикла
+//                    index_i = i;
+//                    break;
+//                }
+//
+//            }
+//            RemoteViews views = new RemoteViews(context.getPackageName(),
+//                    R.layout.widget);
+//            String d = str.get(index_i).get(0);
+//            System.out.println("current month and year="+d);
+//            views.setTextViewText(R.id.date, "за "+d);//го
+//            String h = str.get(index_i).get(2);
+//            views.setTextViewText(R.id.hours, "всего часов: "+h);//всего часов
+//            String sa = str.get(index_i).get(3);
+//            views.setTextViewText(R.id.salary, "заработано: "+sa);//всего заработано
+//            views.setTextViewText(R.id.summary, "сегодня: "+weekday+" "+data);//цена за час
+//            SimpleDateFormat sdf1 = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss a");
+//            Date date1 = cldr.getTime();
+//            String data1 =  sdf1.format(date1);
+//            System.out.println(data1);
+//
+//            Intent intent1 = new Intent(context, MainActivity.class); // Запускаем главную активность (можно другую)
+//            PendingIntent pIntentMainActivity = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_IMMUTABLE);
+//            views.setOnClickPendingIntent(R.id.my_hours, pIntentMainActivity); // R.id.appwidget_startMainActivity — название кнопки в форме виджета
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
+            views.setTextViewText(R.id.hours, number);
+            Intent intent = new Intent(context, MyWidget.class);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetId);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                    appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setOnClickPendingIntent(R.id.summary, pendingIntent);
+
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+            Toast.makeText(context, "Widget has been updated! ", Toast.LENGTH_SHORT).show();
         }
+
+        System.out.println("Widget has been updated! ");
+
+        //updateAppWidget2(context, appWidgetManager, appWidgetId);
+//        for (int i = 0; i < count; i++) {
+//            int widgetId = appWidgetIds[i];
+//            @SuppressLint("DefaultLocale")
+//            String number = String.format("%03d", (new Random().nextInt(900) + 100));
+//
+//            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+//                    R.layout.widget);
+//            remoteViews.setTextViewText(R.id.hours, number);
+//
+//            Intent intent = new Intent(context, MyWidget.class);
+//            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+//            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+//                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//            remoteViews.setOnClickPendingIntent(R.id.summary, pendingIntent);
+//            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+//        }
+//        Intent intentUpdate = new Intent(context, NewAppWidget.class);
+//        intentUpdate.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//        RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.widget);
+//        PendingIntent pendingUpdate = PendingIntent.getBroadcast(
+//                context, appWidgetId, intentUpdate,
+//                PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        views.setOnClickPendingIntent(R.id.widget, getPendingSelfIntent(context, ACTION_UPDATE_CLICK_NEXT));
+//        //views.setOnClickPendingIntent(R.id.previousButtonWidget, getPendingSelfIntent(context, ACTION_UPDATE_CLICK_PREVIOUS));
+
+
+    }
+    public void onReceive(Context context, Intent intent)
+    {
+        super.onReceive(context, intent);
+        Toast.makeText(context, "Clicked!!", Toast.LENGTH_SHORT).show();
+        Log.d(LOG_TAG, "Clicked!!");
     }
 
     @Override
@@ -64,17 +215,15 @@ public class MyWidget extends AppWidgetProvider {
         Log.d(LOG_TAG, "onDisabled");
     }
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId)
+    public static void updateAppWidget2(Context context, AppWidgetManager appWidgetManager, int appWidgetId)
     {
-        //String widgetText = context.getString(R.string.attention);
-        //String widgetText = "23.06.25";
-        DatabaseHelper mydb = new DatabaseHelper(context);
-        ArrayList<ArrayList<String>> str = mydb.getAllRows();
-        String da = str.get(0).get(0);
-        String sa = str.get(0).get(3);
-        String h = str.get(0).get(2);
-        String p = str.get(0).get(4);
-        String widgetText = da+" "+h+" "+sa+" "+p;
+
+        ArrayList<ArrayList<String>> str;
+        try (DatabaseHelper mydb = new DatabaseHelper(context)) {
+            str = mydb.getAllRows();
+        }
+        System.out.println(str);
+
         Calendar calendar = Calendar.getInstance();
         int current_year = calendar.get(Calendar.YEAR);
         int current_month = calendar.get(Calendar.MONTH);
@@ -108,7 +257,7 @@ public class MyWidget extends AppWidgetProvider {
 
         Date date = cldr.getTime();
 
-        int dayOfWeek = cldr.get(java.util.Calendar.DAY_OF_WEEK);
+        int dayOfWeek = cldr.get(Calendar.DAY_OF_WEEK);
         String[] daysOfWeek = context.getResources().getStringArray(R.array.days_of_week_short);
         String[] month = context.getResources().getStringArray(R.array.months);
 
@@ -120,14 +269,45 @@ public class MyWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
         views.setTextViewText(R.id.date, "за "+month[current_month]+" "+String.valueOf(current_year));//год
 
+        System.out.println(month[current_month]+" "+String.valueOf(current_year));
+        String searchElement = month[current_month]+" "+String.valueOf(current_year);
+        System.out.println("searchElement="+searchElement);
+        int index_i = 0;
+        int size = str.size();
+        for (int i = 0; i < size; i++) {
+                if (searchElement.equals(str.get(i).get(0))) {
+                    // Если элемент найден, установить флаг found в true и выйти из цикла
+                    index_i = i;
+                    break;
+                }
+
+        }
+
+        String d = str.get(index_i).get(0);
+        System.out.println("current month and year="+d);
+        views.setTextViewText(R.id.date, "за "+d);//го
+        String h = str.get(index_i).get(2);
         views.setTextViewText(R.id.hours, "всего часов: "+h);//всего часов
+        String sa = str.get(index_i).get(3);
         views.setTextViewText(R.id.salary, "заработано: "+sa);//всего заработано
         views.setTextViewText(R.id.summary, "сегодня: "+weekday+" "+data);//цена за час
 
-        Intent intent = new Intent(context, MainActivity.class); // Запускаем главную активность (можно другую)
-        PendingIntent pIntentMainActivity = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        views.setOnClickPendingIntent(R.id.widget, pIntentMainActivity); // R.id.appwidget_startMainActivity — название кнопки в форме виджета
+//        Intent intent = new Intent(context, MainActivity.class); // Запускаем главную активность (можно другую)
+//        PendingIntent pIntentMainActivity = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+//        //views.setOnClickPendingIntent(R.id.widget, pIntentMainActivity); // R.id.appwidget_startMainActivity — название кнопки в форме виджета
         // ...
+        Intent intent = new Intent(context, MyWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetId);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.summary, pendingIntent);
+        //appWidgetManager.updateAppWidget(appWidgetId, views);
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss a");
+        Date date1 = cldr.getTime();
+        String data1 =  sdf1.format(date1);
+        System.out.println(data1);
         appWidgetManager.updateAppWidget(appWidgetId, views); // Обязательно нужно вызвать этот метод, иначе обработка не будет работать
 
 

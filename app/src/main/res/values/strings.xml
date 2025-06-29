@@ -23,18 +23,18 @@
     <string name="my_hours_widget">мои рабочие часы</string>
 
     <string-array name="months">
-        <item>Январь</item>
-        <item>Февраль</item>
-        <item>Март</item>
-        <item>Апрель</item>
-        <item>Май</item>
-        <item>Июнь</item>
-        <item>Июль</item>
-        <item>Август</item>
-        <item>Сентябрь</item>
-        <item>Октябрь</item>
-        <item>Ноябрь</item>
-        <item>Декабрь</item>
+        <item>ЯНВАРЬ</item>
+        <item>ФЕВРАЛЬ</item>
+        <item>МАРТ</item>
+        <item>АПРЕЛЬ</item>
+        <item>МАЙ</item>
+        <item>ИЮНЬ</item>
+        <item>ИЮЛЬ</item>
+        <item>АВГУСТ</item>
+        <item>СЕНТЯБРЬ</item>
+        <item>ОКТЯБРЬ</item>
+        <item>НОЯБРЬ</item>
+        <item>ДЕКАБРЬ</item>
     </string-array>
 
     <string-array name="days_of_week">
