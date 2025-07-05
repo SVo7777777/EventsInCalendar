@@ -194,6 +194,7 @@
                         android:id="@+id/textView1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:background="@color/work_day"
                         android:gravity="center"
                         android:text="@string/my_hours"
@@ -204,7 +205,7 @@
                     <TextView
                         android:id="@+id/textView4"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="6dp"
                         android:textSize="30sp"
                         tools:ignore="HardcodedText" />
 
@@ -212,6 +213,7 @@
                         android:id="@+id/plan1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:background="@color/work_day"
                         android:gravity="center"
                         android:text="@string/my_hours1"
@@ -222,7 +224,7 @@
                     <TextView
                         android:id="@+id/textView6"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="6dp"
                         android:textSize="30sp"
                         tools:ignore="HardcodedText" />
 
@@ -230,6 +232,7 @@
                         android:id="@+id/plan2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:background="@color/work_day"
                         android:gravity="center"
                         android:text="@string/my_hours2"
@@ -255,8 +258,7 @@
                         <LinearLayout
                             android:id="@+id/days_month"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             tools:ignore="InefficientWeight,NestedWeights">
 
@@ -265,8 +267,7 @@
                         <LinearLayout
                             android:id="@+id/my_hours"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:background="@color/RosyBrown"
                             android:orientation="horizontal">
 
@@ -275,8 +276,7 @@
                         <LinearLayout
                             android:id="@+id/days_month1"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="6dp"
                             android:orientation="horizontal"
                             tools:ignore="InefficientWeight,NestedWeights">
 
@@ -285,8 +285,7 @@
                         <LinearLayout
                             android:id="@+id/my_hours1"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:background="@color/RosyBrown"
                             android:orientation="horizontal">
 
@@ -295,8 +294,7 @@
                         <LinearLayout
                             android:id="@+id/days_month2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="6dp"
                             android:orientation="horizontal"
                             tools:ignore="InefficientWeight,NestedWeights">
 
@@ -305,8 +303,7 @@
                         <LinearLayout
                             android:id="@+id/my_hours2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:background="@color/RosyBrown"
                             android:orientation="horizontal">
 
@@ -324,8 +321,7 @@
                     <TextView
                         android:id="@+id/textView15"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_height="44dp"
                         android:gravity="center"
                         android:text="Итог"
                         android:textSize="15sp"
@@ -343,8 +339,7 @@
                     <TextView
                         android:id="@+id/textView17"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_height="6dp" />
 
                     <TextView
                         android:id="@+id/result1"
@@ -358,8 +353,7 @@
                     <TextView
                         android:id="@+id/textView19"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_height="6dp" />
 
                     <TextView
                         android:id="@+id/result2"

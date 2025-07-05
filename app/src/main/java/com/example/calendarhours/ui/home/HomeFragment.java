@@ -63,6 +63,8 @@ public class HomeFragment extends Fragment {
     public TextView textView3;
     public EditText editTextNumber;
     public Button button2;
+    public int day_OfWeekOfFirstDayOfMonth;
+    public int date_End;
 
 
     @SuppressLint("WrongViewCast")
@@ -70,6 +72,8 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
+
+
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -86,7 +90,7 @@ public class HomeFragment extends Fragment {
         previousYearOnButtonClick(previous_year);
         nextYearOnButtonClick(next_year);
         textView3 = root.findViewById(R.id.textView3);
-        textView3.setText("Всего: 0.0");
+        textView3.setText("Часов: 0.0");
         editTextNumber = root.findViewById(R.id.editTextNumber);
         editTextNumber.setPaintFlags(View.INVISIBLE);
         button2 = root.findViewById(R.id.button2);
@@ -210,14 +214,16 @@ public class HomeFragment extends Fragment {
 
         });
     }
-
     @SuppressLint("SetTextI18n")
     private void showCalendar(String mon, int yea, int wee, int mpred, int dayOfWeekOfFirstDayOfMonth, int dateEnd) {
         month.setText(mon);
         year.setText(Integer.toString(yea));
         String mont = String.valueOf(month.getText());
         String y = String.valueOf(year.getText());
-        button2.setText("salary");
+        //button2.setText("salary");
+        date_End = dateEnd;
+        day_OfWeekOfFirstDayOfMonth = dayOfWeekOfFirstDayOfMonth;
+
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
@@ -303,7 +309,7 @@ public class HomeFragment extends Fragment {
             }
         }
         System.out.println(hours);
-        textView3.setText("Всего: "+ sum);
+        textView3.setText("Часов:"+ sum);
         String data = mont+" "+y;
         mydb = new DatabaseHelper(getContext());
         boolean search = mydb.checkDataExistOrNot(data, DatabaseHelper.TABLE);
@@ -346,7 +352,13 @@ public class HomeFragment extends Fragment {
             }
         }
         System.out.println(sum);
-        textView3.setText("Всего: "+ sum);
+        textView3.setText("Часов: "+ sum);
+        String data = month.getText()+" "+year.getText();
+        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+        System.out.println(data);
+        System.out.println(price);
+        button2.setText(String.valueOf(sum*Float.parseFloat(price)));
+        editTextNumber.setText(price);
     }
     public void previousMonthOnButtonClick(Button btn) {
         btn.setOnClickListener(v -> {
@@ -544,7 +556,7 @@ public class HomeFragment extends Fragment {
                             Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
                         }
                         String s = String.valueOf(sum);
-                        textView3.setText(String.format("Всего: %s", s));
+                        textView3.setText(String.format("Часов: %s", s));
 
 
 

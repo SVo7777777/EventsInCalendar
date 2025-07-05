@@ -214,7 +214,6 @@ public class DashboardFragment extends Fragment {
             }catch (NumberFormatException e) {
                 Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
             }
-
         });
     }
     @SuppressLint("SetTextI18n")

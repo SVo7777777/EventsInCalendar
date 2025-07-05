@@ -189,13 +189,13 @@ public class NotificationsFragment extends Fragment {
             //String data = String.valueOf(textMultiline.getText());
             pd.writeTo(fos);
             Log.d("PDF", "PDF saved to external storage");
-            String attention = "Итоги загружены в телефон в папку Загрузки.)";
+            String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results"+ current_data + ".pdf";
             CustomDialogFragment dialog = new CustomDialogFragment();
             Bundle args = new Bundle();
             args.putString("attention", attention);
             dialog.setArguments(args);
             dialog.show(getParentFragmentManager(), "custom");
-            Toast.makeText(getActivity(), "Итоги успешно загружены в телефон в папку Загрузки!!!", Toast.LENGTH_LONG).show();            //вывод диалогового окна, что запись внесена
+            Toast.makeText(getActivity(), "Итоги успешно загружены в телефон в папку Download!!!", Toast.LENGTH_LONG).show();            //вывод диалогового окна, что запись внесена
 
         } catch (IOException e) {
             //Toast.makeText(getActivity(), "Something wrong: включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь часов-->Разрешение-->Память--> Разрешить)" + e.toString(), Toast.LENGTH_LONG).show();
