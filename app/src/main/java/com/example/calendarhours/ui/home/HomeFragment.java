@@ -4,7 +4,12 @@ import static android.graphics.Color.GRAY;
 import static android.graphics.Color.LTGRAY;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.RemoteInput;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -23,9 +28,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.calendarhours.DatabaseHelper;
+import com.example.calendarhours.MyWidget;
+import com.example.calendarhours.MyWidget2;
 import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentHomeBinding;
 
@@ -33,6 +41,11 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
+
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 public class HomeFragment extends Fragment {
 
@@ -65,6 +78,10 @@ public class HomeFragment extends Fragment {
     public Button button2;
     public int day_OfWeekOfFirstDayOfMonth;
     public int date_End;
+    public int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int dialogType = -1;
+    public HomeFragment fragment;
+    private RemoteInput.Builder intent;
 
 
     @SuppressLint("WrongViewCast")
@@ -96,7 +113,12 @@ public class HomeFragment extends Fragment {
         button2 = root.findViewById(R.id.button2);
         salaryShowOnButtonClick(button2);
 
-
+        //обновление виджета
+        Intent intentq = new Intent(getActivity(), MyWidget2.class);
+        intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        int ids[] = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+        intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        getActivity().sendBroadcast(intentq);
 
         int e = 0;
         while (e < 7) {
@@ -575,9 +597,18 @@ public class HomeFragment extends Fragment {
                                 Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+sal, Toast.LENGTH_SHORT).show();
                             }
                         }
+                        //обновдение виджета
+                        Intent intentq = new Intent(getActivity(), MyWidget2.class);
+                        intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                        int ids[] = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+                        intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                        getActivity().sendBroadcast(intentq);
 
                     }
                 });
+
+
+
                 close.setOnClickListener(v1 -> alertDialog.dismiss());
                 num1.setOnClickListener(v2 -> {
                     event.setText(event.getText()+"1");

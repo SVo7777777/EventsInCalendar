@@ -203,7 +203,7 @@ public class NotificationsFragment extends Fragment {
             //вывод диалогового окна, что запись внесена
 //            CustomDialogFragment dialog2 = new CustomDialogFragment();
 //            dialog2.show(getParentFragmentManager(), "custom");
-            String attention = "Включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь часов-->Разрешение-->Память--> Разрешить)";
+            String attention = "Включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь рабочих часов-->Разрешение-->Память--> Разрешить)";
             CustomDialogFragment dialog = new CustomDialogFragment();
             Bundle args = new Bundle();
             args.putString("attention", attention);
