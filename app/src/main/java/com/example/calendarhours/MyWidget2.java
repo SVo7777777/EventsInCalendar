@@ -93,21 +93,20 @@ public class MyWidget2 extends AppWidgetProvider {
         String data1 =  sdf1.format(date1);
         System.out.println(data1);
 
-        for (int i = 0; i < count; i++) {
-            int widgetId = appWidgetIds[i];
-            String number = String.format("%03d", (new Random().nextInt(900) + 100));
+        for (int widgetId : appWidgetIds) {
+            //String number = String.format("%03d", (new Random().nextInt(900) + 100));
 
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.widget);
-            remoteViews.setTextViewText(R.id.hours, number);
+            //remoteViews.setTextViewText(R.id.hours, number);
             String d = str.get(index_i).get(0);
-            System.out.println("current month and year="+d);
-            remoteViews.setTextViewText(R.id.date, "за "+d);//го
+            System.out.println("current month and year=" + d);
+            remoteViews.setTextViewText(R.id.date, "за " + d);//го
             String h = str.get(index_i).get(2);
-            remoteViews.setTextViewText(R.id.hours, "всего часов: "+h);//всего часов
+            remoteViews.setTextViewText(R.id.hours, "всего часов: " + h);//всего часов
             String sa = str.get(index_i).get(3);
-            remoteViews.setTextViewText(R.id.salary, "заработано: "+sa);//всего заработано
-            remoteViews.setTextViewText(R.id.summary, "сегодня: "+weekday+" "+data);//цена за час
+            remoteViews.setTextViewText(R.id.salary, "заработано: " + sa);//всего заработано
+            remoteViews.setTextViewText(R.id.summary, "сегодня: " + weekday + " " + data);//цена за час
             // обновление виджета при нажатии на дату внизу виджета
             Intent intent = new Intent(context, MyWidget2.class);
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
@@ -116,10 +115,12 @@ public class MyWidget2 extends AppWidgetProvider {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
                     widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.summary, pendingIntent);
-            //открываем календарь при нажатии на строку "мои рабочие часы"
+            //открываем календарь при нажатии виджет
             Intent intent2 = new Intent(context, MainActivity.class); // Запускаем главную активность (можно другую)
             PendingIntent pIntentMainActivity = PendingIntent.getActivity(context, 0, intent2, PendingIntent.FLAG_IMMUTABLE);
-            remoteViews.setOnClickPendingIntent(R.id.my_hours, pIntentMainActivity); // R.id.appwidget_startMainActivity — название кнопки в форме виджета
+            //открываем календарь при нажатии на строку "мои рабочие часы"
+            //remoteViews.setOnClickPendingIntent(R.id.my_hours, pIntentMainActivity); // R.id.appwidget_startMainActivity — название кнопки в форме виджета
+            remoteViews.setOnClickPendingIntent(R.id.widget, pIntentMainActivity);
             //Toast.makeText(context, "Widget has been updated! ", Toast.LENGTH_SHORT).show();
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }

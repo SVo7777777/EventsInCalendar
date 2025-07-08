@@ -110,17 +110,7 @@ public class DashboardFragment extends Fragment {
 
 
         hours1 = "";
-        // обращаемся к методу фрагмента HomeFragment
-        FragmentManager fm = getFragmentManager();
-        assert fm != null;
-        fragment = (HomeFragment)fm.findFragmentById(R.id.navigation_home);
-        //assert fragment != null;
-        if (fragment != null) {
-            fragment.previousMonthOnButtonClick(previous_month);
-            fragment.nextMonthOnButtonClick(next_month);
-            fragment.previousYearOnButtonClick(previous_year);
-            fragment.nextYearOnButtonClick(next_year);
-        }
+
         mydb = new DatabaseHelper(getContext());
         //mydb.AddnewTable("plan3");
         gridTable();

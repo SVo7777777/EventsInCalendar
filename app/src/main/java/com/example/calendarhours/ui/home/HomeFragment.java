@@ -4,11 +4,9 @@ import static android.graphics.Color.GRAY;
 import static android.graphics.Color.LTGRAY;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.RemoteInput;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -28,11 +26,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.calendarhours.DatabaseHelper;
-import com.example.calendarhours.MyWidget;
 import com.example.calendarhours.MyWidget2;
 import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentHomeBinding;
@@ -41,11 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
-
-import android.appwidget.AppWidgetManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 public class HomeFragment extends Fragment {
 
