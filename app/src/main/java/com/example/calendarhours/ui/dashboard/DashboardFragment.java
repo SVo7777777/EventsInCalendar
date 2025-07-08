@@ -17,18 +17,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.calendarhours.DatabaseHelper;
 import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentDashboardBinding;
-import com.example.calendarhours.ui.home.HomeFragment;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
 
@@ -68,7 +69,7 @@ public class DashboardFragment extends Fragment {
     public EditText editTextNumber;
     public Button button2;
     public String hours1;
-    public HomeFragment fragment;
+
     public int day_OfWeekOfFirstDayOfMonth;
     public int date_End;
 
@@ -191,12 +192,12 @@ public class DashboardFragment extends Fragment {
                 int id = mydb.GetId(month_year, DatabaseHelper.TABLE);
                 System.out.println("id="+id);
                 System.out.println("month_year="+month_year);
-                boolean update_hours = mydb.updateSalary(id, month_year, String.valueOf(salary), "hours");
+                boolean update_hours = mydb.updateSalary(id, month_year, salary, "hours");
                 if (update_hours){
                     Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+salary, Toast.LENGTH_SHORT).show();
                 }
                 button2.setText(salary);
-                boolean update_price = mydb.updatePrice(id, month_year, String.valueOf(price), "hours");
+                boolean update_price = mydb.updatePrice(id, month_year, price, "hours");
                 if (update_price){
                     Toast.makeText(getActivity(), "Цена за час в этом месяце: "+price+" сохранена!", Toast.LENGTH_SHORT).show();
                 }
@@ -225,9 +226,7 @@ public class DashboardFragment extends Fragment {
         if (dayOfWeekOfFirstDayOfMonth == 1){
             day_OfWeekOfFirstDayOfMonth = 8;
         }
-        int m = mpred - dayOfWeekOfFirstDayOfMonth+3;
-        int d = 1;
-        int d2 = 1;
+
 
         for (int j = 0; j < 32; j++) {
             number_of_days[j].setEnabled(true);
@@ -247,7 +246,7 @@ public class DashboardFragment extends Fragment {
             int day_of_week = c.get(Calendar.DAY_OF_WEEK);
             String sDate = sdf.format(c.getTime());
             number_of_days[j].setText("");
-            number_of_days[j].setText(( String.valueOf(j+1) + " " + String.valueOf(day_weeks[day_of_week])));
+            number_of_days[j].setText((j + 1 + " " + day_weeks[day_of_week]));
             number_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.work_day));
             number_of_days[j].setTextColor(number_of_days[j].getContext().getResources().getColor(R.color.black));
 
@@ -265,9 +264,7 @@ public class DashboardFragment extends Fragment {
 
                 } else {
                     number_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.work_day));
-//                    events[i][j].setTextColor(events[i][j].getContext().getResources().getColor(R.color.red));
-//                    events[i][j].setTextSize(26);
-//                    days[i][j].setTextColor(days[i][j].getContext().getResources().getColor(R.color.Purple2));
+
                 }
                 if (sDate.equals(sDate_now)) {
                     number_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.DeepSkyBlue));
@@ -324,8 +321,6 @@ public class DashboardFragment extends Fragment {
         //textView3.setText("Всего: "+ sum);
         String data = mont+" "+y;
         StringBuilder hours = new StringBuilder(zeroHours(dateEnd, dayOfWeekOfFirstDayOfMonth));
-//        mydb.insertContact(data, hours.toString(), "plan1");
-//        mydb.insertContact(data, hours.toString(), "plan2");
         boolean search = mydb.checkDataExistOrNot(data, DatabaseHelper.TABLE);
         System.out.println("search: "+search);
         if (search) {
@@ -342,34 +337,7 @@ public class DashboardFragment extends Fragment {
             addHoursInCalendar(h1, dateEnd, my_hours1_of_days);
             addHoursInCalendar(h2, dateEnd, my_hours2_of_days);
         }else {
-//            for (int i = 1; i < 7; i++) {
-//                for (int j = 1; j < 8; j++) {
-//                    String h =(String) fragment.events[i][j].getText();
-//                    if (!h.isEmpty()){
-//                        System.out.println(fragment.days[i][j].getText() + "-" + h);
-//                        sum += Float.parseFloat(h);
-//                        hours.append("-").append(h);
-//                    }else{
-//                        System.out.println(fragment.days[i][j].getText() + "-" + ".");
-//                        hours.append("-" + ".");
-//                    }
-//                }
-//            }
-//            int d = 1;
-//            for (int i = 1; i < 43; i++) {
-//                if (i < dayOfWeekOfFirstDayOfMonth-1){
-//                    hours.append("-" + ".");
-//                }else {
-//                    if (d < dateEnd + 1) {
-//                        hours.append("-" + "0");
-//                        d += 1;
-//                    }else {
-//                        hours.append("-" + ".");
-//                    }
-//                }
-//
-//            }
-            //StringBuilder hours = new StringBuilder(zeroHours(dateEnd, dayOfWeekOfFirstDayOfMonth));
+
             System.out.println(hours);
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
@@ -379,23 +347,7 @@ public class DashboardFragment extends Fragment {
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
     }
-    public String summerHours(String h) {
-        split = h.split("-");
-        System.out.println(Arrays.toString(split));
-        int d = 1;
-        float sum = 0.0F;
-        for (int i = 0; i < 42; i++) {
-            if (split[d].equals(".")) {
-                System.out.println("point");
-            } else {
-                sum += Float.parseFloat(split[d]);
 
-            }
-            d += 1;
-        }
-        System.out.println(sum);
-        return String.valueOf(sum);
-    }
     private StringBuilder zeroHours(int dateEnd, int dayOfWeekOfFirstDayOfMonth){
         StringBuilder hours = new StringBuilder();
         int d = 1;
@@ -465,9 +417,7 @@ public class DashboardFragment extends Fragment {
         } else {
             System.out.println("---INVALID---");
         }
-//        result.setText(String.valueOf(sum));
-//        System.out.println(sum);
-//        textView3.setText("Всего: "+ sum);
+
     }
     public void previousMonthOnButtonClick(Button btn) {
         btn.setOnClickListener(v -> {
@@ -574,7 +524,7 @@ public class DashboardFragment extends Fragment {
                 String mon = (String) month.getText();
                 String ye = (String) year.getText();
                 @SuppressLint("UseRequireInsteadOfGet")
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                 view = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_review, null);
                 EditText event = view.findViewById(R.id.editTextNumberDecimal);
                 Button add = view.findViewById(R.id.button);
@@ -609,7 +559,7 @@ public class DashboardFragment extends Fragment {
                 int ind = Arrays.asList(day_weeks).indexOf(split2[1]);
                 day_of_weeks.setText(day_of_weeks2[ind]);
                 number.setText(split2[0]);
-                c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), Integer.parseInt((String)split2[0]));
+                c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), Integer.parseInt(split2[0]));
                 String sDate = sdf.format(c.getTime());
                 all.setText(sDate+": ");
                 event.requestFocus();
@@ -668,23 +618,6 @@ public class DashboardFragment extends Fragment {
                             }
 
                         }
-
-//                            for (int j = 0; j < 32; j++) {
-//                                String h =(String) my_hours_of_days[j].getText();
-//                                if (!h.isEmpty()){
-//                                    System.out.println(number_of_days[j].getText() + "-" + h);
-//                                    try {
-//                                        sum += Float.parseFloat(h);
-//                                        hours.append("-").append(h);
-//                                    } catch (NumberFormatException e) {
-//                                        Toast.makeText(getActivity(), "Это не число!", Toast.LENGTH_SHORT).show();
-//                                        hours.append("-").append("0");
-//                                    }
-//                                }else{
-//                                    System.out.println(number_of_days[j].getText() + "-" + ".");
-//                                    hours.append("-").append(".");
-//                                }
-//                            }
 
                         System.out.println(hours);
                         System.out.println(month_year+" "+hours);
@@ -886,11 +819,6 @@ public class DashboardFragment extends Fragment {
             my_hours2_of_days[i].setBackgroundColor(0);
 
 
-
-//            if ((i % 2) == 0){
-//                number_of_days[i].setBackgroundColor(number_of_days[i].getContext().getResources().getColor(R.color.teal_200));
-//
-//            }
             if (i == 31) {
                 number_of_days[i].setText("Итог");
                 number_of_days[i].setWidth(200);
