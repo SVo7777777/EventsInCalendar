@@ -26,111 +26,116 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/lineard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/number"
-                    android:layout_width="55dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    tools:ignore="UselessLeaf">
+                    android:id="@+id/lineard1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/num"
+                    <LinearLayout
+                        android:id="@+id/number"
+                        android:layout_width="55dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        tools:ignore="UselessLeaf">
+
+                        <TextView
+                            android:id="@+id/num"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="№"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/data"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        tools:ignore="UselessLeaf">
+
+                        <TextView
+                            android:id="@+id/mon_year"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="дата"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/hours"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="№"
-                        android:textSize="20sp" />
-                </LinearLayout>
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        tools:ignore="UselessLeaf">
 
-                <LinearLayout
-                    android:id="@+id/data"
-                    android:layout_width="130dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    tools:ignore="UselessLeaf">
+                        <TextView
+                            android:id="@+id/hou"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="часы"
+                            android:textSize="20sp" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/mon_year"
+                    <LinearLayout
+                        android:id="@+id/salary"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="дата"
-                        android:textSize="20sp" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        tools:ignore="UselessLeaf">
+
+                        <TextView
+                            android:id="@+id/sala"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="з/п"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        tools:ignore="UselessLeaf">
+
+                        <TextView
+                            android:id="@+id/pr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="цена"
+                            android:textSize="20sp" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/hours"
+                <TextView
+                    android:id="@+id/rez_salary"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    tools:ignore="UselessLeaf">
-
-                    <TextView
-                        android:id="@+id/hou"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="часы"
-                        android:textSize="20sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/salary"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    tools:ignore="UselessLeaf">
-
-                    <TextView
-                        android:id="@+id/sala"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="з/п"
-                        android:textSize="20sp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/price"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    tools:ignore="UselessLeaf">
-
-                    <TextView
-                        android:id="@+id/pr"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="цена"
-                        android:textSize="20sp" />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingEnd="10dp"
+                    android:text="@string/result_salary" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:insetTop="0dp"
-                    android:insetBottom="6dp"
-                    android:text="@string/result_salary"
-                    android:textSize="14sp"
-                    tools:ignore="RtlHardcoded,TouchTargetSizeCheck,VisualLintButtonSize" />
 
 
                 <ImageButton

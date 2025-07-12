@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.FileUtils;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -31,7 +30,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.appcompat.app.AlertDialog;
 
 import com.example.calendarhours.CustomDialogFragment;
 import com.example.calendarhours.DatabaseHelper;
@@ -39,10 +37,7 @@ import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentNotificationsBinding;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,9 +59,10 @@ public class NotificationsFragment extends Fragment {
     TextView dat;
     TextView hou;
     TextView sal;
+    TextView rez_salary0;
     TextView pr;
     String[] split;
-    Button button2;
+    //Button button2;
     private ImageButton btn;
     private Bitmap bitmap;
     private ImageView imageView;
@@ -90,9 +86,10 @@ public class NotificationsFragment extends Fragment {
         hours = root.findViewById(R.id.hours);
         salary = root.findViewById(R.id.salary);
         price = root.findViewById(R.id.price);
-        button2 = root.findViewById(R.id.button2);
+        //button2 = root.findViewById(R.id.button2);
         linear = root.findViewById(R.id.lineard);
         btn = root.findViewById(R.id.btnd);
+        rez_salary0 = root.findViewById(R.id.rez_salary);
 
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +156,8 @@ public class NotificationsFragment extends Fragment {
 
         }
         System.out.println("summer=" + summer);
-        button2.setText(String.format("всего заработано: %s", summer));
+        //button2.setText(String.format("всего заработано: %s", summer));
+        rez_salary0.setText(String.format("всего заработано: %s", summer));
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 //            creatPDF(true);
 //        }
@@ -195,7 +193,7 @@ public class NotificationsFragment extends Fragment {
             args.putString("attention", attention);
             dialog.setArguments(args);
             dialog.show(getParentFragmentManager(), "custom");
-            Toast.makeText(getActivity(), "Итоги успешно загружены в телефон в папку Download!!!", Toast.LENGTH_LONG).show();            //вывод диалогового окна, что запись внесена
+            //Toast.makeText(getActivity(), "Итоги успешно загружены в телефон в папку Download!!!", Toast.LENGTH_LONG).show();            //вывод диалогового окна, что запись внесена
 
         } catch (IOException e) {
             //Toast.makeText(getActivity(), "Something wrong: включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь часов-->Разрешение-->Память--> Разрешить)" + e.toString(), Toast.LENGTH_LONG).show();

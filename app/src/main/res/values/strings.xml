@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CalendarHours</string>
     <string name="title_home">Календарь</string>
-    <string name="title_dashboard">Табель</string>
+    <string name="title_dashboard">Real-plan</string>
     <string name="title_notifications">Итоги</string>
     <string name="monday">пн</string>
     <string name="attention">"Запишите событие, а потом внесите! "</string>

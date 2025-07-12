@@ -627,7 +627,8 @@ public class DashboardFragment extends Fragment {
                             int id = mydb.GetId(data, DatabaseHelper.TABLE2);
                             boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan2", String.valueOf(sum));
                             if (update_hours){
-                                Toast.makeText(getActivity(), "Часы plan2 изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "Часы plan2 изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                                System.out.println("Часы plan2 изменены! Всего часов: "+sum);
                             }
                             DashboardFragment.this.my_hours2_of_days[31].setText(String.valueOf(sum));
                             result2.setText(String.valueOf(sum));
@@ -643,7 +644,8 @@ public class DashboardFragment extends Fragment {
                                 button2.setText(String.valueOf(sal));
                                 editTextNumber.setText(price);
                                 if (update_salary) {
-                                    Toast.makeText(getActivity(), "Зарплата plan2 изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Часы plan2 изменены! Всего : "+sum+"\nЗарплата изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
+                                    //System.out.println("Зарплата plan2 изменена! Всего: " + sal);
                                 }
                             }
                             DashboardFragment.this.my_hours2_of_days[32].setText(String.valueOf(sal));
@@ -655,7 +657,7 @@ public class DashboardFragment extends Fragment {
                             System.out.println("month_year=" + month_year);
                             boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours", String.valueOf(sum));
                             if (update_hours) {
-                                Toast.makeText(getActivity(), "Часы real изменены! Всего часов: " + sum, Toast.LENGTH_SHORT).show();
+                                System.out.println("Часы real изменены! Всего часов: " + sum);
                             }
                             String s = String.valueOf(sum);
                             DashboardFragment.this.my_hours_of_days[31].setText(String.valueOf(sum));
@@ -674,7 +676,8 @@ public class DashboardFragment extends Fragment {
                                 button2.setText(String.valueOf(sal));
                                 editTextNumber.setText(price);
                                 if (update_salary) {
-                                    Toast.makeText(getActivity(), "Зарплата real изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Часы real изменены! Всего : " + sum+"\nЗарплата изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
+                                    //System.out.println("Зарплата real изменена! Всего: " + sal);
                                 }
                             }
                             DashboardFragment.this.my_hours_of_days[32].setText(String.valueOf(sal));
@@ -683,7 +686,7 @@ public class DashboardFragment extends Fragment {
                             int id = mydb.GetId(data, DatabaseHelper.TABLE1);
                             boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "plan1", String.valueOf(sum));
                             if (update_hours){
-                                Toast.makeText(getActivity(), "Часы pian1 изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                                System.out.println("Часы pian1 изменены! Всего часов: "+sum);
                             }
 
                             DashboardFragment.this.my_hours1_of_days[31].setText(String.valueOf(sum));
@@ -699,7 +702,7 @@ public class DashboardFragment extends Fragment {
                                 button2.setText(String.valueOf(sal));
                                 editTextNumber.setText(price);
                                 if (update_salary) {
-                                    Toast.makeText(getActivity(), "Зарплата plan1 изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Часы pian1 изменены! Всего : "+sum+"\nЗарплата изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
                                 }
                             }
                             DashboardFragment.this.my_hours1_of_days[32].setText(String.valueOf(sal));

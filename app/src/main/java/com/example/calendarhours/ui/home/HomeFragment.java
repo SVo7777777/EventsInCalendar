@@ -566,13 +566,10 @@ public class HomeFragment extends Fragment {
                         System.out.println("month_year="+month_year);
                         boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours", String.valueOf(sum));
                         if (update_hours){
-                            Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum, Toast.LENGTH_SHORT).show();
+                            System.out.println("Часы изменены! Всего часов: "+sum);
                         }
                         String s = String.valueOf(sum);
                         textView3.setText(String.format("Часов: %s", s));
-
-
-
                         String price = mydb.getPrice(data, DatabaseHelper.TABLE);
                         float sal = (Float.parseFloat(s)*Float.parseFloat(price));
                         System.out.println(sal);
@@ -585,7 +582,7 @@ public class HomeFragment extends Fragment {
                             button2.setText(String.valueOf(sal));
                             editTextNumber.setText(price);
                             if (update_salary){
-                                Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+sal, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum+"\nЗарплата изменена! Всего: "+sal, Toast.LENGTH_SHORT).show();
                             }
                         }
                         //обновдение виджета
