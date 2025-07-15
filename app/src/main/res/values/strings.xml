@@ -6,7 +6,7 @@
     <string name="monday">пн</string>
     <string name="attention">"Запишите событие, а потом внесите! "</string>
     <string name="file_exist">В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!</string>
-    <string name="salary">salary</string>
+    <string name="salary">з/п</string>
     <string name="result_salary">Всего заработано :</string>
     <string name="hours">my_hours</string>
     <string name="my_hours">real</string>

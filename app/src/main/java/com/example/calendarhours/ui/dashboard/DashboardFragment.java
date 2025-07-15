@@ -115,7 +115,7 @@ public class DashboardFragment extends Fragment {
         mydb = new DatabaseHelper(getContext());
         //mydb.AddnewTable("plan3");
         gridTable();
-            for (int j = 0; j < 32; j++) {
+            for (int j = 0; j < 31; j++) {
                 try {
                     setOnClick(my_hours_of_days[j], number_of_days[j], my_hours_of_days);
                     setOnClick(my_hours1_of_days[j], number_of_days[j], my_hours1_of_days);
@@ -161,8 +161,8 @@ public class DashboardFragment extends Fragment {
         String sal = mydb.getSalary(data, DatabaseHelper.TABLE);
         System.out.println(sal);
         //boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
-        if (price.equals("0.0")){
-            button2.setText("salary");
+        if (price.equals("0.0") || price.isEmpty()){
+            button2.setText("з/п");
             editTextNumber.setText("");
         }else {
             button2.setText(String.valueOf(sal));
@@ -274,14 +274,35 @@ public class DashboardFragment extends Fragment {
                 if (dateEnd==28){
                     my_hours_of_days[28].setEnabled(false);
                     my_hours_of_days[28].setText("");
+                    my_hours_of_days[28].setBackgroundColor(LTGRAY);
+                    my_hours1_of_days[28].setEnabled(false);
+                    my_hours1_of_days[28].setText("");
+                    my_hours1_of_days[28].setBackgroundColor(LTGRAY);
+                    my_hours2_of_days[28].setEnabled(false);
+                    my_hours2_of_days[28].setText("");
+                    my_hours2_of_days[28].setBackgroundColor(LTGRAY);
                     number_of_days[28].setBackgroundColor(LTGRAY);
                     number_of_days[28].setText("");
                     my_hours_of_days[29].setEnabled(false);
                     my_hours_of_days[29].setText("");
+                    my_hours_of_days[29].setBackgroundColor(LTGRAY);
+                    my_hours1_of_days[29].setEnabled(false);
+                    my_hours1_of_days[29].setText("");
+                    my_hours1_of_days[29].setBackgroundColor(LTGRAY);
+                    my_hours2_of_days[29].setEnabled(false);
+                    my_hours2_of_days[29].setText("");
+                    my_hours2_of_days[29].setBackgroundColor(LTGRAY);
                     number_of_days[29].setBackgroundColor(LTGRAY);
                     number_of_days[29].setText("");
                     my_hours_of_days[30].setEnabled(false);
                     my_hours_of_days[30].setText("");
+                    my_hours_of_days[30].setBackgroundColor(LTGRAY);
+                    my_hours1_of_days[30].setEnabled(false);
+                    my_hours1_of_days[30].setText("");
+                    my_hours1_of_days[30].setBackgroundColor(LTGRAY);
+                    my_hours2_of_days[30].setEnabled(false);
+                    my_hours2_of_days[30].setText("");
+                    my_hours2_of_days[30].setBackgroundColor(LTGRAY);
                     number_of_days[30].setBackgroundColor(LTGRAY);
                     number_of_days[30].setText("");
 
@@ -289,10 +310,24 @@ public class DashboardFragment extends Fragment {
                 if (dateEnd==29){
                     my_hours_of_days[29].setEnabled(false);
                     my_hours_of_days[29].setText("");
+                    my_hours_of_days[29].setBackgroundColor(LTGRAY);
+                    my_hours1_of_days[29].setEnabled(false);
+                    my_hours1_of_days[29].setText("");
+                    my_hours1_of_days[29].setBackgroundColor(LTGRAY);
+                    my_hours2_of_days[29].setEnabled(false);
+                    my_hours2_of_days[29].setText("");
+                    my_hours2_of_days[29].setBackgroundColor(LTGRAY);
                     number_of_days[29].setBackgroundColor(LTGRAY);
                     number_of_days[29].setText("");
                     my_hours_of_days[30].setEnabled(false);
                     my_hours_of_days[30].setText("");
+                    my_hours_of_days[30].setBackgroundColor(LTGRAY);
+                    my_hours1_of_days[30].setEnabled(false);
+                    my_hours1_of_days[30].setText("");
+                    my_hours1_of_days[30].setBackgroundColor(LTGRAY);
+                    my_hours2_of_days[30].setEnabled(false);
+                    my_hours2_of_days[30].setText("");
+                    my_hours2_of_days[30].setBackgroundColor(LTGRAY);
                     number_of_days[30].setBackgroundColor(LTGRAY);
                     number_of_days[30].setText("");
 
@@ -302,6 +337,13 @@ public class DashboardFragment extends Fragment {
                     number_of_days[30].setBackgroundColor(LTGRAY);
                     number_of_days[30].setText("");
                     my_hours_of_days[30].setText("");
+                    my_hours_of_days[30].setBackgroundColor(LTGRAY);
+                    my_hours1_of_days[30].setEnabled(false);
+                    my_hours1_of_days[30].setText("");
+                    my_hours1_of_days[30].setBackgroundColor(LTGRAY);
+                    my_hours2_of_days[30].setEnabled(false);
+                    my_hours2_of_days[30].setText("");
+                    my_hours2_of_days[30].setBackgroundColor(LTGRAY);
 
                 }
 
@@ -407,7 +449,7 @@ public class DashboardFragment extends Fragment {
             result.setText(String.valueOf(sum));
             hours_of_days[32].setText(String.valueOf(sum*Float.parseFloat(price)));
             System.out.println(sum);
-            textView3.setText("Всего: " + sum);
+            textView3.setText("Часов: " + sum);
             button2.setText(String.valueOf(sum*Float.parseFloat(price)));
             editTextNumber.setText(price);
         } else if (Arrays.equals(hours_of_days, my_hours1_of_days)) {
@@ -574,12 +616,12 @@ public class DashboardFragment extends Fragment {
                     public void onClick(View view) {
                         String data = String.valueOf(event.getText());
                         System.out.println("data="+data);
-                        if (!data.isEmpty()){
+                        if (!data.isEmpty() && Float.parseFloat(data) < 25){
                             myHoursOfDay.setText(data);
                             alertDialog.dismiss();
                             addHours();
                         }else {
-                            Toast.makeText(getActivity(), "Введите часы!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Введите часы меньше 24-ёх!!", Toast.LENGTH_LONG).show();
                         }
                     }
                     private void addHours() {
@@ -637,11 +679,11 @@ public class DashboardFragment extends Fragment {
                             float sal = (Float.parseFloat(String.valueOf(sum)) * Float.parseFloat(price));
                             System.out.println(sal);
                             boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan2");
-                            if (price.equals("0.0")){
-                                button2.setText("salary");
+                            if (price.equals("0.0") || price.isEmpty()){
+                                button2.setText("з/п");
                                 editTextNumber.setText("");
                             }else {
-                                button2.setText(String.valueOf(sal));
+                                //button2.setText(String.valueOf(sal));
                                 editTextNumber.setText(price);
                                 if (update_salary) {
                                     Toast.makeText(getActivity(), "Часы plan2 изменены! Всего : "+sum+"\nЗарплата изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();
@@ -662,7 +704,7 @@ public class DashboardFragment extends Fragment {
                             String s = String.valueOf(sum);
                             DashboardFragment.this.my_hours_of_days[31].setText(String.valueOf(sum));
                             result.setText(String.valueOf(sum));
-                            textView3.setText(String.format("Всего: %s", s));
+                            textView3.setText(String.format("Часов: %s", s));
 
                             String price = mydb.getPrice(data, DatabaseHelper.TABLE);
                             float sal = (Float.parseFloat(s) * Float.parseFloat(price));
@@ -670,7 +712,7 @@ public class DashboardFragment extends Fragment {
                             boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "hours");
 
                             if (price.equals("0.0")){
-                                button2.setText("salary");
+                                button2.setText("з/п");
                                 editTextNumber.setText("");
                             }else {
                                 button2.setText(String.valueOf(sal));
@@ -695,11 +737,11 @@ public class DashboardFragment extends Fragment {
                             float sal = (Float.parseFloat(String.valueOf(sum)) * Float.parseFloat(price));
                             System.out.println(sal);
                             boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
-                            if (price.equals("0.0")){
-                                button2.setText("salary");
+                            if (price.equals("0.0") || price.isEmpty()){
+                                button2.setText("з/п");
                                 editTextNumber.setText("");
                             }else {
-                                button2.setText(String.valueOf(sal));
+                                //button2.setText(String.valueOf(sal));
                                 editTextNumber.setText(price);
                                 if (update_salary) {
                                     Toast.makeText(getActivity(), "Часы pian1 изменены! Всего : "+sum+"\nЗарплата изменена! Всего: " + sal, Toast.LENGTH_SHORT).show();

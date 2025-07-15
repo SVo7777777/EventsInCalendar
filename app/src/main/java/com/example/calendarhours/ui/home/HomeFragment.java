@@ -4,7 +4,6 @@ import static android.graphics.Color.GRAY;
 import static android.graphics.Color.LTGRAY;
 
 import android.annotation.SuppressLint;
-import android.app.RemoteInput;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -37,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -69,13 +69,10 @@ public class HomeFragment extends Fragment {
     public Button button2;
     public int day_OfWeekOfFirstDayOfMonth;
     public int date_End;
-    public int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
-    private int dialogType = -1;
-    public HomeFragment fragment;
-    private RemoteInput.Builder intent;
 
 
-    @SuppressLint("WrongViewCast")
+
+    @SuppressLint({"WrongViewCast", "SetTextI18n"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
@@ -107,13 +104,14 @@ public class HomeFragment extends Fragment {
         //обновление виджета
         Intent intentq = new Intent(getActivity(), MyWidget2.class);
         intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-        int ids[] = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+        int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
         intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
         getActivity().sendBroadcast(intentq);
 
         int e = 0;
         while (e < 7) {
             String weekId = "numweek_" + e;
+            @SuppressLint("DiscouragedApi")
             int weID = getResources().getIdentifier(weekId, "id", requireActivity().getPackageName());
             number_of_week[e] = root.findViewById(weID);
             e++;
@@ -124,8 +122,11 @@ public class HomeFragment extends Fragment {
                 String llButtonId = "calendar_" + i + j;
                 String dayId = "day_" + i + j;
                 String eventId = "event_" + i + j;
+                @SuppressLint("DiscouragedApi")
                 int bID = getResources().getIdentifier(llButtonId, "id", requireActivity().getPackageName());
+                @SuppressLint("DiscouragedApi")
                 int dID = getResources().getIdentifier(dayId, "id", requireActivity().getPackageName());
+                @SuppressLint("DiscouragedApi")
                 int eID = getResources().getIdentifier(eventId, "id", requireActivity().getPackageName());
                 //buttons[i][j] = String.valueOf(findViewById(gameID));
                 buttons[i][j] = root.findViewById(bID);
@@ -178,8 +179,8 @@ public class HomeFragment extends Fragment {
         String sal = mydb.getSalary(data, DatabaseHelper.TABLE);
         System.out.println(sal);
         //boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
-        if (price.equals("0.0")){
-            button2.setText("salary");
+        if (price.equals("0.0") || price.isEmpty()){
+            button2.setText("з/п");
             editTextNumber.setText("");
         }else {
             button2.setText(String.valueOf(sal));
@@ -212,11 +213,11 @@ public class HomeFragment extends Fragment {
                 System.out.println("id="+id);
                 System.out.println("month_year="+month_year);
 
-                boolean update_hours = mydb.updateSalary(id, month_year, String.valueOf(salary), "hours");
+                boolean update_hours = mydb.updateSalary(id, month_year, salary, "hours");
                 if (update_hours){
                     Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+salary, Toast.LENGTH_SHORT).show();
                 }
-                boolean update_price = mydb.updatePrice(id, month_year, String.valueOf(price), "hours");
+                boolean update_price = mydb.updatePrice(id, month_year, price, "hours");
                 if (update_price){
                     Toast.makeText(getActivity(), "Цена за час в этом месяце: "+price+" сохранена!", Toast.LENGTH_SHORT).show();
                 }
@@ -477,7 +478,7 @@ public class HomeFragment extends Fragment {
                 String mon = (String) month.getText();
                 String ye = (String) year.getText();
                 @SuppressLint("UseRequireInsteadOfGet")
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                 view = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_review, null);
                 EditText event = view.findViewById(R.id.editTextNumberDecimal);
                 Button add = view.findViewById(R.id.button);
@@ -521,15 +522,10 @@ public class HomeFragment extends Fragment {
                     public void onClick(View view) {
                         String data = String.valueOf(event.getText());
                         System.out.println("data="+data);
-
-
-
-                        if ((!data.isEmpty()) && (Integer.parseInt(data) < 25)){
+                        if ((!data.isEmpty()) && (Float.parseFloat(data) < 25)){
                             event1.setText(data);
                             alertDialog.dismiss();
                             addHours();
-
-
                         }else {
                             Toast.makeText(getActivity(), "Введите часы меньше 24-ёх!", Toast.LENGTH_LONG).show();
                         }
@@ -575,8 +571,8 @@ public class HomeFragment extends Fragment {
                         System.out.println(sal);
                         boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "hours");
 
-                        if (price.equals("0.0")){
-                            button2.setText("salary");
+                        if (price.equals("0.0") || price.isEmpty()){
+                            button2.setText("з/п");
                             editTextNumber.setText("");
                         }else {
                             button2.setText(String.valueOf(sal));
@@ -588,7 +584,7 @@ public class HomeFragment extends Fragment {
                         //обновдение виджета
                         Intent intentq = new Intent(getActivity(), MyWidget2.class);
                         intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-                        int ids[] = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+                        int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
                         intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
                         getActivity().sendBroadcast(intentq);
 

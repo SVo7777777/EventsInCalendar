@@ -122,22 +122,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<ArrayList<String>> getAllRows() {
         ArrayList<ArrayList<String>>  array_list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        int i = 0;
-        //int j = 0;
         @SuppressLint("Recycle")
         Cursor res = db.rawQuery("select * from hours", null);
         res.moveToFirst();
-//        while (!res.isAfterLast()) {
-//
-//            array_list.add(res.getString(res.getColumnIndex(String.valueOf(0))));
-//
-//            res.moveToNext();
-//        }
 
         if(res.getCount() > 0) {
             if (res.moveToFirst()) {
                 do {
-                    ArrayList<String> row = new ArrayList<String>();
+                    ArrayList<String> row = new ArrayList<>();
                     row.add(res.getString(1));
                     row.add(res.getString(2));
                     row.add(res.getString(3));
@@ -156,8 +148,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean checkDataExistOrNot(String value, String TABLE3) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        //String query = "SELECT * FROM " + TABLE + " WHERE " + COLUMN_MONTH_YEAR + " = " + value;
-        //String query = "select * from hours" + " where " + COLUMN_MONTH_YEAR + " like ?";
         String query = "SELECT * FROM " + TABLE3 + " WHERE " + COLUMN_MONTH_YEAR + " like ?";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{"%" + value + "%"});
@@ -251,7 +241,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         @SuppressLint("Recycle")
         Cursor getNoteId = myDB.rawQuery("select id from'"+ TABLE3 +"' where month_year = '" + currentNote + "'", null);
         //Cursor getNoteId = myDB.rawQuery("select id from notepadData where notepad like + "'" + currentNote + "'", null);
-        if (getNoteId != null && getNoteId.moveToFirst()) {
+        if (getNoteId.moveToFirst()) {
             return getNoteId.getInt(0);
         } else {
             return Integer.parseInt(null);  // because you have to return something

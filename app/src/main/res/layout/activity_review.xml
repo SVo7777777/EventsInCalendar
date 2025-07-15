@@ -74,10 +74,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/event_edit_border"
         android:ems="10"
+        android:focusableInTouchMode="true"
         android:gravity="center"
         android:hint="hours"
-        android:focusableInTouchMode="true"
         android:inputType="numberDecimal"
+        android:minHeight="48dp"
         android:textSize="24sp" />
 
 

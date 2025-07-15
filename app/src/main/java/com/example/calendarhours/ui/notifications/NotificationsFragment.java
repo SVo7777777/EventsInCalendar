@@ -19,9 +19,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,17 +59,15 @@ public class NotificationsFragment extends Fragment {
     TextView sal;
     TextView rez_salary0;
     TextView pr;
-    String[] split;
-    //Button button2;
+
     private ImageButton btn;
-    private Bitmap bitmap;
-    private ImageView imageView;
+
     private int width, height;
     Calendar calendar = Calendar.getInstance();
     public int current_year = calendar.get(Calendar.YEAR);
     public int current_month = calendar.get(Calendar.MONTH);
     public int current_day = calendar.get(Calendar.DATE);
-    String current_data = "_"+String.valueOf(current_day)+"-"+String.valueOf(current_month+1)+"-"+String.valueOf(current_year);
+    String current_data = "_"+ current_day +"-"+ (current_month + 1) +"-"+ current_year;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -92,26 +88,20 @@ public class NotificationsFragment extends Fragment {
         rez_salary0 = root.findViewById(R.id.rez_salary);
 
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("size", "" + linear.getWidth() + " " + linear.getWidth());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    creatPDF(true);
-                }
-
+        btn.setOnClickListener(v -> {
+            Log.d("size", linear.getWidth() + " " + linear.getWidth());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                creatPDF(true);
             }
+
         });
         ImageButton btnop = root.findViewById(R.id.btn_open);
-        btnop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    openPdf();
-                }
-
+        btnop.setOnClickListener(v -> {
+            Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                openPdf();
             }
+
         });
 
         mydb = new DatabaseHelper(getContext());
@@ -156,11 +146,8 @@ public class NotificationsFragment extends Fragment {
 
         }
         System.out.println("summer=" + summer);
-        //button2.setText(String.format("всего заработано: %s", summer));
         rez_salary0.setText(String.format("всего заработано: %s", summer));
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            creatPDF(true);
-//        }
+
         return root;
     }
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -193,14 +180,12 @@ public class NotificationsFragment extends Fragment {
             args.putString("attention", attention);
             dialog.setArguments(args);
             dialog.show(getParentFragmentManager(), "custom");
-            //Toast.makeText(getActivity(), "Итоги успешно загружены в телефон в папку Download!!!", Toast.LENGTH_LONG).show();            //вывод диалогового окна, что запись внесена
+
 
         } catch (IOException e) {
             //Toast.makeText(getActivity(), "Something wrong: включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь часов-->Разрешение-->Память--> Разрешить)" + e.toString(), Toast.LENGTH_LONG).show();
             System.out.println(e.toString());
             //вывод диалогового окна, что запись внесена
-//            CustomDialogFragment dialog2 = new CustomDialogFragment();
-//            dialog2.show(getParentFragmentManager(), "custom");
             String attention = "Включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь рабочих часов-->Разрешение-->Память--> Разрешить)";
             CustomDialogFragment dialog = new CustomDialogFragment();
             Bundle args = new Bundle();
@@ -212,7 +197,6 @@ public class NotificationsFragment extends Fragment {
 
         pd.close();
         String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
-        String storage = Environment.getExternalStorageDirectory().toString() + "/Documents/itodi_results.pdf";
         String pdf_file = "a-computer-engineer-pdf-test.pdf";
         System.out.println("Environment.getExternalStorageDirectory().toString()=" + Environment.getExternalStorageDirectory().toString());
         System.out.println(downloadDir);
@@ -220,9 +204,6 @@ public class NotificationsFragment extends Fragment {
         @SuppressLint("SdCardPath")
         //final String APP_SD_PATH = "/storage/emulated/0/data/data/com.example.calendarofevents";
         String path = getActivity().getApplicationInfo().dataDir;
-        String sFolder = path + "/files";
-        String sFile = sFolder + "/" + pdf_file;
-        //boolean copy = copyFile(sFile, downloadDir);
 
         System.out.println("=path=" + path);
         //openPdf();
@@ -231,10 +212,9 @@ public class NotificationsFragment extends Fragment {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        String path1 = getActivity().getApplicationInfo().dataDir;
         String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
 
-        String sFolder =  path1 + "/files";
+
         String sFile=downloadDir+"/itogi_results"+current_data+".pdf";
 
         //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
@@ -248,79 +228,7 @@ public class NotificationsFragment extends Fragment {
 
     }
     //@SuppressLint("ObsoleteSdkInt")
-    public void convertXmlToPdf() {
-        // Inflate the XML layout file
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_dashboard, null);
-        //View view = LinearLayout
-        DisplayMetrics displayMetrics = new DisplayMetrics();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            getActivity().getDisplay().getRealMetrics(displayMetrics);
-        } else
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        view.measure(View.MeasureSpec.makeMeasureSpec(displayMetrics.widthPixels, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(displayMetrics.heightPixels, View.MeasureSpec.EXACTLY));
-        Log.d("mylog", "Width Now " + view.getMeasuredWidth());
-        view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
-        // Create a new PdfDocument instance
-        PdfDocument document = new PdfDocument();
-
-        // Obtain the width and height of the view
-        int viewWidth = view.getMeasuredWidth();
-        int viewHeight = view.getMeasuredHeight();
-        // Create a PageInfo object specifying the page attributes
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth, viewHeight, 1).create();
-
-        // Start a new page
-        PdfDocument.Page page = document.startPage(pageInfo);
-
-        // Get the Canvas object to draw on the page
-        Canvas canvas = page.getCanvas();
-
-        // Create a Paint object for styling the view
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-
-        // Draw the view on the canvas
-        view.draw(canvas);
-
-        // Finish the page
-        document.finishPage(page);
-
-        try (FileOutputStream fos = getActivity().openFileOutput("exampleXML.pdf", Context.MODE_PRIVATE);
-             //try (FileOutputStream fos = new FileOutputStream("exampleXML.pdf", true);
-             // outputStream = new FileOutputStream (new File(patternDirectory.getAbsolutePath().toString()), true); // true will be same as Context.MODE_APPEND
-
-             OutputStreamWriter osw = new OutputStreamWriter(fos)) {
-            //String data = String.valueOf(textMultiline.getText());
-            document.writeTo(fos);
-            Log.d("PDF", "PDF saved to external storage");
-            Toast.makeText(getActivity(), "Written Successfully!!!", Toast.LENGTH_SHORT).show();            //вывод диалогового окна, что запись внесена
-
-        } catch (IOException e) {
-            Toast.makeText(getActivity(), "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
-            System.out.println(e.toString());
-            //throw new RuntimeException(e);
-        }
-        document.close();
-    }
-    public String summerHours (String h){
-            split = h.split("-");
-            System.out.println(Arrays.toString(split));
-            int d = 1;
-            float sum = 0.0F;
-            for (int i = 0; i < 42; i++) {
-                if (split[d].equals(".")) {
-                    System.out.println("point");
-                } else {
-                    sum += Float.parseFloat(split[d]);
-                }
-                d += 1;
-            }
-            System.out.println(sum);
-            return String.valueOf(sum);
-    }
 
         @Override
         public void onDestroyView () {

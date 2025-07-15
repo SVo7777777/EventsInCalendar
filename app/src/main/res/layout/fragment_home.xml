@@ -36,7 +36,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left"
+            android:gravity="center"
             android:insetTop="0dp"
             android:insetBottom="6dp"
             android:text="@string/salary"
@@ -751,6 +751,7 @@
                             android:textColor="@color/Purple2"
                             android:textSize="35dp"
                             tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
                         <TextView
                             android:id="@+id/event_23"
                             android:layout_width="wrap_content"
