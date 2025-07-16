@@ -225,6 +225,12 @@ public class HomeFragment extends Fragment {
             }catch (NumberFormatException e) {
                 Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
             }
+            //обновление виджета
+            Intent intentq = new Intent(getActivity(), MyWidget2.class);
+            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+            getActivity().sendBroadcast(intentq);
 
         });
     }

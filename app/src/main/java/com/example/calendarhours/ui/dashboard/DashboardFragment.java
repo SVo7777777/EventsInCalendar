@@ -3,6 +3,9 @@ package com.example.calendarhours.ui.dashboard;
 import static android.graphics.Color.LTGRAY;
 
 import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.calendarhours.DatabaseHelper;
+import com.example.calendarhours.MyWidget2;
 import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentDashboardBinding;
 
@@ -108,7 +112,12 @@ public class DashboardFragment extends Fragment {
         //button2.setText("salary");
         salaryShowOnButtonClick(button2);
 
-
+//обновление виджета
+        Intent intentq = new Intent(getActivity(), MyWidget2.class);
+        intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+        intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        getActivity().sendBroadcast(intentq);
 
         hours1 = "";
 
@@ -205,6 +214,12 @@ public class DashboardFragment extends Fragment {
             }catch (NumberFormatException e) {
                 Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
             }
+            //обновление виджета
+            Intent intentq = new Intent(getActivity(), MyWidget2.class);
+            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+            getActivity().sendBroadcast(intentq);
         });
     }
     @SuppressLint("SetTextI18n")
@@ -752,6 +767,12 @@ public class DashboardFragment extends Fragment {
                         } else {
                             System.out.println("---INVALID---");
                         }
+                        //обновление виджета
+                        Intent intentq = new Intent(getActivity(), MyWidget2.class);
+                        intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                        int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+                        intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                        getActivity().sendBroadcast(intentq);
 
 
                     }
