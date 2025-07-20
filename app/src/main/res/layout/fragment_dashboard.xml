@@ -175,7 +175,7 @@
 
                 <LinearLayout
                     android:id="@+id/list"
-                    android:layout_width="349dp"
+                    android:layout_width="300dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
@@ -185,10 +185,13 @@
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="9dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:text="@string/hours"
-                        android:textSize="30sp"
-                        android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+                        android:textSize="28sp"
+                        android:textStyle="normal"
+                        tools:ignore="HardcodedText,NestedWeights" />
 
                     <TextView
                         android:id="@+id/textView1"
@@ -200,7 +203,7 @@
                         android:text="@string/my_hours"
                         android:textSize="28sp"
                         android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+                        tools:ignore="HardcodedText,NestedWeights" />
 
                     <TextView
                         android:id="@+id/textView4"
@@ -264,6 +267,7 @@
 
                         </LinearLayout>
 
+
                         <LinearLayout
                             android:id="@+id/my_hours"
                             android:layout_width="match_parent"
@@ -313,18 +317,22 @@
 
                 <LinearLayout
                     android:id="@+id/results"
-                    android:layout_width="250dp"
+                    android:layout_width="280dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="UselessLeaf,TextSizeCheck">
 
                     <TextView
                         android:id="@+id/textView15"
                         android:layout_width="match_parent"
-                        android:layout_height="44dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="9dp"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Итог"
-                        android:textSize="15sp"
+                        android:text="итог"
+                        android:textSize="18sp"
+                        android:textStyle="normal"
                         tools:ignore="HardcodedText,NestedWeights" />
 
                     <TextView
@@ -334,12 +342,18 @@
                         android:layout_weight="1"
                         android:background="@color/work_day"
                         android:gravity="center"
-                        android:textColor="@color/red" />
+                        android:text="@string/my_hours"
+                        android:textColor="#880E4F"
+                        android:textSize="18sp"
+                        android:textStyle="normal"
+                        tools:ignore="HardcodedText,NestedWeights" />
 
                     <TextView
                         android:id="@+id/textView17"
                         android:layout_width="match_parent"
-                        android:layout_height="6dp" />
+                        android:layout_height="6dp"
+                        android:textSize="30sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/result1"
@@ -348,12 +362,18 @@
                         android:layout_weight="1"
                         android:background="@color/work_day"
                         android:gravity="center"
-                        android:textColor="@color/red" />
+                        android:text="@string/my_hours1"
+                        android:textColor="#880E4F"
+                        android:textSize="18sp"
+                        android:textStyle="normal"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/textView19"
                         android:layout_width="match_parent"
-                        android:layout_height="6dp" />
+                        android:layout_height="6dp"
+                        android:textSize="30sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/result2"
@@ -362,7 +382,11 @@
                         android:layout_weight="1"
                         android:background="@color/work_day"
                         android:gravity="center"
-                        android:textColor="@color/red" />
+                        android:text="@string/my_hours2"
+                        android:textColor="#880E4F"
+                        android:textSize="18sp"
+                        android:textStyle="normal"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
             </LinearLayout>
 

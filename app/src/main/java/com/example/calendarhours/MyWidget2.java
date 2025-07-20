@@ -96,7 +96,7 @@ public class MyWidget2 extends AppWidgetProvider {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
             //intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                    widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             remoteViews.setOnClickPendingIntent(R.id.summary, pendingIntent);
 
             //открываем календарь при нажатии виджет

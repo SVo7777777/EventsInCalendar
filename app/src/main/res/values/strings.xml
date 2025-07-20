@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CalendarHours</string>
+    <string name="app_name">Календарь рабочих часов</string>
     <string name="title_home">Календарь</string>
     <string name="title_dashboard">Real-plan</string>
     <string name="title_notifications">Итоги</string>
@@ -8,7 +8,7 @@
     <string name="file_exist">В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!</string>
     <string name="salary">з/п</string>
     <string name="result_salary">Всего заработано :</string>
-    <string name="hours">my_hours</string>
+    <string name="hours">часы</string>
     <string name="my_hours">real</string>
     <string name="my_hours1">plan1</string>
     <string name="my_hours2">plan2</string>

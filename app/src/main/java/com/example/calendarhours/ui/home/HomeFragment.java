@@ -31,6 +31,7 @@ import com.example.calendarhours.DatabaseHelper;
 import com.example.calendarhours.MyWidget2;
 import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentHomeBinding;
+import com.example.calendarhours.ui.dashboard.DashboardFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -179,7 +180,7 @@ public class HomeFragment extends Fragment {
         String sal = mydb.getSalary(data, DatabaseHelper.TABLE);
         System.out.println(sal);
         //boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
-        if (price.equals("0.0") || price.isEmpty()){
+        if (price.equals("0.0") ){
             button2.setText("з/п");
             editTextNumber.setText("");
         }else {
@@ -199,12 +200,14 @@ public class HomeFragment extends Fragment {
             String mon = (String) month.getText();
             String ye = (String) year.getText();
             String month_year = mon + " " + ye;
+            DashboardFragment dashboardFragment = new DashboardFragment();
             try {
                 split2 = h.split(" ");
                 System.out.println(Arrays.toString(split2));
                 System.out.println(split2[0]);
                 System.out.println(split2[1]);
                 String price = String.valueOf(editTextNumber.getText());
+                dashboardFragment.editTextNumber.setText(price);
                 String hours = split2[1];
                 float p = Float.parseFloat(hours) * Float.parseFloat(price);
                 System.out.println(p);
@@ -335,7 +338,8 @@ public class HomeFragment extends Fragment {
         boolean search = mydb.checkDataExistOrNot(data, DatabaseHelper.TABLE);
         System.out.println("search: "+search);
         if (search) {
-            Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
+            System.out.println(data + " уже есть!");
             String h = mydb.getHours(data, DatabaseHelper.TABLE);
             //String s = mydb.getSum(data);
             System.out.println("за "+data+" часы: "+h);

@@ -27,6 +27,7 @@ import com.example.calendarhours.DatabaseHelper;
 import com.example.calendarhours.MyWidget2;
 import com.example.calendarhours.R;
 import com.example.calendarhours.databinding.FragmentDashboardBinding;
+import com.example.calendarhours.ui.home.HomeFragment;
 
 
 import java.text.SimpleDateFormat;
@@ -76,6 +77,9 @@ public class DashboardFragment extends Fragment {
 
     public int day_OfWeekOfFirstDayOfMonth;
     public int date_End;
+    //public HomeFragment homeFragment;
+
+
 
 
     @SuppressLint("SetTextI18n")
@@ -188,12 +192,18 @@ public class DashboardFragment extends Fragment {
             String mon = (String) month.getText();
             String ye = (String) year.getText();
             String month_year = mon + " " + ye;
+
+
+
+
             try {
                 split2 = h.split(" ");
                 System.out.println(Arrays.toString(split2));
                 System.out.println(split2[0]);
                 System.out.println(split2[1]);
                 String price = String.valueOf(editTextNumber.getText());
+                //String rt = String.valueOf(homeFragment.editTextNumber.getText());
+                //System.out.println("rt="+rt);
                 String hours = split2[1];
                 float p = Float.parseFloat(hours) * Float.parseFloat(price);
                 System.out.println(p);
@@ -261,7 +271,7 @@ public class DashboardFragment extends Fragment {
             int day_of_week = c.get(Calendar.DAY_OF_WEEK);
             String sDate = sdf.format(c.getTime());
             number_of_days[j].setText("");
-            number_of_days[j].setText((j + 1 + " " + day_weeks[day_of_week]));
+            number_of_days[j].setText((j + 1 + " "+day_weeks[day_of_week]));
             number_of_days[j].setBackgroundColor(number_of_days[j].getContext().getResources().getColor(R.color.work_day));
             number_of_days[j].setTextColor(number_of_days[j].getContext().getResources().getColor(R.color.black));
 
@@ -381,7 +391,8 @@ public class DashboardFragment extends Fragment {
         boolean search = mydb.checkDataExistOrNot(data, DatabaseHelper.TABLE);
         System.out.println("search: "+search);
         if (search) {
-            Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
+            System.out.println(data + " уже есть!");
             String h = mydb.getHours(data, DatabaseHelper.TABLE);
             String h1 = mydb.getHours(data, DatabaseHelper.TABLE1);
             String h2 = mydb.getHours(data, DatabaseHelper.TABLE2);
@@ -849,19 +860,21 @@ public class DashboardFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     public void gridTable(){
         for (int i = 0; i < 33; i++){
-            number_of_days[i]=new TextView(getContext());
-            number_of_days[i].setText(Integer.toString(i + 1)); // Set text or other properties as needed
+            number_of_days[i]=new Button(getContext());
+            //number_of_days[i].setText(Integer. (i + 1)); // Set text or other properties as needed
             number_of_days[i].setId(i + 1);
-            number_of_days[i].setTextSize(30);
-            number_of_days[i].setWidth(160);
-            number_of_days[i].setGravity(Gravity.CENTER | Gravity.TOP);
+            number_of_days[i].setAllCaps(false);
+            //number_of_days[i].setTransformationMethod(null);
+            number_of_days[i].setTextSize(26);
+            number_of_days[i].setWidth(165);
+            number_of_days[i].setGravity(Gravity.CENTER);
             number_of_days[i].setBackgroundColor(LTGRAY);
 
             my_hours_of_days[i]=new Button(getContext());
             my_hours_of_days[i].setId(i + 1);
             my_hours_of_days[i].setTextSize(30);
             my_hours_of_days[i].setPadding(0,0,0,5);
-            my_hours_of_days[i].setWidth(160);
+            my_hours_of_days[i].setWidth(165);
             my_hours_of_days[i].setTextColor(my_hours_of_days[i].getContext().getResources().getColor(R.color.purple_700));
             my_hours_of_days[i].setGravity(Gravity.CENTER);
             my_hours_of_days[i].setBackgroundColor(0);
@@ -870,7 +883,7 @@ public class DashboardFragment extends Fragment {
             my_hours1_of_days[i].setId(i + 1);
             my_hours1_of_days[i].setTextSize(30);
             my_hours1_of_days[i].setPadding(0,0,0,5);
-            my_hours1_of_days[i].setWidth(160);
+            my_hours1_of_days[i].setWidth(165);
             my_hours1_of_days[i].setTextColor(my_hours_of_days[i].getContext().getResources().getColor(R.color.purple_700));
             my_hours1_of_days[i].setGravity(Gravity.CENTER);
             my_hours1_of_days[i].setBackgroundColor(0);
@@ -880,26 +893,43 @@ public class DashboardFragment extends Fragment {
             my_hours2_of_days[i].setTextSize(30);
             my_hours2_of_days[i].setPadding(0,0,0,5);
             my_hours2_of_days[i].setTextColor(my_hours_of_days[i].getContext().getResources().getColor(R.color.purple_700));
-            my_hours2_of_days[i].setWidth(160);
+            my_hours2_of_days[i].setWidth(165);
             my_hours2_of_days[i].setGravity(Gravity.CENTER);
             my_hours2_of_days[i].setBackgroundColor(0);
 
 
             if (i == 31) {
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                number_of_days[i].setLayoutParams(params);
+                my_hours_of_days[i].setLayoutParams(params);
+                my_hours1_of_days[i].setLayoutParams(params);
+                my_hours2_of_days[i].setLayoutParams(params);
+                params.width = 260;
                 number_of_days[i].setText("Итог");
-                number_of_days[i].setWidth(200);
+                //number_of_days[i].setWidth(260);
                 number_of_days[i].setBackgroundColor(number_of_days[i].getContext().getResources().getColor(R.color.purple_200));
-                my_hours_of_days[i].setWidth(200);
-                my_hours1_of_days[i].setWidth(200);
-                my_hours2_of_days[i].setWidth(200);
+                //my_hours_of_days[i].setWidth(260);
+//                my_hours1_of_days[i].setWidth(260);
+//                my_hours2_of_days[i].setWidth(260);
             }
             if (i == 32) {
+//                LinearLayout.LayoutParams params = new (LinearLayout.LayoutParams) number_of_days[i].getLayoutParams();
+//                params.width = 320;
+//                number_of_days[i].setLayoutParams(params);
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                number_of_days[i].setLayoutParams(params);
+                my_hours_of_days[i].setLayoutParams(params);
+                my_hours1_of_days[i].setLayoutParams(params);
+                my_hours2_of_days[i].setLayoutParams(params);
+                params.width = 380;
+
+                //number_of_days[i].getLayoutParams().width=300;
                 number_of_days[i].setText("З/п");
-                number_of_days[i].setWidth(250);
+                //number_of_days[i].setWidth(320);
                 number_of_days[i].setBackgroundColor(number_of_days[i].getContext().getResources().getColor(R.color.purple_200));
-                my_hours_of_days[i].setWidth(250);
-                my_hours1_of_days[i].setWidth(250);
-                my_hours2_of_days[i].setWidth(250);
+                //my_hours_of_days[i].setWidth(320);
+                //my_hours1_of_days[i].setWidth(320);
+                //my_hours2_of_days[i].setWidth(320);
             }
 
             days_month.addView(number_of_days[i]);
