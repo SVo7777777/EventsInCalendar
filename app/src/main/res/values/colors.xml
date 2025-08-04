@@ -14,4 +14,6 @@
     <color name="Wheat">#F5DEB3</color>
     <color name="red">#FF0000</color>#BC8F8F
     <color name="RosyBrown">#BC8F8F</color>#BC8F8F
+    <color name="Purple">#800080</color>
+    <color name="colorPrimaryDark">#7A0671</color>
 </resources>

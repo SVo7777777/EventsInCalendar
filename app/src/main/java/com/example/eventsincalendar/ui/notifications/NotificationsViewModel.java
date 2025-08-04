@@ -1,4 +1,4 @@
-package com.example.calendarhours.ui.notifications;
+package com.example.eventsincalendar.ui.notifications;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

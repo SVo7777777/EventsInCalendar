@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Календарь рабочих часов</string>
+    <string name="app_name">Календарь событий</string>
     <string name="title_home">Календарь</string>
-    <string name="title_dashboard">Real-plan</string>
+    <string name="title_dashboard">Поиск</string>
     <string name="title_notifications">Итоги</string>
     <string name="monday">пн</string>
     <string name="attention">"Запишите событие, а потом внесите! "</string>
@@ -12,15 +12,21 @@
     <string name="my_hours">real</string>
     <string name="my_hours1">plan1</string>
     <string name="my_hours2">plan2</string>
-    <string name="name">Календарь моих рабочих часов</string>
-    <string name="widget_name">Календарь рабочих часов</string>
-    <string name="widget_text">Календарь моих рабочих часов</string>
+    <string name="name">Календарь моих событий</string>
+    <string name="widget_name">Календарь событий</string>
+    <string name="widget_text">Календарь событий</string>
     <string name="widget_name2">My second widget</string>
     <string name="red">Red</string>
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="ok">Ok</string>
     <string name="my_hours_widget">мои рабочие часы</string>
+    <string name="atantion">"Запишите событие, а потом внесите! "</string>
+    <string name="descript">Выберите дату и запишите событие.</string>
+    <string name="add">ВНЕСТИ</string>
+    <string name="review">ПРОССМОТРЕТЬ</string>
+    <string name="reset">СБРОСИТЬ</string>
+    <string name="editTextInput"> Поиск по слову. Введите слово. </string>
 
     <string-array name="months">
         <item>ЯНВАРЬ</item>

@@ -1,5 +1,6 @@
-package com.example.calendarhours.ui.home;
+package com.example.eventsincalendar.ui.home;
 
+import static android.content.Context.MODE_APPEND;
 import static android.graphics.Color.GRAY;
 import static android.graphics.Color.LTGRAY;
 
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +29,23 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.calendarhours.DatabaseHelper;
-import com.example.calendarhours.MyWidget2;
-import com.example.calendarhours.R;
-import com.example.calendarhours.databinding.FragmentHomeBinding;
-import com.example.calendarhours.ui.dashboard.DashboardFragment;
+import com.example.eventsincalendar.CustomDialogFragment;
+import com.example.eventsincalendar.DatabaseHelper;
+import com.example.eventsincalendar.FileEmpty;
+import com.example.eventsincalendar.MyWidget2;
+import com.example.eventsincalendar.R;
+import com.example.eventsincalendar.ReviewOWeek;
+import com.example.eventsincalendar.ReviewOnMonth;
+import com.example.eventsincalendar.databinding.FragmentHomeBinding;
+import com.example.eventsincalendar.ui.dashboard.DashboardFragment;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -187,10 +200,57 @@ public class HomeFragment extends Fragment {
             button2.setText(String.valueOf(sal));
             editTextNumber.setText(price);
         }
+        for (int i = 1; i < 7; i++){
+            onWeekMonthClick(number_of_week[i]);
+        }
 
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
+    }
+    public void onWeekMonthClick(TextView btn) {
+        btn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
+            @Override
+            public void onClick(View v) {
+                System.out.println(btn.getText());
+                String[] week_days;
+                String result = "";
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                int week = Integer.parseInt((String) btn.getText());
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.WEEK_OF_YEAR, week);
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                int week_start_day = cal.getFirstDayOfWeek();
+                System.out.println(format.format(cal.getTime()));
+                for (int i = week_start_day; i < week_start_day + 7; i++) {
+                    cal.set(Calendar.DAY_OF_WEEK, i);
+                    result += new SimpleDateFormat("dd-MM-yyyy").format(cal.getTime()) + " ";
+                }
+                System.out.println(result);
+                week_days = result.split(" ");
+                System.out.println(Arrays.toString(week_days));
+                Intent intent = new Intent(getContext(), ReviewOWeek.class);
+                Bundle args = new Bundle();
+                args.putSerializable("ARRAYLIST",(Serializable)week_days);
+                intent.putExtra("BUNDLE",args);
+                intent.putExtra("week", week);
+                //intent.putExtra("week_days", week_days);
+
+                startActivity(intent);
+
+            }
+        });
+    }
+    public void onReviewMonthClick(View view) {
+        Intent intent2 = new Intent(getContext(), ReviewOnMonth.class);
+        @SuppressLint("SimpleDateFormat")
+        final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar c = Calendar.getInstance();
+        c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), 1);
+        String data = sdf.format(c.getTime());
+        intent2.putExtra("data", data);
+        startActivity(intent2);
     }
 
     @SuppressLint("SetTextI18n")
@@ -207,7 +267,7 @@ public class HomeFragment extends Fragment {
                 System.out.println(split2[0]);
                 System.out.println(split2[1]);
                 String price = String.valueOf(editTextNumber.getText());
-                dashboardFragment.editTextNumber.setText(price);
+                //dashboardFragment.editTextNumber.setText(price);
                 String hours = split2[1];
                 float p = Float.parseFloat(hours) * Float.parseFloat(price);
                 System.out.println(p);
@@ -481,195 +541,127 @@ public class HomeFragment extends Fragment {
         });
     }
     public void setOnClick(LinearLayout btn, TextView day1, TextView event1,  String day_week) {
-        btn.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint({"SetTextI18n", "InflateParams"})
-            @Override
-            public void onClick(View v) {
-                String mon = (String) month.getText();
-                String ye = (String) year.getText();
-                @SuppressLint("UseRequireInsteadOfGet")
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
-                view = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_review, null);
-                EditText event = view.findViewById(R.id.editTextNumberDecimal);
-                Button add = view.findViewById(R.id.button);
-                Button close = view.findViewById(R.id.close);
-                TextView number = view.findViewById(R.id.number);
-                TextView all = view.findViewById(R.id.textView2);
-                number.setText(day1.getText());
-                TextView year1 = view.findViewById(R.id.year);
-                Button num1 = view.findViewById(R.id.num1);
-                Button num2 = view.findViewById(R.id.num2);
-                Button num3 = view.findViewById(R.id.num3);
-                Button num4 = view.findViewById(R.id.num4);
-                Button num5 = view.findViewById(R.id.num5);
-                Button num6 = view.findViewById(R.id.num6);
-                Button num7 = view.findViewById(R.id.num7);
-                Button num8 = view.findViewById(R.id.num8);
-                Button num9 = view.findViewById(R.id.num9);
-                Button num0 = view.findViewById(R.id.num0);
-                Button point = view.findViewById(R.id.point);
-                Button backspace = view.findViewById(R.id.backspace);
-                year1.setText(year.getText().toString());
-                TextView month1 = view.findViewById(R.id.month);
-                month1.setText(month.getText());
-                TextView day_of_weeks = view.findViewById(R.id.day_of_weeks);
-                day_of_weeks.setText(day_week);
-                @SuppressLint("SimpleDateFormat")
-                final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                Calendar c = Calendar.getInstance();
-                c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), Integer.parseInt((String) number.getText()));
-                String sDate = sdf.format(c.getTime());
-                all.setText(sDate+": ");
-                event.requestFocus();
-                event.setSelection(event.getText().length());
-                //клавиатура выезжает сразу
-                builder.setView(view);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                add.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onClick(View view) {
-                        String data = String.valueOf(event.getText());
-                        System.out.println("data="+data);
-                        if ((!data.isEmpty()) && (Float.parseFloat(data) < 25)){
-                            event1.setText(data);
-                            alertDialog.dismiss();
-                            addHours();
-                        }else {
-                            Toast.makeText(getActivity(), "Введите часы меньше 24-ёх!", Toast.LENGTH_LONG).show();
-                        }
 
-                    }
-                    private void addHours() {
-                        String month_year = mon + " " + ye;
-                        StringBuilder hours = new StringBuilder();
-                        float sum = 0.0F;
-                        for (int i = 1; i < 7; i++) {
-                            for (int j = 1; j < 8; j++) {
-                                String h =(String) events[i][j].getText();
-                                if (!h.isEmpty()){
-                                    System.out.println(days[i][j].getText() + "-" + h);
-                                    try {
-                                        sum += Float.parseFloat(h);
-                                        hours.append("-").append(h);
-                                    } catch (NumberFormatException e) {
-                                        Toast.makeText(getActivity(), "Это не число!", Toast.LENGTH_SHORT).show();
-                                        hours.append("-").append("0");
-                                    }
-                                }else{
-                                    System.out.println(days[i][j].getText() + "-" + ".");
-                                    hours.append("-").append(".");
+            btn.setOnClickListener(new View.OnClickListener() {
+
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onClick(View v) {
+                    @SuppressLint("UseRequireInsteadOfGet")
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+                    view = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_review, null);
+                    EditText event = view.findViewById(R.id.editTextTextMultiLine);
+                    Button add = view.findViewById(R.id.button);
+                    Button close = view.findViewById(R.id.close);
+                    TextView number = view.findViewById(R.id.number);
+                    number.setText(day1.getText());
+                    TextView year1 = view.findViewById(R.id.year);
+
+                    year1.setText(year.getText().toString());
+                    TextView month1 = view.findViewById(R.id.month);
+                    month1.setText((String) month.getText());
+                    TextView day_of_weeks = view.findViewById(R.id.day_of_weeks);
+                    day_of_weeks.setText(day_week);
+
+                    @SuppressLint("SimpleDateFormat")
+                    final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    Calendar c = Calendar.getInstance();
+                    c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), Integer.parseInt((String) number.getText()));
+                    String sDate = sdf.format(c.getTime());
+                    String st = "";
+                    event.setText(sDate+": ");
+                    boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+                    if (exists) {
+                        StringBuilder sb = new StringBuilder();
+                        try (FileInputStream fis = new FileInputStream("event_diary.txt");
+                             InputStreamReader isr = new InputStreamReader(fis);
+                             BufferedReader br = new BufferedReader(isr)) {
+                            String line;
+
+                            while ((line = br.readLine()) != null) {
+                                boolean contains = line.contains(sDate);
+                                if (contains) {
+                                    String day = line.substring(0, 11);
+                                    String event1 = line.substring(11);
+                                    String str =  "<font color=\"#0000FF\">"  + day + "</font>" + event1+ " <br>";
+                                    st = str;
+                                    add.setEnabled(false);
+                                    sb.append(str);
                                 }
                             }
-                       }
-                        System.out.println(hours);
-                        System.out.println(month_year+" "+hours);
-                        String data;
-                        data = month_year;
-                        int id = mydb.GetId(data, DatabaseHelper.TABLE);
-                        System.out.println("id="+id);
-                        System.out.println("month_year="+month_year);
-                        boolean update_hours = mydb.updateHours(id, month_year, String.valueOf(hours), "hours", String.valueOf(sum));
-                        if (update_hours){
-                            System.out.println("Часы изменены! Всего часов: "+sum);
-                        }
-                        String s = String.valueOf(sum);
-                        textView3.setText(String.format("Часов: %s", s));
-                        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
-                        float sal = (Float.parseFloat(s)*Float.parseFloat(price));
-                        System.out.println(sal);
-                        boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "hours");
 
-                        if (price.equals("0.0") || price.isEmpty()){
-                            button2.setText("з/п");
-                            editTextNumber.setText("");
-                        }else {
-                            button2.setText(String.valueOf(sal));
-                            editTextNumber.setText(price);
-                            if (update_salary){
-                                Toast.makeText(getActivity(), "Часы изменены! Всего часов: "+sum+"\nЗарплата изменена! Всего: "+sal, Toast.LENGTH_SHORT).show();
+                            event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+                            //event.setHint(Html.fromHtml(st, Html.FROM_HTML_MODE_LEGACY));
+                            if (sb.length() == 0) {
+                                event.setHint(sDate + " нет событий за этот день!");
+                                add.setEnabled(true);
+                                event.requestFocus();
+                                event.setSelection(event.getText().length());
+
+                                //дата синяя
+//                                String str = "<font color=\"#0000FF\">" + sDate+": " + "</font>" + " нет событий за этот день!";
+//                                event.setHint(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
+//
+                                //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
+
+
                             }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
-                        //обновдение виджета
-                        Intent intentq = new Intent(getActivity(), MyWidget2.class);
-                        intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-                        int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
-                        intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
-                        getActivity().sendBroadcast(intentq);
+                    }else {
+                        event.setHint(R.string.file_exist);
 
                     }
-                });
 
+                    add.setOnClickListener(new View.OnClickListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onClick(View view) {
+                            String data = String.valueOf(event.getText());
+                            System.out.println("data="+data);
+                            event1.setText("event");
+                            //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
 
+                            //сохранение события в (базу данных) пока в текстовый файл
+                            if  (data.length() >= 20) {
+                                try (FileOutputStream fos = requireContext().openFileOutput("event_diary.txt", MODE_APPEND);
+                                     OutputStreamWriter osw = new OutputStreamWriter(fos)) {
+                                    //String data = String.valueOf(textMultiline.getText());
+                                    osw.write(sDate + ": " + data + "\n");
+                                    //вывод диалогового окна, что запись внесена
+                                    String attention = "запись внесена";
+                                    CustomDialogFragment dialog = new CustomDialogFragment();
+                                    Bundle args = new Bundle();
+                                    args.putString("attention", attention);
+                                    dialog.setArguments(args);
+                                    dialog.show(getParentFragmentManager(), "custom");
 
-                close.setOnClickListener(v1 -> alertDialog.dismiss());
-                num1.setOnClickListener(v2 -> {
-                    event.setText(event.getText()+"1");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num2.setOnClickListener(v3 -> {
-                    event.setText(event.getText()+"2");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num3.setOnClickListener(v4 -> {
-                    event.setText(event.getText()+"3");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num4.setOnClickListener(v5 -> {
-                    event.setText(event.getText()+"4");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num5.setOnClickListener(v6 -> {
-                    event.setText(event.getText()+"5");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num6.setOnClickListener(v7 -> {
-                    event.setText(event.getText()+"6");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num7.setOnClickListener(v8 -> {
-                    event.setText(event.getText()+"7");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num8.setOnClickListener(v9 -> {
-                    event.setText(event.getText()+"8");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num9.setOnClickListener(v10 -> {
-                    event.setText(event.getText()+"9");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                num0.setOnClickListener(v11 -> {
-                    event.setText(event.getText()+"0");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                point.setOnClickListener(v12 -> {
-                    event.setText(event.getText()+".");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-                });
-                backspace.setOnClickListener(v13 -> {
-                    String str = String.valueOf(event.getText());
-                    if (!str.isEmpty()){
-                        String newStr = str.substring(0, str.length() - 1);
-                        event.setText(newStr);
-                        event.requestFocus();
-                        event.setSelection(event.getText().length());
-                    }
-                });
-            }
-        });
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }  else {
+                                Toast.makeText(getActivity(),  "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
+                            }
+                            //Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();//display the text of button1
+                        }
+                    });
+                    builder.setView(view);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    close.setOnClickListener(new  View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                }
+
+                // Do whatever you want(str can be used here)
+
+            });
     }
 
     @Override

@@ -1,11 +1,9 @@
-package com.example.calendarhours.ui.notifications;
+package com.example.eventsincalendar.ui.notifications;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
@@ -13,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,24 +19,22 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.calendarhours.CustomDialogFragment;
-import com.example.calendarhours.DatabaseHelper;
-import com.example.calendarhours.R;
-import com.example.calendarhours.databinding.FragmentNotificationsBinding;
+import com.example.eventsincalendar.CustomDialogFragment;
+import com.example.eventsincalendar.DatabaseHelper;
+import com.example.eventsincalendar.R;
+import com.example.eventsincalendar.databinding.FragmentNotificationsBinding;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 

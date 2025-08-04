@@ -1,9 +1,11 @@
-package com.example.calendarhours;
+package com.example.eventsincalendar;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.os.Handler;
+
+import com.example.eventsincalendar.ui.home.HomeFragment;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends Activity {

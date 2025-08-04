@@ -1,4 +1,4 @@
-package com.example.calendarhours;
+package com.example.eventsincalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.example.eventsincalendar.ui.home.HomeFragment;
 
 
 public class MyWidget2 extends AppWidgetProvider {

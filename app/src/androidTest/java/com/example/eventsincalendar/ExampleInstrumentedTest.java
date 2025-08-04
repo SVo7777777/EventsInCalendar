@@ -1,4 +1,4 @@
-package com.example.calendarhours;
+package com.example.eventsincalendar;
 
 import android.content.Context;
 

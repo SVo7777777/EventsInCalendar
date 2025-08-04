@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.calendarhours"
+    namespace = "com.example.eventsincalendar"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.calendarhours"
-        minSdk = 24
+        applicationId = "com.example.eventsincalendar"
+        minSdk = 28
         targetSdk = 34
         versionCode = 2
         versionName = "2.1"
@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.gridlayout)
+    implementation(libs.car.ui.lib)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

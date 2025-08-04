@@ -45,6 +45,15 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ReviewOYear"-->
+<!--            android:exported="false" />-->
+        <activity
+            android:name=".ReviewOWeek"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewOnMonth"
+            android:exported="false" />
 
 
         <receiver
