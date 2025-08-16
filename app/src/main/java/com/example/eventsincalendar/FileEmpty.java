@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 
 public class FileEmpty {
     @SuppressLint("SdCardPath")
-    private static final String APP_SD_PATH = "/data/data/com.example.calendarofevents";
+    private static final String APP_SD_PATH = "/data/data/com.example.eventsincalendar";
     public static boolean fileExistsInSD(String sFileName){
         System.out.println("проверка файла!");
         //Environment.getExternalStorageDirectory().toString()

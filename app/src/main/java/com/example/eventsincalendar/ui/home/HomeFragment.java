@@ -9,6 +9,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import android.text.Html;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -306,7 +308,8 @@ public class HomeFragment extends Fragment {
         //button2.setText("salary");
         date_End = dateEnd;
         day_OfWeekOfFirstDayOfMonth = dayOfWeekOfFirstDayOfMonth;
-
+//        Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290644);
+//        events[6][6].setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
@@ -320,6 +323,7 @@ public class HomeFragment extends Fragment {
         int m = mpred - dayOfWeekOfFirstDayOfMonth+3;
         int d = 1;
         int d2 = 1;
+        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
 
         for (int i = 1; i < 7; i++) {
             number_of_week[i].setText(Integer.toString(wee));
@@ -337,7 +341,7 @@ public class HomeFragment extends Fragment {
                     if (d < dateEnd + 1) {
                         days[i][j].setText(Integer.toString(d));
                         days[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
-                        events[i][j].setText("0");
+                        //events[i][j].setText("0");
                         events[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                         events[i][j].setTypeface(null, Typeface.BOLD);
                         buttons[i][j].setEnabled(true);
@@ -346,6 +350,36 @@ public class HomeFragment extends Fragment {
                         Calendar c = Calendar.getInstance();
                         c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), d);
                         String sDate = sdf.format(c.getTime());
+
+
+                        if (exists) {
+                            try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
+                                 InputStreamReader isr = new InputStreamReader(fis);
+                                 BufferedReader br = new BufferedReader(isr)) {
+                                String line;
+
+                                while ((line = br.readLine()) != null) {
+                                    boolean contains = line.contains(sDate);
+                                    if (contains) {
+                                        Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+                                        events[i][j].setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
+                                        //events[i][j].setText("11");
+                                        System.out.println("sDate="+sDate);
+                                        break;
+                                    }
+                                }
+
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }else {
+                            Toast.makeText(getContext(), "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getContext(), "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
+
+                        }
+
+
                         if (j==6 || j == 7){
                             buttons[i][j].setBackgroundColor(buttons[i][j].getContext().getResources().getColor(R.color.weekend_day));
                             days[i][j].setTextColor(days[i][j].getContext().getResources().getColor(R.color.white));
@@ -404,7 +438,7 @@ public class HomeFragment extends Fragment {
             //String s = mydb.getSum(data);
             System.out.println("за "+data+" часы: "+h);
             System.out.println("s="+sum);
-            addHoursInCalendar(h);
+            //addHoursInCalendar(h);
         }else {
             System.out.println("hours="+hours);
             System.out.println("sum="+ sum);
@@ -573,7 +607,7 @@ public class HomeFragment extends Fragment {
                     boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
                     if (exists) {
                         StringBuilder sb = new StringBuilder();
-                        try (FileInputStream fis = new FileInputStream("event_diary.txt");
+                        try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
                              InputStreamReader isr = new InputStreamReader(fis);
                              BufferedReader br = new BufferedReader(isr)) {
                             String line;
@@ -620,7 +654,9 @@ public class HomeFragment extends Fragment {
                         public void onClick(View view) {
                             String data = String.valueOf(event.getText());
                             System.out.println("data="+data);
-                            event1.setText("event");
+                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+                            event1.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+                            //event1.setText("event");
                             //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
 
                             //сохранение события в (базу данных) пока в текстовый файл
@@ -669,4 +705,6 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 }

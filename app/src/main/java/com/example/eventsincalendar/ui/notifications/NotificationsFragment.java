@@ -1,5 +1,7 @@
 package com.example.eventsincalendar.ui.notifications;
 
+import static android.content.Context.MODE_APPEND;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,17 +13,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -31,9 +39,11 @@ import com.example.eventsincalendar.R;
 import com.example.eventsincalendar.databinding.FragmentNotificationsBinding;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -42,6 +52,12 @@ public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
     private DatabaseHelper mydb;
+    CalendarView calendarView;
+    public EditText textMultiline;
+    public Button buttonAdd;
+    public Button buttonReset;
+    boolean addRecord;
+    public String chosesData;
     LinearLayout number;
     LinearLayout data;
     LinearLayout hours;
@@ -72,32 +88,67 @@ public class NotificationsFragment extends Fragment {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        number = root.findViewById(R.id.number);
-        data = root.findViewById(R.id.data);
-        hours = root.findViewById(R.id.hours);
-        salary = root.findViewById(R.id.salary);
-        price = root.findViewById(R.id.price);
-        //button2 = root.findViewById(R.id.button2);
-        linear = root.findViewById(R.id.lineard);
-        btn = root.findViewById(R.id.btnd);
-        rez_salary0 = root.findViewById(R.id.rez_salary);
+        calendarView = root.findViewById(R.id.calendarView10);
+        textMultiline = root.findViewById(R.id.editTextTextMultiLine8);
+        buttonAdd = root.findViewById(R.id.buttonAdd);
+        buttonReset = root.findViewById(R.id.buttonReset);
+        clickAdd(buttonAdd);
+        clickReset(buttonReset);
 
+        Calendar ci = Calendar.getInstance();
+        //вывод текущей даты в поле информации при запуске приложения
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy EEEE");
+        System.out.println(format.format(ci.getTime()));
+        String today = format.format(ci.getTime());
+        // цвет даты
+        //textMultiline.setText(Html.fromHtml("<font color=\"#006400\">" + today  + "</font>"));
+        CharSequence hint = textMultiline.getHint();
+        String s = "Сегодня " + today + ". " + hint;
+        textMultiline.setHint(s);
 
-        btn.setOnClickListener(v -> {
-            Log.d("size", linear.getWidth() + " " + linear.getWidth());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                creatPDF(true);
+        //курсор в конце строки
+        textMultiline.requestFocus();
+        textMultiline.setSelection(textMultiline.getText().length());
+        //вывод даты  в поле информации при нажатии на календаре
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month,
+                                            int dayOfMonth) {
+                addRecord = true;
+                @SuppressLint("SimpleDateFormat")
+                final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                int week = calendar.get(Calendar.WEEK_OF_YEAR);
+
+                String sDate = sdf.format(calendar.getTime());
+                chosesData = sDate;
+                //цвет даты 006400-зелёный
+                textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + sDate + ": " +"</font>"));
+                //фокус в конце даты
+                textMultiline.requestFocus();
+                textMultiline.setSelection(textMultiline.getText().length());
             }
-
         });
-        ImageButton btnop = root.findViewById(R.id.btn_open);
-        btnop.setOnClickListener(v -> {
-            Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                openPdf();
-            }
 
-        });
+
+
+//        btn.setOnClickListener(v -> {
+//            Log.d("size", linear.getWidth() + " " + linear.getWidth());
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                creatPDF(true);
+//            }
+//
+//        });
+//        ImageButton btnop = root.findViewById(R.id.btn_open);
+//        btnop.setOnClickListener(v -> {
+//            Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                openPdf();
+//            }
+//
+//        });
 
         mydb = new DatabaseHelper(getContext());
         ArrayList<ArrayList<String>> str = mydb.getAllRows();
@@ -132,19 +183,72 @@ public class NotificationsFragment extends Fragment {
             pr.setGravity(Gravity.CENTER);
             pr.setText(p);
             pr.setId(j+1);
-            number.addView(num);
-            data.addView(dat);
-            hours.addView(hou);
-            salary.addView(sal);
-            price.addView(pr);
+//            number.addView(num);
+//            data.addView(dat);
+//            hours.addView(hou);
+//            salary.addView(sal);
+//            price.addView(pr);
             j += 1;
 
         }
         System.out.println("summer=" + summer);
-        rez_salary0.setText(String.format("всего заработано: %s", summer));
+        //rez_salary0.setText(String.format("всего заработано: %s", summer));
 
         return root;
     }
+    //Например, MODE_PRIVATE — файл доступен только этому приложению, MODE_WORLD_READABLE — файл доступен для чтения всем, MODE_WORLD_WRITEABLE — файл доступен для записи всем, MODE_APPEND — файл будет дописан, а не начат заново.
+    //добавяем запись в файл "event_diary.txt"
+
+    private void clickAdd(Button button2) {
+        button2.setOnClickListener(v -> {
+            String data = String.valueOf(textMultiline.getText());
+            System.out.println(data);
+            if (!addRecord) {
+                Toast.makeText(getContext(), "Выберите дату, запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
+            } else {
+                if  (data.length() >= 20){
+                    try (FileOutputStream fos = requireContext().openFileOutput("event_diary.txt", MODE_APPEND);
+                         OutputStreamWriter osw = new OutputStreamWriter(fos)) {
+                        //String data = String.valueOf(textMultiline.getText());
+                        osw.write(data+"\n");
+                        //вывод диалогового окна, что запись внесена
+                        String attention = "запись внесена";
+                        CustomDialogFragment dialog = new CustomDialogFragment();
+                        Bundle args = new Bundle();
+                        args.putString("attention", attention);
+                        dialog.setArguments(args);
+                        dialog.show(getParentFragmentManager(), "custom");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    addRecord = false;
+                } else {
+                    Toast.makeText(getContext(), "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
+    }
+
+    private void clickReset(Button button2) {
+        button2.setOnClickListener(v -> {
+            addRecord = false;
+            Calendar ci = Calendar.getInstance();
+            textMultiline.setText("");
+            //simpleSearchView.setQuery("", false);
+            //searchView.setQuery("", false);
+            //simpleSearchView.setIconified(true);
+            //simpleSearchView.setQueryHint("Поиск по слову. Введите слово.");
+
+//        String CiDateTime = ci.get(Calendar.DAY_OF_MONTH) + "-" + (ci.get(Calendar.MONTH) + 1) + "-" + ci.get(Calendar.YEAR) + ": ";
+//        textMultiline.setText(CiDateTime);
+            //курсор в конце строки
+            textMultiline.requestFocus();
+            textMultiline.setSelection(textMultiline.getText().length());
+
+        });
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public  void creatPDF(boolean hasFocus) {
         super.onHiddenChanged(hasFocus);

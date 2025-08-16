@@ -107,7 +107,7 @@ public class DashboardFragment extends Fragment {
                 StringBuilder sb = new StringBuilder();
                 boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
                 if (exists) {
-                    try (FileInputStream fis = new FileInputStream("event_diary.txt");
+                    try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
                          InputStreamReader isr = new InputStreamReader(fis);
                          BufferedReader br = new BufferedReader(isr)) {
                         String line;

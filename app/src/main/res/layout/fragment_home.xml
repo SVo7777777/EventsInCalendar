@@ -594,12 +594,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:drawableLeft="@android:drawable/checkbox_on_background"
-                            android:text="15.5"
+                            android:text=""
                             android:textColor="#1DE9B6"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            tools:ignore="HardcodedText" />
+                            tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -635,7 +634,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="15.5"
+                            android:text=""
                             android:textColor="#1DE9B6"
                             android:textSize="20sp"
                             android:textStyle="bold"
