@@ -26,9 +26,8 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="TextView"
+            android:text=""
             tools:ignore="HardcodedText" />
 
         <Button
@@ -39,20 +38,18 @@
             android:gravity="center"
             android:insetTop="0dp"
             android:insetBottom="6dp"
-            android:text="@string/salary"
+            android:text=""
             android:textSize="14sp"
             tools:ignore="TouchTargetSizeCheck,VisualLintButtonSize" />
 
         <EditText
             android:id="@+id/editTextNumber"
-            android:layout_width="100dp"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:autofillHints=""
             android:background="@android:color/transparent"
             android:ems="10"
             android:gravity="center|center_vertical"
-            android:hint="введите цену за час"
             android:inputType="number"
             android:textSize="17dp"
             tools:ignore="HardcodedText,SpUsage,TouchTargetSizeCheck,TextSizeCheck,VisualLintTextFieldSize" />

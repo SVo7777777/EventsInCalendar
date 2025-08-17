@@ -54,6 +54,9 @@
         <activity
             android:name=".ReviewOnMonth"
             android:exported="false" />
+        <activity
+            android:name=".ReviewOYear"
+            android:exported="false" />
 
 
         <receiver

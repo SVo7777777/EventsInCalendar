@@ -37,6 +37,7 @@ import com.example.eventsincalendar.FileEmpty;
 import com.example.eventsincalendar.MyWidget2;
 import com.example.eventsincalendar.R;
 import com.example.eventsincalendar.ReviewOWeek;
+import com.example.eventsincalendar.ReviewOYear;
 import com.example.eventsincalendar.ReviewOnMonth;
 import com.example.eventsincalendar.databinding.FragmentHomeBinding;
 import com.example.eventsincalendar.ui.dashboard.DashboardFragment;
@@ -110,6 +111,10 @@ public class HomeFragment extends Fragment {
         nextMonthOnButtonClick(next_month);
         previousYearOnButtonClick(previous_year);
         nextYearOnButtonClick(next_year);
+
+        onReviewMonthClick(month);
+        onReviewYearClick(year);
+
         textView3 = root.findViewById(R.id.textView3);
         textView3.setText("Часов: 0.0");
         editTextNumber = root.findViewById(R.id.editTextNumber);
@@ -244,15 +249,28 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-    public void onReviewMonthClick(View view) {
-        Intent intent2 = new Intent(getContext(), ReviewOnMonth.class);
-        @SuppressLint("SimpleDateFormat")
-        final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Calendar c = Calendar.getInstance();
-        c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), 1);
-        String data = sdf.format(c.getTime());
-        intent2.putExtra("data", data);
-        startActivity(intent2);
+    public void onReviewMonthClick(Button button2) {
+        button2.setOnClickListener(v -> {
+            Intent intent2 = new Intent(getContext(), ReviewOnMonth.class);
+            @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Calendar c = Calendar.getInstance();
+            c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), 1);
+            String data = sdf.format(c.getTime());
+            intent2.putExtra("data", data);
+            startActivity(intent2);
+        });
+    }
+
+    public void onReviewYearClick(Button button2) {
+        button2.setOnClickListener(v -> {
+            Intent intent2 = new Intent(getContext(), ReviewOYear.class);
+            @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Calendar c = Calendar.getInstance();
+            c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), 1);
+            String data = sdf.format(c.getTime());
+            intent2.putExtra("data", data);
+            startActivity(intent2);
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -367,6 +385,9 @@ public class HomeFragment extends Fragment {
                                         //events[i][j].setText("11");
                                         System.out.println("sDate="+sDate);
                                         break;
+                                    }else{
+                                        events[i][j].setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+
                                     }
                                 }
 
@@ -587,6 +608,8 @@ public class HomeFragment extends Fragment {
                     EditText event = view.findViewById(R.id.editTextTextMultiLine);
                     Button add = view.findViewById(R.id.button);
                     Button close = view.findViewById(R.id.close);
+                    Button delete = view.findViewById(R.id.delete);
+                    Button editor = view.findViewById(R.id.editor);
                     TextView number = view.findViewById(R.id.number);
                     number.setText(day1.getText());
                     TextView year1 = view.findViewById(R.id.year);
@@ -621,6 +644,9 @@ public class HomeFragment extends Fragment {
                                     st = str;
                                     add.setEnabled(false);
                                     sb.append(str);
+                                }else {
+//                                    delete.setEnabled(false);
+//                                    editor.setEnabled(false);
                                 }
                             }
 
@@ -629,6 +655,8 @@ public class HomeFragment extends Fragment {
                             if (sb.length() == 0) {
                                 event.setHint(sDate + " нет событий за этот день!");
                                 add.setEnabled(true);
+                                delete.setEnabled(false);
+                                editor.setEnabled(false);
                                 event.requestFocus();
                                 event.setSelection(event.getText().length());
 
