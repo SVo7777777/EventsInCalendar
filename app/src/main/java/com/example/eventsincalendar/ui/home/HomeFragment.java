@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -40,20 +41,25 @@ import com.example.eventsincalendar.ReviewOWeek;
 import com.example.eventsincalendar.ReviewOYear;
 import com.example.eventsincalendar.ReviewOnMonth;
 import com.example.eventsincalendar.databinding.FragmentHomeBinding;
+import com.example.eventsincalendar.ListenActivity;
 import com.example.eventsincalendar.ui.dashboard.DashboardFragment;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class HomeFragment extends Fragment {
 
@@ -81,11 +87,11 @@ public class HomeFragment extends Fragment {
     String[] split;
     String[] split2;
     private DatabaseHelper mydb ;
-    public TextView textView3;
-    public EditText editTextNumber;
-    public Button button2;
+
     public int day_OfWeekOfFirstDayOfMonth;
     public int date_End;
+    @SuppressLint("SdCardPath")
+    private static final String APP_SD_PATH = "/data/data/com.example.eventsincalendar";
 
 
 
@@ -114,13 +120,8 @@ public class HomeFragment extends Fragment {
 
         onReviewMonthClick(month);
         onReviewYearClick(year);
+        //ListenActivity.Speak();
 
-        textView3 = root.findViewById(R.id.textView3);
-        textView3.setText("Часов: 0.0");
-        editTextNumber = root.findViewById(R.id.editTextNumber);
-        editTextNumber.setPaintFlags(View.INVISIBLE);
-        button2 = root.findViewById(R.id.button2);
-        salaryShowOnButtonClick(button2);
 
         //обновление виджета
         Intent intentq = new Intent(getActivity(), MyWidget2.class);
@@ -200,13 +201,13 @@ public class HomeFragment extends Fragment {
         String sal = mydb.getSalary(data, DatabaseHelper.TABLE);
         System.out.println(sal);
         //boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
-        if (price.equals("0.0") ){
-            button2.setText("з/п");
-            editTextNumber.setText("");
-        }else {
-            button2.setText(String.valueOf(sal));
-            editTextNumber.setText(price);
-        }
+//        if (price.equals("0.0") ){
+//            button2.setText("з/п");
+//            editTextNumber.setText("");
+//        }else {
+//            button2.setText(String.valueOf(sal));
+//            editTextNumber.setText(price);
+//        }
         for (int i = 1; i < 7; i++){
             onWeekMonthClick(number_of_week[i]);
         }
@@ -273,50 +274,51 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    @SuppressLint("SetTextI18n")
-    private void salaryShowOnButtonClick(Button button2) {
-        button2.setOnClickListener(v -> {
-            String h = String.valueOf(textView3.getText());
-            String mon = (String) month.getText();
-            String ye = (String) year.getText();
-            String month_year = mon + " " + ye;
-            DashboardFragment dashboardFragment = new DashboardFragment();
-            try {
-                split2 = h.split(" ");
-                System.out.println(Arrays.toString(split2));
-                System.out.println(split2[0]);
-                System.out.println(split2[1]);
-                String price = String.valueOf(editTextNumber.getText());
-                //dashboardFragment.editTextNumber.setText(price);
-                String hours = split2[1];
-                float p = Float.parseFloat(hours) * Float.parseFloat(price);
-                System.out.println(p);
-                String salary = String.valueOf(p);
-                int id = mydb.GetId(month_year, DatabaseHelper.TABLE);
-                System.out.println("id="+id);
-                System.out.println("month_year="+month_year);
 
-                boolean update_hours = mydb.updateSalary(id, month_year, salary, "hours");
-                if (update_hours){
-                    Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+salary, Toast.LENGTH_SHORT).show();
-                }
-                boolean update_price = mydb.updatePrice(id, month_year, price, "hours");
-                if (update_price){
-                    Toast.makeText(getActivity(), "Цена за час в этом месяце: "+price+" сохранена!", Toast.LENGTH_SHORT).show();
-                }
-                button2.setText(salary);
-            }catch (NumberFormatException e) {
-                Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
-            }
-            //обновление виджета
-            Intent intentq = new Intent(getActivity(), MyWidget2.class);
-            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
-            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
-            getActivity().sendBroadcast(intentq);
-
-        });
-    }
+//    private void salaryShowOnButtonClick(Button button2) {
+//        button2.setOnClickListener(v -> {
+////            String h = String.valueOf(textView3.getText());
+//            String mon = (String) month.getText();
+//            String ye = (String) year.getText();
+//            String month_year = mon + " " + ye;
+//            DashboardFragment dashboardFragment = new DashboardFragment();
+//            try {
+//                split2 = h.split(" ");
+//                System.out.println(Arrays.toString(split2));
+//                System.out.println(split2[0]);
+//                System.out.println(split2[1]);
+////                String price = String.valueOf(editTextNumber.getText());
+//                String price = "250";
+//                //dashboardFragment.editTextNumber.setText(price);
+//                String hours = split2[1];
+//                float p = Float.parseFloat(hours) * Float.parseFloat("250");
+//                System.out.println(p);
+//                String salary = String.valueOf(p);
+//                int id = mydb.GetId(month_year, DatabaseHelper.TABLE);
+//                System.out.println("id="+id);
+//                System.out.println("month_year="+month_year);
+//
+//                boolean update_hours = mydb.updateSalary(id, month_year, salary, "hours");
+//                if (update_hours){
+//                    Toast.makeText(getActivity(), "Зарплата изменена! Всего: "+salary, Toast.LENGTH_SHORT).show();
+//                }
+//                boolean update_price = mydb.updatePrice(id, month_year, price, "hours");
+//                if (update_price){
+//                    Toast.makeText(getActivity(), "Цена за час в этом месяце: "+price+" сохранена!", Toast.LENGTH_SHORT).show();
+//                }
+//                button2.setText(salary);
+//            }catch (NumberFormatException e) {
+//                Toast.makeText(getActivity(), "Введите цену за час!", Toast.LENGTH_LONG).show();
+//            }
+//            //обновление виджета
+//            Intent intentq = new Intent(getActivity(), MyWidget2.class);
+//            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+//            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+//            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+//            getActivity().sendBroadcast(intentq);
+//
+//        });
+   // }
     @SuppressLint("SetTextI18n")
     private void showCalendar(String mon, int yea, int wee, int mpred, int dayOfWeekOfFirstDayOfMonth, int dateEnd) {
         month.setText(mon);
@@ -346,7 +348,10 @@ public class HomeFragment extends Fragment {
         for (int i = 1; i < 7; i++) {
             number_of_week[i].setText(Integer.toString(wee));
             wee += 1;
+
             for (int j = 1; j < 8; j++) {
+                events[i][j].setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+
                 if (i == 1 && j < dayOfWeekOfFirstDayOfMonth-1) {
                     buttons[i][j].setBackgroundColor(LTGRAY);
                     days[i][j].setText(Integer.toString(m));
@@ -394,11 +399,12 @@ public class HomeFragment extends Fragment {
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
-                        }else {
-                            Toast.makeText(getContext(), "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
-                            //Toast.makeText(getContext(), "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
-
                         }
+//                        else {
+//                            //Toast.makeText(getContext(), "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
+//                            //Toast.makeText(getContext(), "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
+//
+//                        }
 
 
                         if (j==6 || j == 7){
@@ -447,7 +453,7 @@ public class HomeFragment extends Fragment {
             }
         }
         System.out.println(hours);
-        textView3.setText("Часов:"+ sum);
+//        textView3.setText("Часов:"+ sum);
         String data = mont+" "+y;
         mydb = new DatabaseHelper(getContext());
         boolean search = mydb.checkDataExistOrNot(data, DatabaseHelper.TABLE);
@@ -469,36 +475,36 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
         }
     }
-    @SuppressLint("SetTextI18n")
-    private void addHoursInCalendar(String h) {
-        split = h.split("-");
-        System.out.println(h);
-        int d = 1;
-        float sum = 0.0F;
-        System.out.println("split[0=]"+split[0]);
-        System.out.println("split[1=]"+split[1]);
-        System.out.println(split[d]);
-        System.out.println(Arrays.toString(split));
-        for (int i = 1; i < 7; i++) {
-            for (int j = 1; j < 8; j++) {
-                if (split[d].equals(".")){
-                    events[i][j].setText("");
-                }else {
-                    events[i][j].setText(split[d]);
-                    sum += Float.parseFloat(split[d]);
-                    }
-                d += 1;
-            }
-        }
-        System.out.println(sum);
-        textView3.setText("Часов: "+ sum);
-        String data = month.getText()+" "+year.getText();
-        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
-        System.out.println(data);
-        System.out.println(price);
-        button2.setText(String.valueOf(sum*Float.parseFloat(price)));
-        editTextNumber.setText(price);
-    }
+//    @SuppressLint("SetTextI18n")
+//    private void addHoursInCalendar(String h) {
+//        split = h.split("-");
+//        System.out.println(h);
+//        int d = 1;
+//        float sum = 0.0F;
+//        System.out.println("split[0=]"+split[0]);
+//        System.out.println("split[1=]"+split[1]);
+//        System.out.println(split[d]);
+//        System.out.println(Arrays.toString(split));
+//        for (int i = 1; i < 7; i++) {
+//            for (int j = 1; j < 8; j++) {
+//                if (split[d].equals(".")){
+//                    events[i][j].setText("");
+//                }else {
+//                    events[i][j].setText(split[d]);
+//                    sum += Float.parseFloat(split[d]);
+//                    }
+//                d += 1;
+//            }
+//        }
+//        System.out.println(sum);
+//        textView3.setText("Часов: "+ sum);
+//        String data = month.getText()+" "+year.getText();
+//        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+//        System.out.println(data);
+//        System.out.println(price);
+//        button2.setText(String.valueOf(sum*Float.parseFloat(price)));
+//        editTextNumber.setText(price);
+    //}
     public void previousMonthOnButtonClick(Button btn) {
         btn.setOnClickListener(v -> {
             String mon = (String) month.getText();
@@ -614,6 +620,8 @@ public class HomeFragment extends Fragment {
                     number.setText(day1.getText());
                     TextView year1 = view.findViewById(R.id.year);
 
+
+
                     year1.setText(year.getText().toString());
                     TextView month1 = view.findViewById(R.id.month);
                     month1.setText((String) month.getText());
@@ -626,7 +634,7 @@ public class HomeFragment extends Fragment {
                     c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), Integer.parseInt((String) number.getText()));
                     String sDate = sdf.format(c.getTime());
                     String st = "";
-                    event.setText(sDate+": ");
+                    //event.setText(sDate+": ");
                     boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
                     if (exists) {
                         StringBuilder sb = new StringBuilder();
@@ -669,10 +677,19 @@ public class HomeFragment extends Fragment {
 
                             }
                         } catch (IOException e) {
+                            event.setHint(e.toString());
+                            add.setEnabled(true);
+                            delete.setEnabled(false);
+                            editor.setEnabled(false);
                             throw new RuntimeException(e);
+
+
                         }
                     }else {
                         event.setHint(R.string.file_exist);
+                        add.setEnabled(true);
+                        delete.setEnabled(false);
+                        editor.setEnabled(false);
 
                     }
 
@@ -688,7 +705,7 @@ public class HomeFragment extends Fragment {
                             //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
 
                             //сохранение события в (базу данных) пока в текстовый файл
-                            if  (data.length() >= 20) {
+                            if  (data.length() >= 2) {
                                 try (FileOutputStream fos = requireContext().openFileOutput("event_diary.txt", MODE_APPEND);
                                      OutputStreamWriter osw = new OutputStreamWriter(fos)) {
                                     //String data = String.valueOf(textMultiline.getText());
@@ -707,12 +724,160 @@ public class HomeFragment extends Fragment {
                             }  else {
                                 Toast.makeText(getActivity(),  "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
                             }
+
+                            //обновление виджета
+                            Intent intentq = new Intent(getActivity(), MyWidget2.class);
+                            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+                            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                            getActivity().sendBroadcast(intentq);
                             //Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();//display the text of button1
                         }
+
                     });
                     builder.setView(view);
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
+
+                    delete.setOnClickListener(new View.OnClickListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onClick(View view) {
+                            String data = String.valueOf(event.getText());
+                            String sFolder =  APP_SD_PATH + "/files";
+                            String sFile=sFolder+"/"+"event_diary.txt";
+                            System.out.println("data="+data);
+                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+                            //event1.setText("event");
+                            //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
+
+                            //сохранение события в (базу данных) пока в текстовый файл
+                            File sdCard = Environment.getExternalStorageDirectory();
+                            System.out.println(sdCard);
+                            File root = new File (sFolder);
+                            System.out.println("root"+root);
+                            try {
+                                FileInputStream fis = requireContext().openFileInput("event_diary.txt");
+                                InputStreamReader isr = new InputStreamReader(fis);
+                                BufferedReader br = new BufferedReader(isr);
+
+                                FileOutputStream fos = requireContext().openFileOutput("event_diary2.txt", MODE_APPEND);
+                                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                                //out = new PrintWriter(new File(root,"/event_diary2.txt"));
+                                osw.write("hello" + "\n");
+                                        String line; //a line in the file
+
+                                while ((line = br.readLine()) != null) {
+                                    System.out.println("мы тут");
+                                    System.out.println(line);
+                                    boolean contains = line.contains(sDate);
+                                    if (!contains) {
+                                        System.out.println("записали");
+                                        osw.write(line + "\n");
+                                    }else {
+                                        System.out.println("не записали");
+
+                                    }
+
+                                }
+                                osw.write("hello" + "\n");
+//                                File from = new File(root,"/event_diary2.txt");
+//                                File to = new File(root,"/event_diary3.txt");
+//                                if(from.exists()){
+//                                    from.renameTo(to);
+//                                    //to.delete();
+
+                                //}
+
+
+
+
+                                event1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+
+                            }catch(Exception e) {
+                                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+                                System.out.println(e.toString());
+                            }
+                            Toast.makeText(getActivity(), "запись удалена!", Toast.LENGTH_LONG).show();
+
+                            //обновление виджета
+                            Intent intentq = new Intent(getActivity(), MyWidget2.class);
+                            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+                            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                            getActivity().sendBroadcast(intentq);
+
+                        }
+
+                    });
+
+                    editor.setOnClickListener(new View.OnClickListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onClick(View view) {
+                            String data = String.valueOf(event.getText());
+                            String sFolder =  APP_SD_PATH + "/files";
+                            String sFile=sFolder+"/"+"event_diary.txt";
+                            System.out.println("data="+data);
+                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+                            event1.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
+                            //event1.setText("event");
+                            //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
+
+                            //сохранение события в (базу данных) пока в текстовый файл
+                            File sdCard = Environment.getExternalStorageDirectory();
+                            System.out.println(sdCard);
+                            File root = new File (sFolder);
+                            System.out.println(root);
+                            try {
+                                FileInputStream fis = requireContext().openFileInput("event_diary.txt");
+                                InputStreamReader isr = new InputStreamReader(fis);
+                                BufferedReader br = new BufferedReader(isr);
+
+                                FileOutputStream fos = requireContext().openFileOutput("event_diary2.txt", MODE_APPEND);
+                                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                                //out = new PrintWriter(new File(root,"/event_diary2.txt"));
+
+                                String line; //a line in the file
+
+                                while ((line = br.readLine()) != null) {
+                                    System.out.println(line);
+                                    boolean contains = line.contains(sDate);
+                                    if (contains) {
+                                        osw.write(data + "\n");
+                                        osw.write(line);
+                                    }else {
+                                        osw.write(line);
+                                    }
+
+                                }
+                                File from = new File(root,"/event_diary2.txt");
+                                File to = new File(root,"/event_diary.txt");
+                                if(from.exists()){
+                                    from.renameTo(to);
+                                    to.delete();
+
+                                }
+
+
+
+                            }catch(Exception e) {
+                                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+                                System.out.println(e.toString());
+                            }
+                            Toast.makeText(getActivity(), "запись изменена!", Toast.LENGTH_LONG).show();
+
+                            //обновление виджета
+                            Intent intentq = new Intent(getActivity(), MyWidget2.class);
+                            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+                            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                            getActivity().sendBroadcast(intentq);
+
+                        }
+
+                    });
 
                     close.setOnClickListener(new  View.OnClickListener(){
                         @Override
@@ -720,6 +885,7 @@ public class HomeFragment extends Fragment {
                             alertDialog.dismiss();
                         }
                     });
+
 
                 }
 

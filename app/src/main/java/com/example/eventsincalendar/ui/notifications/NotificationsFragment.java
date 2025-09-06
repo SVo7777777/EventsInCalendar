@@ -3,6 +3,8 @@ package com.example.eventsincalendar.ui.notifications;
 import static android.content.Context.MODE_APPEND;
 
 import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -35,6 +37,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eventsincalendar.CustomDialogFragment;
 import com.example.eventsincalendar.DatabaseHelper;
+import com.example.eventsincalendar.MyWidget2;
 import com.example.eventsincalendar.R;
 import com.example.eventsincalendar.databinding.FragmentNotificationsBinding;
 
@@ -95,6 +98,13 @@ public class NotificationsFragment extends Fragment {
         clickAdd(buttonAdd);
         clickReset(buttonReset);
 
+        //обновление виджета
+        Intent intentq = new Intent(getActivity(), MyWidget2.class);
+        intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+        intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        getActivity().sendBroadcast(intentq);
+
         Calendar ci = Calendar.getInstance();
         //вывод текущей даты в поле информации при запуске приложения
         @SuppressLint("SimpleDateFormat")
@@ -149,50 +159,50 @@ public class NotificationsFragment extends Fragment {
 //            }
 //
 //        });
-
-        mydb = new DatabaseHelper(getContext());
-        ArrayList<ArrayList<String>> str = mydb.getAllRows();
-        System.out.println(str);
-        System.out.println(str.get(0).get(0));
-        System.out.println(str.get(0).get(1));
-        int size = str.size();
-        float summer = 0.0F;
-        System.out.println(size);
-        int j = 10;
-        for (int i = 0; i < size; i++) {
-            num = new TextView(getContext());
-            dat = new TextView(getContext());
-            hou = new TextView(getContext());
-            sal = new TextView(getContext());
-            pr = new TextView(getContext());
-            String da = str.get(i).get(0);
-            String sa = str.get(i).get(3);
-            String h = str.get(i).get(2);
-            String p = str.get(i).get(4);
-            summer += Float.parseFloat(sa);
-            num.setText(String.valueOf(i + 1));
-            num.setGravity(Gravity.CENTER);
-            dat.setText(da);
-            dat.setGravity(Gravity.CENTER);
-            hou.setText(h);
-            hou.setGravity(Gravity.CENTER);
-            hou.setId(i + 1);
-            sal.setText(sa);
-            sal.setId(j + 1);
-            sal.setGravity(Gravity.CENTER);
-            pr.setGravity(Gravity.CENTER);
-            pr.setText(p);
-            pr.setId(j+1);
-//            number.addView(num);
-//            data.addView(dat);
-//            hours.addView(hou);
-//            salary.addView(sal);
-//            price.addView(pr);
-            j += 1;
-
-        }
-        System.out.println("summer=" + summer);
-        //rez_salary0.setText(String.format("всего заработано: %s", summer));
+//
+//        mydb = new DatabaseHelper(getContext());
+//        ArrayList<ArrayList<String>> str = mydb.getAllRows();
+//        System.out.println(str);
+//        System.out.println(str.get(0).get(0));
+//        System.out.println(str.get(0).get(1));
+//        int size = str.size();
+//        float summer = 0.0F;
+//        System.out.println(size);
+//        int j = 10;
+//        for (int i = 0; i < size; i++) {
+//            num = new TextView(getContext());
+//            dat = new TextView(getContext());
+//            hou = new TextView(getContext());
+//            sal = new TextView(getContext());
+//            pr = new TextView(getContext());
+//            String da = str.get(i).get(0);
+//            String sa = str.get(i).get(3);
+//            String h = str.get(i).get(2);
+//            String p = str.get(i).get(4);
+//            summer += Float.parseFloat(sa);
+//            num.setText(String.valueOf(i + 1));
+//            num.setGravity(Gravity.CENTER);
+//            dat.setText(da);
+//            dat.setGravity(Gravity.CENTER);
+//            hou.setText(h);
+//            hou.setGravity(Gravity.CENTER);
+//            hou.setId(i + 1);
+//            sal.setText(sa);
+//            sal.setId(j + 1);
+//            sal.setGravity(Gravity.CENTER);
+//            pr.setGravity(Gravity.CENTER);
+//            pr.setText(p);
+//            pr.setId(j+1);
+////            number.addView(num);
+////            data.addView(dat);
+////            hours.addView(hou);
+////            salary.addView(sal);
+////            price.addView(pr);
+//            j += 1;
+//
+//        }
+//        System.out.println("summer=" + summer);
+//        //rez_salary0.setText(String.format("всего заработано: %s", summer));
 
         return root;
     }

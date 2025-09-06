@@ -1,100 +1,128 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.CalendarHours.AppWidget.Container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget"
+    style="@style/Widget.EventsInCalendar.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/Theme.CalendarHours.AppWidgetContainer">
+    android:theme="@style/Theme.EventsInCalendar.AppWidgetContainer">
 
     <RelativeLayout
+        android:id="@+id/my_events"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="102">
+        android:layout_weight="100"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/my_hou"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
+            android:layout_marginTop="-6dp"
             android:text="@string/my_hours_widget"
-            android:textSize="16sp"
+            android:textSize="26sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/today"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="110"
+        android:layout_weight="100"
         android:orientation="vertical">
-
-
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="5dp"
-            android:text="за месяц и год"
-            android:textSize="12sp"
-            tools:ignore="HardcodedText" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="105">
-
-        <TextView
-            android:id="@+id/hours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="всего часов: 0.0"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="112">
-
-    <TextView
-        android:id="@+id/salary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="заработано: 0.0"
-        android:textSize="11sp"
-        tools:ignore="HardcodedText" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="95">
 
         <TextView
             android:id="@+id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="дата сегодня"
-            android:textSize="14sp"
+            android:text="за сегодня"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
+
+
     </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/today_events"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="60"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="нет событий"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btnListen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:text="...Читать полностью"
+            android:textColor="@color/purple_700"
+            android:textSize="14sp"
+            app:cornerRadius="0dp"
+            tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/listening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="5dp"
+            android:drawableEnd="@android:drawable/ic_lock_silent_mode_off"
+            android:text=""
+            android:textSize="38sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
+
+        <TextView
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:drawableEnd="@drawable/car_ui_icon_settings"
+            android:text=""
+            android:textSize="38sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
+
+    </RelativeLayout>
+
+
 </LinearLayout>

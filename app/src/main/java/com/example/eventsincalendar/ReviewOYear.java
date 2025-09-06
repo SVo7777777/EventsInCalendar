@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -76,20 +77,20 @@ public class ReviewOYear extends AppCompatActivity {
                     while ((line = br.readLine()) != null) {
                         boolean contains = line.contains(year);
                         if (contains)  {
-//                            String day = line.substring(0, 11);
-//                            String event = line.substring(11);
-//                            System.out.println("day="+day);
-//                            System.out.println("event="+event);
-//                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
-//                            System.out.println(str);
-//                            sb.append(str);
-                            sb.append(line).append("\n");
+                            String day = line.substring(0, 11);
+                            String event = line.substring(11);
+                            System.out.println("day="+day);
+                            System.out.println("event="+event);
+                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
+                            System.out.println(str);
+                            sb.append(str);
+                            //sb.append(line).append("\n");
                         }
 
 
                     }
                     //
-                    textMultiline.setText(sb.toString());
+                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
                     if (sb.length() == 0) {
                         textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ ГОД!");
                     }

@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CalendarHours"
+        android:theme="@style/Theme.EventsInCalendar"
         tools:targetApi="31">
         <activity
             android:name=".SplashActivity"
@@ -58,6 +58,26 @@
             android:name=".ReviewOYear"
             android:exported="false" />
 
+        <activity android:name=".ReviewActivity"
+            android:theme="@style/AppTheme.Dialog"
+            android:exported="false">
+            <!--android:exported="true"
+            tools:ignore="IntentFilterExportedReceiver">
+            -<intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".ReviewTodayActivity"
+            android:theme="@style/AppTheme.Dialog"
+            android:exported="false">
+        </activity>
+        <activity android:name=".ListenActivity"
+            android:theme="@style/AppTheme.Dialog"
+            android:exported="false"
+            android:width="50dip"
+            android:height="50dip">
+        </activity>
+
 
         <receiver
             android:name="MyWidget2"
@@ -72,6 +92,8 @@
                     <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                     <action android:name="com.example.calendarhours.ACTION_WIDGET_CLICK" />
                     <action android:name="com.example.calendarhours.ACTION_OPEN_CALENDAR" />
+                    <action android:name="com.example.calendarhours.ACTION_OPEN_SETTINGS" />
+                    <action android:name="com.example.calendarhours.ACTION_OPEN_DAY" />
 
             </intent-filter>
             <meta-data

@@ -114,7 +114,13 @@ public class DashboardFragment extends Fragment {
                         while ((line = br.readLine()) != null) {
                             boolean contains = line.contains(query);
                             if (contains) {
-                                sb.append(line + "\n");
+                                // цвет даты
+                                //textMultiline.setText(Html.fromHtml("<font color=\"#006400\">" + today  + "</font>"));
+                                String day = line.substring(0, 11);
+                                String event = line.substring(11);
+                                String str = String.valueOf(Html.fromHtml( "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>"));
+                                sb.append(str);
+                                //sb.append(line + "\n");
                             }
                         }
                         textMultiline.setText(sb.toString());

@@ -20,7 +20,7 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="ok">Ok</string>
-    <string name="my_hours_widget">мои рабочие часы</string>
+    <string name="my_hours_widget">мои события</string>
     <string name="atantion">"Запишите событие, а потом внесите! "</string>
     <string name="descript">Выберите дату и запишите событие.</string>
     <string name="add">ВНЕСТИ</string>
