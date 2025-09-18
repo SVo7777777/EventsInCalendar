@@ -71,8 +71,8 @@
 
         <Button
             android:id="@+id/btnListen"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/white"
@@ -84,7 +84,7 @@
             android:paddingBottom="0dp"
             android:text="...Читать полностью"
             android:textColor="@color/purple_700"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:cornerRadius="0dp"
             tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 

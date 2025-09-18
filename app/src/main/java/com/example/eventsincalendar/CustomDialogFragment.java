@@ -19,9 +19,6 @@ public class CustomDialogFragment extends DialogFragment {
                 .setMessage(attention)
                 .setPositiveButton("OK", null)
                 .setNegativeButton("",null)
-
-
-
                 .create();
     }
 }

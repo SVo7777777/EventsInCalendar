@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Календарь событий</string>
+    <string name="app_name">Мои события</string>
     <string name="title_home">Календарь</string>
     <string name="title_dashboard">Поиск</string>
     <string name="title_notifications">Главный</string>

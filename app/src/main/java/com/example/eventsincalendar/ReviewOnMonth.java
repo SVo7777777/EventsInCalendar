@@ -2,27 +2,47 @@ package com.example.eventsincalendar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.text.Html;
+import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 public class ReviewOnMonth extends AppCompatActivity {
 
     boolean addRecord;
     TextView textMultiline;
     TextView textView;
+    ImageButton btnd;
+    ImageButton btn_open;
+
+    LinearLayout linear;
+    Calendar calendar = Calendar.getInstance();
+    public int current_year = calendar.get(Calendar.YEAR);
+    public int current_month = calendar.get(Calendar.MONTH);
+    public int current_day = calendar.get(Calendar.DATE);
+    String current_data = "_"+ current_day +"-"+ (current_month + 1) +"-"+ current_year;
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     String[] name_month = {"month", "ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ","АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"};
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
@@ -44,6 +64,48 @@ public class ReviewOnMonth extends AppCompatActivity {
 
         textMultiline = findViewById(R.id.editTextTextMultiLine2);
         textView = findViewById(R.id.textView);
+        btnd = findViewById(R.id.btnd);
+        btn_open = findViewById(R.id.btn_open);
+        linear = findViewById(R.id.lineard);
+
+        btnd.setOnClickListener(v -> {
+            System.out.println("hear-btnd");
+            Log.d("size", linear.getWidth() + " " + linear.getWidth());
+            boolean wr = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                wr = CreatPDF.creatPDF(linear, current_data);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (wr){
+                    String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results"+ current_data + ".pdf";
+                    CustomDialogFragment dialog = new CustomDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString("attention", attention);
+                    dialog.setArguments(args);
+                    dialog.show(this.getSupportFragmentManager(), "custom");
+                }else{
+                    String attention = "Включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь рабочих часов-->Разрешение-->Память--> Разрешить)";
+                    CustomDialogFragment dialog = new CustomDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString("attention", attention);
+                    dialog.setArguments(args);
+                    dialog.show(this.getSupportFragmentManager(), "custom");
+                }
+                //creatPDF();
+            }else {
+                System.out.println("hear0000");
+            }
+
+        });
+
+        btn_open.setOnClickListener(v -> {
+            System.out.println("hear-btn_open");
+            Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                openPdf();
+            }
+
+        });
         //проссмотр за месяц
         addRecord = false;
         Intent intent = getIntent();
@@ -65,8 +127,12 @@ public class ReviewOnMonth extends AppCompatActivity {
                 System.out.println(month2);
                 int number = Integer.parseInt(number_month);
                 System.out.println("номер"+number_month+"месяца");
-                System.out.println(name_month[number]);
-                textView.setText("   за " +name_month[number]+" "+year + "г.:");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    System.out.println(name_month[number]);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    textView.setText("   за " +name_month[number]+" "+year + "г.:");
+                }
                 //считываем с файла всё что есть
                 StringBuilder sb = new StringBuilder();
                 try (FileInputStream fis = openFileInput("event_diary.txt");
@@ -118,6 +184,26 @@ public class ReviewOnMonth extends AppCompatActivity {
 
         }
     }
+    private void openPdf () {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+
+
+        String sFile=downloadDir+"/itogi_results"+current_data+".pdf";
+
+        //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
+        File path = new File(sFile);
+        Uri uri = Uri.fromFile(path);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "text/plain");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+    }
+
     //меню три точки вверху справа
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

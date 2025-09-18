@@ -153,7 +153,7 @@ public class MyWidget2 extends AppWidgetProvider {
                 remoteViews.setTextViewText(R.id.date, "нет событий ");//го
                 remoteViews.setTextViewText(R.id.btnListen, "");
             }else {
-                if (sb.length() < 20) {
+                if (sb.length() < 15) {
                     remoteViews.setTextViewText(R.id.btnListen, "");
                     remoteViews.setTextViewText(R.id.date, Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
 
@@ -186,9 +186,9 @@ public class MyWidget2 extends AppWidgetProvider {
 
 
             //открываем окно внесения события при нажатии а на дату
-            Intent intent3 = new Intent(context, ReviewActivity.class); // Запускаем главную активность (можно другую)
-            PendingIntent pIntentHomeFragment = PendingIntent.getActivity(context, 0, intent3, PendingIntent.FLAG_IMMUTABLE);
-            remoteViews.setOnClickPendingIntent(R.id.today, pIntentHomeFragment);
+//            Intent intent3 = new Intent(context, ReviewActivity.class); // Запускаем главную активность (можно другую)
+//            PendingIntent pIntentHomeFragment = PendingIntent.getActivity(context, 0, intent3, PendingIntent.FLAG_IMMUTABLE);
+//            remoteViews.setOnClickPendingIntent(R.id.today, pIntentHomeFragment);
 
             //открываем окно проссмотра события на сегодня при нажатии на "читать полностью"
             Intent intent4 = new Intent(context, ReviewTodayActivity.class); // Запускаем главную активность (можно другую)

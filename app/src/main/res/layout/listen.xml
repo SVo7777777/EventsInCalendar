@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/listening_events"
     style="@style/AppTheme.Dialog"
-    android:layout_width="350dp"
-    android:layout_height="90dp"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
     android:background="@color/black"
     android:orientation="vertical"
     android:theme="@style/AppTheme.Dialog"
@@ -35,19 +35,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="70"
-        android:background="@color/black"
+        android:background="@color/white"
         android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/date"
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gifImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            tools:ignore="HardcodedText" />
+            android:src="@drawable/free_animated_icon_sound8121329"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </RelativeLayout>

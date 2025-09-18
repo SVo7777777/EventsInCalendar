@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,14 +36,20 @@ public class ReviewTodayActivity extends Activity {
     Calendar calendar = Calendar.getInstance();
     int current_month =  calendar.get(Calendar.MONTH);
 
+    @SuppressLint("SetTextI18n")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.x = -20;
+        params.height = 100;
+        params.width = 850;
+        params.y = -10;
+        this.getWindow().setAttributes(params);
         setContentView(R.layout.activity_review_today);
 
         EditText event = findViewById(R.id.editTextTextMultiLine);
-        Button close = findViewById(R.id.close);
-        TextView number = findViewById(R.id.number);
-        TextView year1 = findViewById(R.id.year);
+        //Button close = findViewById(R.id.close);
         TextView month1 = findViewById(R.id.month);
         TextView day_of_weeks = findViewById(R.id.day_of_weeks);
 
@@ -53,19 +60,25 @@ public class ReviewTodayActivity extends Activity {
         String today = format.format(ci.getTime());
         String[] month = getResources().getStringArray(R.array.months);
 
+        String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_short);
+        int dayOfWeek = ci.get(Calendar.DAY_OF_WEEK);
+        String weekday =  daysOfWeek[dayOfWeek-1];
+
+
         String day = today.substring(0, 2);
         System.out.println(day);
-        number.setText(day);
+        //number.setText(day);
         String month2 = today.substring(3, 5);
         System.out.println(month2);
-        month1.setText(month[current_month]);
+        //month1.setText(month[current_month]);
         String year = today.substring(6, 10);
         System.out.println(year);
         String sDate = today.substring(0, 10);
-        year1.setText(year);
+        //year1.setText(year);
         String dw = today.substring(11);
-        day_of_weeks.setText(dw);
+        day_of_weeks.setText("за сегодня: "+weekday+" "+sDate);
         System.out.println(dw);
+
 
 
 
@@ -114,12 +127,12 @@ public class ReviewTodayActivity extends Activity {
         }
 
 
-        close.setOnClickListener(new  View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finishAffinity();
-            }
-        });
+//        close.setOnClickListener(new  View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                finishAffinity();
+//            }
+//        });
 
 
 

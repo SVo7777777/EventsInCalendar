@@ -2,28 +2,55 @@ package com.example.eventsincalendar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.gesture.GestureOverlayView;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.text.Html;
+import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class ReviewOWeek extends AppCompatActivity {
 
     boolean addRecord;
     TextView textMultiline;
     TextView textView;
+    ImageButton btnd;
+    ImageButton btn_open;
+    private int width, height;
+    LinearLayout linear;
+    Calendar calendar = Calendar.getInstance();
+    public int current_year = calendar.get(Calendar.YEAR);
+    public int current_month = calendar.get(Calendar.MONTH);
+    public int current_day = calendar.get(Calendar.DATE);
+    String current_data = "_"+ current_day +"-"+ (current_month + 1) +"-"+ current_year;
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +73,47 @@ public class ReviewOWeek extends AppCompatActivity {
         });
         textMultiline = findViewById(R.id.editTextTextMultiLine2);
         textView = findViewById(R.id.textView);
+        btnd = findViewById(R.id.btnd);
+        btn_open = findViewById(R.id.btn_open);
+        linear = findViewById(R.id.lineard);
+
+
+        btnd.setOnClickListener(v -> {
+            System.out.println("hear-btnd");
+            Log.d("size", linear.getWidth() + " " + linear.getWidth());
+            boolean wr = CreatPDF.creatPDF(linear, current_data);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (wr){
+                    String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results"+ current_data + ".pdf";
+                    CustomDialogFragment dialog = new CustomDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString("attention", attention);
+                    dialog.setArguments(args);
+                    dialog.show(this.getSupportFragmentManager(), "custom");
+                }else{
+                    String attention = "Включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь рабочих часов-->Разрешение-->Память--> Разрешить)";
+                    CustomDialogFragment dialog = new CustomDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString("attention", attention);
+                    dialog.setArguments(args);
+                    dialog.show(this.getSupportFragmentManager(), "custom");
+                }
+                //creatPDF();
+            }else {
+                System.out.println("hear0000");
+            }
+
+        });
+
+        btn_open.setOnClickListener(v -> {
+            System.out.println("hear-btn_open");
+            Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                openPdf();
+            }
+
+        });
+
         addRecord = false;
         Intent intent = getIntent();
         int week = intent.getIntExtra("week", 0);
@@ -107,6 +175,26 @@ public class ReviewOWeek extends AppCompatActivity {
             Toast.makeText(this, "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
             System.out.println("pass");
         }
+    }
+
+
+    private void openPdf () {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+
+
+        String sFile=downloadDir+"/itogi_results"+current_data+".pdf";
+
+        //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
+        File path = new File(sFile);
+        Uri uri = Uri.fromFile(path);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "text/plain");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
     }
     //меню три точки вверху справа

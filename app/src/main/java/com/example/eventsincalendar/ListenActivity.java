@@ -52,6 +52,8 @@ public class ListenActivity extends Activity {
         StringBuilder sb = new StringBuilder();
 
         t = "Мои события за сегодня.";
+        boolean ev = false;
+
         boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
         if (exists) {
 
@@ -66,6 +68,7 @@ public class ListenActivity extends Activity {
 //                         = line.substring(0, 11);
                         String event = line.substring(11);
                         sb.append(event).append(" ");
+                        ev = true;
                     }
                 }
             } catch (IOException e) {
@@ -75,6 +78,7 @@ public class ListenActivity extends Activity {
         text = t + String.valueOf(sb);
 
         // Initialize TextToSpeech instance
+        boolean finalEv = ev;
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -91,7 +95,11 @@ public class ListenActivity extends Activity {
                     } else {
                         // TTS engine is ready
                         // Proceed with speaking
-                        speak(text);
+                        if (finalEv) {
+                            speak(text);
+                        }else{
+                            speak("За сегодня нет событий.");
+                        }
                         //close();
 
                         onStop();

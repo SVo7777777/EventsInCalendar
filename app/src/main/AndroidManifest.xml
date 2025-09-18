@@ -69,7 +69,9 @@
         </activity>
         <activity android:name=".ReviewTodayActivity"
             android:theme="@style/AppTheme.Dialog"
-            android:exported="false">
+            android:exported="false"
+            android:width="150dip"
+            android:height="50dip">
         </activity>
         <activity android:name=".ListenActivity"
             android:theme="@style/AppTheme.Dialog"

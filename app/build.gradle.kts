@@ -47,7 +47,9 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.gridlayout)
     implementation(libs.car.ui.lib)
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.19")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 }
