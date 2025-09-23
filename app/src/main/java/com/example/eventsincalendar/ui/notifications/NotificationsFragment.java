@@ -37,6 +37,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eventsincalendar.CustomDialogFragment;
 import com.example.eventsincalendar.DatabaseHelper;
+import com.example.eventsincalendar.DatabaseHelperEv;
 import com.example.eventsincalendar.MyWidget2;
 import com.example.eventsincalendar.R;
 import com.example.eventsincalendar.databinding.FragmentNotificationsBinding;
@@ -49,12 +50,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
-    private DatabaseHelper mydb;
+    private DatabaseHelperEv mydb;
     CalendarView calendarView;
     public EditText textMultiline;
     public Button buttonAdd;
@@ -73,7 +76,9 @@ public class NotificationsFragment extends Fragment {
     TextView sal;
     TextView rez_salary0;
     TextView pr;
-
+    private int ch_d;
+    private int ch_m;
+    private int ch_y;
     private ImageButton btn;
 
     private int width, height;
@@ -105,40 +110,72 @@ public class NotificationsFragment extends Fragment {
         intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
         getActivity().sendBroadcast(intentq);
 
+        mydb = new DatabaseHelperEv(getContext());
+
         Calendar ci = Calendar.getInstance();
         //вывод текущей даты в поле информации при запуске приложения
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy EEEE");
-        System.out.println(format.format(ci.getTime()));
-        String today = format.format(ci.getTime());
-        // цвет даты
-        //textMultiline.setText(Html.fromHtml("<font color=\"#006400\">" + today  + "</font>"));
-        CharSequence hint = textMultiline.getHint();
-        String s = "Сегодня " + today + ". " + hint;
-        textMultiline.setHint(s);
+        SimpleDateFormat format0 = new SimpleDateFormat("EE dd-MM-yyyy");
+        String today0 = format0.format(ci.getTime());
+        System.out.println(today0);
+        boolean search = mydb.checkDataExistOrNot(today0, DatabaseHelperEv.TABLE);
+        String ev = mydb.getEvents(today0, DatabaseHelperEv.TABLE);
+        if (search){
+            textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + today0  + ": " +"</font>" + ev));
 
-        //курсор в конце строки
-        textMultiline.requestFocus();
-        textMultiline.setSelection(textMultiline.getText().length());
+        }else {
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy EEEE");
+            System.out.println(format.format(ci.getTime()));
+            String today = format.format(ci.getTime());
+            // цвет даты
+            //textMultiline.setText(Html.fromHtml("<font color=\"#006400\">" + today  + "</font>"));
+            CharSequence hint = textMultiline.getHint();
+            String s = "Сегодня " + today + ". " + hint;
+            textMultiline.setHint(s);
+
+            //курсор в конце строки
+            textMultiline.requestFocus();
+            textMultiline.setSelection(textMultiline.getText().length());
+        }
+
         //вывод даты  в поле информации при нажатии на календаре
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month,
                                             int dayOfMonth) {
                 addRecord = true;
+                ch_d = dayOfMonth;
+                ch_m = month;
+                ch_y = year;
+
+                @SuppressLint("SimpleDateFormat")
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(ch_y, ch_m, ch_d);
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat sdf1 = new SimpleDateFormat("EE dd-MM-yyyy");
+                Date date1 = calendar1.getTime();
+                String data1 =  sdf1.format(date1);//дата в базе
+                System.out.println(data1);
+                boolean search = mydb.checkDataExistOrNot(data1, DatabaseHelperEv.TABLE);
+                String ev = mydb.getEvents(data1, DatabaseHelperEv.TABLE);
+
                 @SuppressLint("SimpleDateFormat")
                 final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth);
-                int week = calendar.get(Calendar.WEEK_OF_YEAR);
-
                 String sDate = sdf.format(calendar.getTime());
-                chosesData = sDate;
-                //цвет даты 006400-зелёный
-                textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + sDate + ": " +"</font>"));
-                //фокус в конце даты
-                textMultiline.requestFocus();
-                textMultiline.setSelection(textMultiline.getText().length());
+                if (search){
+                    textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data1  + ": " +"</font>" + ev));
+
+                }else {
+                    chosesData = sDate;
+                    //цвет даты 006400-зелёный
+                    textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + sDate + ": " +"</font>"));
+                    //фокус в конце даты
+                    textMultiline.requestFocus();
+                    textMultiline.setSelection(textMultiline.getText().length());
+                }
             }
         });
 
@@ -160,7 +197,7 @@ public class NotificationsFragment extends Fragment {
 //
 //        });
 //
-//        mydb = new DatabaseHelper(getContext());
+//
 //        ArrayList<ArrayList<String>> str = mydb.getAllRows();
 //        System.out.println(str);
 //        System.out.println(str.get(0).get(0));
@@ -213,23 +250,63 @@ public class NotificationsFragment extends Fragment {
         button2.setOnClickListener(v -> {
             String data = String.valueOf(textMultiline.getText());
             System.out.println(data);
+            String day_ = data.substring(0, 11);
+            String day = data.substring(0, 10);
+            String event = data.substring(12);
+//            int d = Integer.parseInt(data.substring(0, 2));
+//            int m = Integer.parseInt(data.substring(3, 5));
+//            int y = Integer.parseInt(data.substring(6, 10));
+
+
+//            int dayOfWeek = cldr.get(Calendar.DAY_OF_WEEK);
+//            String[] daysOfWeek = context.getResources().getStringArray(R.array.days_of_week_short);
+//            String[] month = context.getResources().getStringArray(R.array.months);
+            @SuppressLint("SimpleDateFormat")
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(ch_y, ch_m, ch_d);
+
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf1 = new SimpleDateFormat("EE dd-MM-yyyy");
+            Date date1 = calendar.getTime();
+            String data1 =  sdf1.format(date1);//дата в базе
+            System.out.println(data1);
+
+
             if (!addRecord) {
                 Toast.makeText(getContext(), "Выберите дату, запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
             } else {
-                if  (data.length() >= 20){
-                    try (FileOutputStream fos = requireContext().openFileOutput("event_diary.txt", MODE_APPEND);
-                         OutputStreamWriter osw = new OutputStreamWriter(fos)) {
-                        //String data = String.valueOf(textMultiline.getText());
-                        osw.write(data+"\n");
-                        //вывод диалогового окна, что запись внесена
-                        String attention = "запись внесена";
+
+                if  (data.length() > 13){
+                    //mydb = new DatabaseHelperEv(getContext());
+                    boolean search = mydb.checkDataExistOrNot(day, DatabaseHelperEv.TABLE);
+                    System.out.println("search: "+search);
+                    if (search) {
+                        Toast.makeText(getActivity(), day + " уже есть!", Toast.LENGTH_SHORT).show();
+                        System.out.println(data + " уже есть!");
+                        String ev = mydb.getEvents(data1, DatabaseHelperEv.TABLE);
+
+                        int id = mydb.GetId(data1, DatabaseHelperEv.TABLE);
+                        boolean update_events = mydb.updateEvents(id, data1, String.valueOf(data), "hours");
+                        if (update_events){
+                            System.out.println("событие изменено");
+                        }
+                        //String s = mydb.getSum(data);
+                        System.out.println("за "+day+" событие: "+ev);
+                        //System.out.println("s="+sum);
+                        //addHoursInCalendar(h);
+                    }else {
+                        System.out.println(day);
+                        System.out.println(event);
+                        mydb.insertContact(data1, event, null,null,null,null, DatabaseHelperEv.TABLE);
+                        //mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan1");
+                        //mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan2");
+                        //Toast.makeText(getActivity(), "За " + day + "\n добавлено событие:\n" + event, Toast.LENGTH_SHORT).show();
+                        String attention = "За " + day + "\nдобавлено событие:\n" + event;
                         CustomDialogFragment dialog = new CustomDialogFragment();
                         Bundle args = new Bundle();
                         args.putString("attention", attention);
                         dialog.setArguments(args);
                         dialog.show(getParentFragmentManager(), "custom");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                     addRecord = false;
                 } else {

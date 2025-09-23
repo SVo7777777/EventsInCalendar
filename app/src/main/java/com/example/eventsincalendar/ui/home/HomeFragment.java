@@ -34,6 +34,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eventsincalendar.CustomDialogFragment;
 import com.example.eventsincalendar.DatabaseHelper;
+import com.example.eventsincalendar.DatabaseHelperEv;
+
 import com.example.eventsincalendar.FileEmpty;
 import com.example.eventsincalendar.MyWidget2;
 import com.example.eventsincalendar.R;
@@ -64,6 +66,7 @@ import java.util.regex.Pattern;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private DatabaseHelperEv mydb;
     public Button previous_month;
     public Button next_month;
     public Button previous_year;
@@ -86,7 +89,7 @@ public class HomeFragment extends Fragment {
     public int current_day = calendar.get(Calendar.DATE);
     String[] split;
     String[] split2;
-    private DatabaseHelper mydb ;
+
 
     public int day_OfWeekOfFirstDayOfMonth;
     public int date_End;
@@ -105,6 +108,7 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        mydb = new DatabaseHelperEv(getContext());
 
         month = root.findViewById(R.id.month);
         year = root.findViewById(R.id.year);
@@ -196,10 +200,10 @@ public class HomeFragment extends Fragment {
             }
         String data = month.getText() + " " + year.getText();
         System.out.println(data);
-        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
-        System.out.println(price);
-        String sal = mydb.getSalary(data, DatabaseHelper.TABLE);
-        System.out.println(sal);
+//        String price = mydb.getPrice(data, DatabaseHelper.TABLE);
+//        System.out.println(price);
+//        String sal = mydb.getSalary(data, DatabaseHelper.TABLE);
+//        System.out.println(sal);
         //boolean update_salary = mydb.updateSalary(id, month_year, String.valueOf(sal), "plan1");
 //        if (price.equals("0.0") ){
 //            button2.setText("з/п");
@@ -368,38 +372,48 @@ public class HomeFragment extends Fragment {
                         events[i][j].setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                         events[i][j].setTypeface(null, Typeface.BOLD);
                         buttons[i][j].setEnabled(true);
+//                        mydb = new DatabaseHelpereEv(getContext());
                         @SuppressLint("SimpleDateFormat")
-                        final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        final SimpleDateFormat sdf = new SimpleDateFormat("EE dd-MM-yyyy");
                         Calendar c = Calendar.getInstance();
                         c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), d);
                         String sDate = sdf.format(c.getTime());
 
+                        boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+                        String ev = mydb.getEvents(sDate, DatabaseHelperEv.TABLE);
+                        if (search){
+                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+                            events[i][j].setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+                        }else{
+                            events[i][j].setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
-                        if (exists) {
-                            try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
-                                 InputStreamReader isr = new InputStreamReader(fis);
-                                 BufferedReader br = new BufferedReader(isr)) {
-                                String line;
-
-                                while ((line = br.readLine()) != null) {
-                                    boolean contains = line.contains(sDate);
-                                    if (contains) {
-                                        Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
-                                        events[i][j].setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-
-                                        //events[i][j].setText("11");
-                                        System.out.println("sDate="+sDate);
-                                        break;
-                                    }else{
-                                        events[i][j].setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
-                                    }
-                                }
-
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
                         }
+
+//                        if (exists) {
+//                            try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
+//                                 InputStreamReader isr = new InputStreamReader(fis);
+//                                 BufferedReader br = new BufferedReader(isr)) {
+//                                String line;
+//
+//                                while ((line = br.readLine()) != null) {
+//                                    boolean contains = line.contains(sDate);
+//                                    if (contains) {
+//                                        Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+//                                        events[i][j].setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+//
+//                                        //events[i][j].setText("11");
+//                                        System.out.println("sDate="+sDate);
+//                                        break;
+//                                    }else{
+//                                        events[i][j].setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+//
+//                                    }
+//                                }
+//
+//                            } catch (IOException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                        }
 //                        else {
 //                            //Toast.makeText(getContext(), "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
 //                            //Toast.makeText(getContext(), "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
@@ -433,48 +447,48 @@ public class HomeFragment extends Fragment {
                 }
             }
         }
-        addHoursFromBase(mont,y);
+        //addHoursFromBase(mont,y);
     }
-    @SuppressLint("SetTextI18n")
-    private void addHoursFromBase(String mont, String y){
-        StringBuilder hours = new StringBuilder();
-        float sum = 0.0F;
-        for (int i = 1; i < 7; i++) {
-            for (int j = 1; j < 8; j++) {
-                String h =(String) events[i][j].getText();
-                if (!h.isEmpty()){
-                    System.out.println(days[i][j].getText() + "-" + h);
-                    sum += Float.parseFloat(h);
-                    hours.append("-").append(h);
-                }else{
-                    System.out.println(days[i][j].getText() + "-" + ".");
-                    hours.append("-" + ".");
-                }
-            }
-        }
-        System.out.println(hours);
-//        textView3.setText("Часов:"+ sum);
-        String data = mont+" "+y;
-        mydb = new DatabaseHelper(getContext());
-        boolean search = mydb.checkDataExistOrNot(data, DatabaseHelper.TABLE);
-        System.out.println("search: "+search);
-        if (search) {
-            //Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
-            System.out.println(data + " уже есть!");
-            String h = mydb.getHours(data, DatabaseHelper.TABLE);
-            //String s = mydb.getSum(data);
-            System.out.println("за "+data+" часы: "+h);
-            System.out.println("s="+sum);
-            //addHoursInCalendar(h);
-        }else {
-            System.out.println("hours="+hours);
-            System.out.println("sum="+ sum);
-            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","hours");
-            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan1");
-            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan2");
-            Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    @SuppressLint("SetTextI18n")
+//    private void addHoursFromBase(String mont, String y){
+//        StringBuilder hours = new StringBuilder();
+//        float sum = 0.0F;
+//        for (int i = 1; i < 7; i++) {
+//            for (int j = 1; j < 8; j++) {
+//                String h =(String) events[i][j].getText();
+//                if (!h.isEmpty()){
+//                    System.out.println(days[i][j].getText() + "-" + h);
+//                    sum += Float.parseFloat(h);
+//                    hours.append("-").append(h);
+//                }else{
+//                    System.out.println(days[i][j].getText() + "-" + ".");
+//                    hours.append("-" + ".");
+//                }
+//            }
+//        }
+//        System.out.println(hours);
+////        textView3.setText("Часов:"+ sum);
+//        String data = mont+" "+y;
+//        mydb = new DatabaseHelper(getContext());
+//        boolean search = mydb.checkDataExistOrNot(data, DatabaseHelper.TABLE);
+//        System.out.println("search: "+search);
+//        if (search) {
+//            //Toast.makeText(getActivity(), data + " уже есть!", Toast.LENGTH_SHORT).show();
+//            System.out.println(data + " уже есть!");
+//            String h = mydb.getHours(data, DatabaseHelper.TABLE);
+//            //String s = mydb.getSum(data);
+//            System.out.println("за "+data+" часы: "+h);
+//            System.out.println("s="+sum);
+//            //addHoursInCalendar(h);
+//        }else {
+//            System.out.println("hours="+hours);
+//            System.out.println("sum="+ sum);
+//            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","hours");
+//            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan1");
+//            mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan2");
+//            Toast.makeText(getActivity(), data + " добавлен!", Toast.LENGTH_SHORT).show();
+       // }
+//    }
 //    @SuppressLint("SetTextI18n")
 //    private void addHoursInCalendar(String h) {
 //        split = h.split("-");
@@ -629,69 +643,84 @@ public class HomeFragment extends Fragment {
                     day_of_weeks.setText(day_week);
 
                     @SuppressLint("SimpleDateFormat")
-                    final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    final SimpleDateFormat sdf = new SimpleDateFormat("EE dd-MM-yyyy");
                     Calendar c = Calendar.getInstance();
                     c.set(Integer.parseInt(year.getText().toString()), Arrays.asList(monthNames).indexOf((String) month.getText()), Integer.parseInt((String) number.getText()));
                     String sDate = sdf.format(c.getTime());
-                    String st = "";
-                    //event.setText(sDate+": ");
-                    boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-                    if (exists) {
-                        StringBuilder sb = new StringBuilder();
-                        try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
-                             InputStreamReader isr = new InputStreamReader(fis);
-                             BufferedReader br = new BufferedReader(isr)) {
-                            String line;
-
-                            while ((line = br.readLine()) != null) {
-                                boolean contains = line.contains(sDate);
-                                if (contains) {
-                                    String day = line.substring(0, 11);
-                                    String event1 = line.substring(11);
-                                    String str =  "<font color=\"#0000FF\">"  + day + "</font>" + event1+ " <br>";
-                                    st = str;
-                                    add.setEnabled(false);
-                                    sb.append(str);
-                                }else {
-//                                    delete.setEnabled(false);
-//                                    editor.setEnabled(false);
-                                }
-                            }
-
-                            event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-                            //event.setHint(Html.fromHtml(st, Html.FROM_HTML_MODE_LEGACY));
-                            if (sb.length() == 0) {
-                                event.setHint(sDate + " нет событий за этот день!");
-                                add.setEnabled(true);
-                                delete.setEnabled(false);
-                                editor.setEnabled(false);
-                                event.requestFocus();
-                                event.setSelection(event.getText().length());
-
-                                //дата синяя
-//                                String str = "<font color=\"#0000FF\">" + sDate+": " + "</font>" + " нет событий за этот день!";
-//                                event.setHint(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
-//
-                                //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
-
-
-                            }
-                        } catch (IOException e) {
-                            event.setHint(e.toString());
-                            add.setEnabled(true);
-                            delete.setEnabled(false);
-                            editor.setEnabled(false);
-                            throw new RuntimeException(e);
-
-
-                        }
+                    //выводится событие, если оно есть
+                    boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+                    String ev = mydb.getEvents(sDate, DatabaseHelperEv.TABLE);
+                    String str =  "<font color=\"#0000FF\">"  + sDate+ ": " + "</font>" + ev+ " <br>";
+                    if (search){
+                        event.setText(Html.fromHtml(String.valueOf(str), Html.FROM_HTML_MODE_LEGACY));
+                        add.setEnabled(false);
                     }else {
-                        event.setHint(R.string.file_exist);
+                        event.setHint(sDate + ": нет событий за этот день!");
                         add.setEnabled(true);
                         delete.setEnabled(false);
                         editor.setEnabled(false);
-
+                        event.requestFocus();
+                        event.setSelection(event.getText().length());
                     }
+
+                    //event.setText(sDate+": ");
+//                    boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+//                    if (exists) {
+//                        StringBuilder sb = new StringBuilder();
+//                        try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
+//                             InputStreamReader isr = new InputStreamReader(fis);
+//                             BufferedReader br = new BufferedReader(isr)) {
+//                            String line;
+//
+//                            while ((line = br.readLine()) != null) {
+//                                boolean contains = line.contains(sDate);
+//                                if (contains) {
+//                                    String day = line.substring(0, 11);
+//                                    String event1 = line.substring(11);
+//                                    String str =  "<font color=\"#0000FF\">"  + day + "</font>" + event1+ " <br>";
+//                                    st = str;
+//                                    add.setEnabled(false);
+//                                    sb.append(str);
+//                                }else {
+////                                    delete.setEnabled(false);
+////                                    editor.setEnabled(false);
+//                                }
+//                            }
+//
+//                            event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+//                            //event.setHint(Html.fromHtml(st, Html.FROM_HTML_MODE_LEGACY));
+//                            if (sb.length() == 0) {
+//                                event.setHint(sDate + " нет событий за этот день!");
+//                                add.setEnabled(true);
+//                                delete.setEnabled(false);
+//                                editor.setEnabled(false);
+//                                event.requestFocus();
+//                                event.setSelection(event.getText().length());
+//
+//                                //дата синяя
+////                                String str = "<font color=\"#0000FF\">" + sDate+": " + "</font>" + " нет событий за этот день!";
+////                                event.setHint(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
+////
+//                                //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
+//
+//
+//                            }
+//                        } catch (IOException e) {
+//                            event.setHint(e.toString());
+//                            add.setEnabled(true);
+//                            delete.setEnabled(false);
+//                            editor.setEnabled(false);
+//                            throw new RuntimeException(e);
+//
+//
+//                        }
+//                    }else {
+//                        event.setHint(R.string.file_exist);
+//                        add.setEnabled(true);
+//                        delete.setEnabled(false);
+//                        editor.setEnabled(false);
+//
+//                    }
 
                     add.setOnClickListener(new View.OnClickListener() {
                         @SuppressLint("SetTextI18n")
@@ -705,25 +734,63 @@ public class HomeFragment extends Fragment {
                             //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
 
                             //сохранение события в (базу данных) пока в текстовый файл
-                            if  (data.length() >= 2) {
-                                try (FileOutputStream fos = requireContext().openFileOutput("event_diary.txt", MODE_APPEND);
-                                     OutputStreamWriter osw = new OutputStreamWriter(fos)) {
-                                    //String data = String.valueOf(textMultiline.getText());
-                                    osw.write(sDate + ": " + data + "\n");
-                                    //вывод диалогового окна, что запись внесена
-                                    String attention = "запись внесена";
+                            if  (data.length() > 13){
+                                //mydb = new DatabaseHelperEv(getContext());
+                                boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+                                System.out.println("search: "+search);
+                                if (search) {
+                                    Toast.makeText(getActivity(), sDate + " уже есть!", Toast.LENGTH_SHORT).show();
+                                    System.out.println(data + " уже есть!");
+                                    String ev = mydb.getEvents(sDate, DatabaseHelperEv.TABLE);
+
+                                    int id = mydb.GetId(sDate, DatabaseHelperEv.TABLE);
+                                    boolean update_events = mydb.updateEvents(id, sDate, String.valueOf(data), "hours");
+                                    if (update_events){
+                                        System.out.println("событие изменено");
+                                    }
+                                    //String s = mydb.getSum(data);
+                                    System.out.println("за "+sDate+" событие: "+ev);
+                                    //System.out.println("s="+sum);
+                                    //addHoursInCalendar(h);
+                                }else {
+                                    System.out.println(sDate);
+                                    System.out.println(event);
+                                    mydb.insertContact(sDate, String.valueOf(event), null,null,null,null, DatabaseHelperEv.TABLE);
+                                    //mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan1");
+                                    //mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan2");
+                                    //Toast.makeText(getActivity(), "За " + day + "\n добавлено событие:\n" + event, Toast.LENGTH_SHORT).show();
+                                    String attention = "За " + sDate + "\nдобавлено событие:\n" + event;
                                     CustomDialogFragment dialog = new CustomDialogFragment();
                                     Bundle args = new Bundle();
                                     args.putString("attention", attention);
                                     dialog.setArguments(args);
                                     dialog.show(getParentFragmentManager(), "custom");
-
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
                                 }
-                            }  else {
-                                Toast.makeText(getActivity(),  "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
+                                //addRecord = false;
+                            } else {
+                                Toast.makeText(getContext(), "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
                             }
+
+
+//                            if  (data.length() >= 2) {
+//                                try (FileOutputStream fos = requireContext().openFileOutput("event_diary.txt", MODE_APPEND);
+//                                     OutputStreamWriter osw = new OutputStreamWriter(fos)) {
+//                                    //String data = String.valueOf(textMultiline.getText());
+//                                    osw.write(sDate + ": " + data + "\n");
+//                                    //вывод диалогового окна, что запись внесена
+//                                    String attention = "запись внесена";
+//                                    CustomDialogFragment dialog = new CustomDialogFragment();
+//                                    Bundle args = new Bundle();
+//                                    args.putString("attention", attention);
+//                                    dialog.setArguments(args);
+//                                    dialog.show(getParentFragmentManager(), "custom");
+//
+//                                } catch (IOException e) {
+//                                    throw new RuntimeException(e);
+//                                }
+//                            }  else {
+//                                Toast.makeText(getActivity(),  "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
+//                            }
 
                             //обновление виджета
                             Intent intentq = new Intent(getActivity(), MyWidget2.class);
@@ -743,62 +810,69 @@ public class HomeFragment extends Fragment {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void onClick(View view) {
-                            String data = String.valueOf(event.getText());
-                            String sFolder =  APP_SD_PATH + "/files";
-                            String sFile=sFolder+"/"+"event_diary.txt";
-                            System.out.println("data="+data);
-                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+//                            String data = String.valueOf(event.getText());
+//                            String sFolder =  APP_SD_PATH + "/files";
+//                            String sFile=sFolder+"/"+"event_diary.txt";
+//                            System.out.println("data="+data);
+//                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
                             //event1.setText("event");
                             //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
+                            int id = mydb.GetId(sDate, DatabaseHelperEv.TABLE);
+                            mydb.deleteContact(id);
 
                             //сохранение события в (базу данных) пока в текстовый файл
-                            File sdCard = Environment.getExternalStorageDirectory();
-                            System.out.println(sdCard);
-                            File root = new File (sFolder);
-                            System.out.println("root"+root);
-                            try {
-                                FileInputStream fis = requireContext().openFileInput("event_diary.txt");
-                                InputStreamReader isr = new InputStreamReader(fis);
-                                BufferedReader br = new BufferedReader(isr);
+//                            File sdCard = Environment.getExternalStorageDirectory();
+//                            System.out.println(sdCard);
+//                            File root = new File (sFolder);
+//                            System.out.println("root"+root);
+//                            try {
+//                                FileInputStream fis = requireContext().openFileInput("event_diary.txt");
+//                                InputStreamReader isr = new InputStreamReader(fis);
+//                                BufferedReader br = new BufferedReader(isr);
+//
+//                                FileOutputStream fos = requireContext().openFileOutput("event_diary2.txt", MODE_APPEND);
+//                                OutputStreamWriter osw = new OutputStreamWriter(fos);
+//                                //out = new PrintWriter(new File(root,"/event_diary2.txt"));
+//                                osw.write("hello" + "\n");
+//                                        String line; //a line in the file
+//
+//                                while ((line = br.readLine()) != null) {
+//                                    System.out.println("мы тут");
+//                                    System.out.println(line);
+//                                    boolean contains = line.contains(sDate);
+//                                    if (!contains) {
+//                                        System.out.println("записали");
+//                                        osw.write(line + "\n");
+//                                    }else {
+//                                        System.out.println("не записали");
+//
+//                                    }
+//
+//                                }
+//                                osw.write("hello" + "\n");
+////                                File from = new File(root,"/event_diary2.txt");
+////                                File to = new File(root,"/event_diary3.txt");
+////                                if(from.exists()){
+////                                    from.renameTo(to);
+////                                    //to.delete();
+//
+//                                //}
+//
 
-                                FileOutputStream fos = requireContext().openFileOutput("event_diary2.txt", MODE_APPEND);
-                                OutputStreamWriter osw = new OutputStreamWriter(fos);
-                                //out = new PrintWriter(new File(root,"/event_diary2.txt"));
-                                osw.write("hello" + "\n");
-                                        String line; //a line in the file
-
-                                while ((line = br.readLine()) != null) {
-                                    System.out.println("мы тут");
-                                    System.out.println(line);
-                                    boolean contains = line.contains(sDate);
-                                    if (!contains) {
-                                        System.out.println("записали");
-                                        osw.write(line + "\n");
-                                    }else {
-                                        System.out.println("не записали");
-
-                                    }
-
-                                }
-                                osw.write("hello" + "\n");
-//                                File from = new File(root,"/event_diary2.txt");
-//                                File to = new File(root,"/event_diary3.txt");
-//                                if(from.exists()){
-//                                    from.renameTo(to);
-//                                    //to.delete();
-
-                                //}
 
 
+                            event1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
+//                            }catch(Exception e) {
+//                                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+//                                System.out.println(e.toString());
+//                            }
 
-                                event1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
-                            }catch(Exception e) {
-                                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
-                                System.out.println(e.toString());
+                            boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+                            if (!search) {
+                                Toast.makeText(getActivity(), "запись удалена!", Toast.LENGTH_LONG).show();
+                                event.setText("");
                             }
-                            Toast.makeText(getActivity(), "запись удалена!", Toast.LENGTH_LONG).show();
 
                             //обновление виджета
                             Intent intentq = new Intent(getActivity(), MyWidget2.class);
@@ -806,78 +880,80 @@ public class HomeFragment extends Fragment {
                             int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
                             intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
                             getActivity().sendBroadcast(intentq);
-
                         }
-
                     });
 
-                    editor.setOnClickListener(new View.OnClickListener() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void onClick(View view) {
-                            String data = String.valueOf(event.getText());
-                            String sFolder =  APP_SD_PATH + "/files";
-                            String sFile=sFolder+"/"+"event_diary.txt";
-                            System.out.println("data="+data);
-                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
-                            event1.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+//                    editor.setOnClickListener(new View.OnClickListener() {
+//                        @SuppressLint("SetTextI18n")
+//                        @Override
+//                        public void onClick(View view) {
+//                            String data = String.valueOf(event.getText());
+//                            String sFolder =  APP_SD_PATH + "/files";
+//                            String sFile=sFolder+"/"+"event_diary.txt";
+//                            System.out.println("data="+data);
+//                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+//                            event1.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+//
+//                            //event1.setText("event");
+//                            //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
+//                            int id = mydb.GetId(sDate, DatabaseHelperEv.TABLE);
+//                            boolean update_events = mydb.updateEvents(id, sDate, String.valueOf(data), "hours");
+//                            if (update_events){
+//                                System.out.println("событие изменено");
+//                            }
+//                            //сохранение события в (базу данных) пока в текстовый файл
+////                            File sdCard = Environment.getExternalStorageDirectory();
+////                            System.out.println(sdCard);
+//////                            File root = new File (sFolder);
+//////                            System.out.println(root);
+////                            try {
+////                                FileInputStream fis = requireContext().openFileInput("event_diary.txt");
+////                                InputStreamReader isr = new InputStreamReader(fis);
+////                                BufferedReader br = new BufferedReader(isr);
+////
+////                                FileOutputStream fos = requireContext().openFileOutput("event_diary2.txt", MODE_APPEND);
+////                                OutputStreamWriter osw = new OutputStreamWriter(fos);
+////                                //out = new PrintWriter(new File(root,"/event_diary2.txt"));
+////
+////                                String line; //a line in the file
+////
+////                                while ((line = br.readLine()) != null) {
+////                                    System.out.println(line);
+////                                    boolean contains = line.contains(sDate);
+////                                    if (contains) {
+////                                        osw.write(data + "\n");
+////                                        osw.write(line);
+////                                    }else {
+////                                        osw.write(line);
+////                                    }
+////
+////                                }
+//////                                File from = new File(root,"/event_diary2.txt");
+//////                                File to = new File(root,"/event_diary.txt");
+//////                                if(from.exists()){
+//////                                    from.renameTo(to);
+//////                                    to.delete();
+////
+//////                                }
+////
+////
+////
+////                            }catch(Exception e) {
+////                                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+////                                System.out.println(e.toString());
+////                            }
+//                            Toast.makeText(getActivity(), "запись изменена!", Toast.LENGTH_LONG).show();
+//
+//                            //обновление виджета
+//                            Intent intentq = new Intent(getActivity(), MyWidget2.class);
+//                            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+//                            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+//                            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+//                            getActivity().sendBroadcast(intentq);
+//
+//                        }
 
-                            //event1.setText("event");
-                            //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
-
-                            //сохранение события в (базу данных) пока в текстовый файл
-                            File sdCard = Environment.getExternalStorageDirectory();
-                            System.out.println(sdCard);
-                            File root = new File (sFolder);
-                            System.out.println(root);
-                            try {
-                                FileInputStream fis = requireContext().openFileInput("event_diary.txt");
-                                InputStreamReader isr = new InputStreamReader(fis);
-                                BufferedReader br = new BufferedReader(isr);
-
-                                FileOutputStream fos = requireContext().openFileOutput("event_diary2.txt", MODE_APPEND);
-                                OutputStreamWriter osw = new OutputStreamWriter(fos);
-                                //out = new PrintWriter(new File(root,"/event_diary2.txt"));
-
-                                String line; //a line in the file
-
-                                while ((line = br.readLine()) != null) {
-                                    System.out.println(line);
-                                    boolean contains = line.contains(sDate);
-                                    if (contains) {
-                                        osw.write(data + "\n");
-                                        osw.write(line);
-                                    }else {
-                                        osw.write(line);
-                                    }
-
-                                }
-                                File from = new File(root,"/event_diary2.txt");
-                                File to = new File(root,"/event_diary.txt");
-                                if(from.exists()){
-                                    from.renameTo(to);
-                                    to.delete();
-
-                                }
-
-
-
-                            }catch(Exception e) {
-                                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
-                                System.out.println(e.toString());
-                            }
-                            Toast.makeText(getActivity(), "запись изменена!", Toast.LENGTH_LONG).show();
-
-                            //обновление виджета
-                            Intent intentq = new Intent(getActivity(), MyWidget2.class);
-                            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-                            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
-                            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
-                            getActivity().sendBroadcast(intentq);
-
-                        }
-
-                    });
+//                    });
 
                     close.setOnClickListener(new  View.OnClickListener(){
                         @Override

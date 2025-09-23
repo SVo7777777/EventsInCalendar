@@ -20,7 +20,7 @@ public class DatabaseHelperEv extends SQLiteOpenHelper {
     // названия столбцов
     //public static final String COLUMN_ID = "_id";
     public static final String COLUMN_DATA = "data";
-    public static final String COLUMN_EVENTS = "events";
+    public static final String COLUMN_EVENTS = "event";
     public static final String COLUMN_REPEAT_DAY = "day";
     public static final String COLUMN_REPEAT_WEEK = "week";
     public static final String COLUMN_REPEAT_MONTH = "month";
@@ -41,7 +41,7 @@ public class DatabaseHelperEv extends SQLiteOpenHelper {
 
         db.execSQL(
                 "create table events " +
-                        "(id integer primary key, data text, events text, day text, week text, month text, year text)");
+                        "(id integer primary key, data text, event text, day text, week text, month text, year text)");
 
 //        db.execSQL(
 //                "create table plan1 " +
@@ -77,11 +77,11 @@ public class DatabaseHelperEv extends SQLiteOpenHelper {
         //db.execSQL(CreateTableString);//CreateTableString is the SQL Command String
     }
 
-    public void insertContact(String data, String events, String day, String week, String month, String year, String table_name) {
+    public void insertContact(String data, String event, String day, String week, String month, String year, String table_name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("data", data);
-        contentValues.put("events", events);
+        contentValues.put("event", event);
         contentValues.put("day", day);
         contentValues.put("week", week);
         contentValues.put("month", month);
@@ -90,12 +90,11 @@ public class DatabaseHelperEv extends SQLiteOpenHelper {
         db.insert(table_name, null, contentValues);
     }
 
-    public boolean updateEvents(Integer id, String month_year, String hours, String table_name, String quantity_hour) {
+    public boolean updateEvents(Integer id, String data, String event, String table_name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("month_year", month_year);
-        contentValues.put("hour", hours);
-        contentValues.put("quantity_hour", quantity_hour);
+        contentValues.put("data", data);
+        contentValues.put("event", event);
         //contentValues.put("quantity_hour", quantity_hour);
         db.update(table_name, contentValues, "id = ? ", new String[]{Integer.toString(id)});
         return true;
@@ -130,7 +129,7 @@ public class DatabaseHelperEv extends SQLiteOpenHelper {
         ArrayList<ArrayList<String>>  array_list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         @SuppressLint("Recycle")
-        Cursor res = db.rawQuery("select * from hours", null);
+        Cursor res = db.rawQuery("select * from events", null);
         res.moveToFirst();
 
         if(res.getCount() > 0) {
@@ -142,6 +141,7 @@ public class DatabaseHelperEv extends SQLiteOpenHelper {
                     row.add(res.getString(3));
                     row.add(res.getString(4));
                     row.add(res.getString(5));
+                    row.add(res.getString(6));
                     array_list.add(row);
                     //array_list.add(String.valueOf(res.getColumnIndex(COLUMN_MONTH_YEAR)));
 
@@ -286,7 +286,7 @@ public class DatabaseHelperEv extends SQLiteOpenHelper {
     public int GetId(String currentNote, String TABLE3) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         @SuppressLint("Recycle")
-        Cursor getNoteId = myDB.rawQuery("select id from'"+ TABLE3 +"' where month_year = '" + currentNote + "'", null);
+        Cursor getNoteId = myDB.rawQuery("select id from'"+ TABLE3 +"' where data = '" + currentNote + "'", null);
         //Cursor getNoteId = myDB.rawQuery("select id from notepadData where notepad like + "'" + currentNote + "'", null);
         if (getNoteId.moveToFirst()) {
             return getNoteId.getInt(0);

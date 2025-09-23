@@ -65,6 +65,7 @@ public class MyWidget2 extends AppWidgetProvider {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String sDate =  sdf.format(date);
         StringBuilder sb = new StringBuilder();
+
         boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
         if (exists) {
 
