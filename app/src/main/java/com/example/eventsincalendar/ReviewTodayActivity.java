@@ -23,12 +23,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ReviewTodayActivity extends Activity {
     int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
     Intent resultValue;
     public HomeFragment fragment;
+    private DatabaseHelperEv mydb;
     LinearLayout ln;
     TextView ev;
     TextView day;
@@ -52,6 +54,7 @@ public class ReviewTodayActivity extends Activity {
         //Button close = findViewById(R.id.close);
         TextView month1 = findViewById(R.id.month);
         TextView day_of_weeks = findViewById(R.id.day_of_weeks);
+        mydb = new DatabaseHelperEv(getApplicationContext());
 
         Calendar ci = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat")
@@ -79,52 +82,77 @@ public class ReviewTodayActivity extends Activity {
         day_of_weeks.setText("за сегодня: "+weekday+" "+sDate);
         System.out.println(dw);
 
+        // Define the desired date format
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat format1 = new SimpleDateFormat("EE dd-MM-yyyy");
+        System.out.println(format1.format(ci.getTime()));
+        String today0 = format1.format(ci.getTime());
+//        String sDate0 =  format1.format(today0);
+        System.out.println(today0);
+        StringBuilder sb = new StringBuilder();
 
+        boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+        String eve = mydb.getEvents(today0, DatabaseHelperEv.TABLE);
+        //String stri = String.valueOf(eve);
+        String str1 =  "<font color=\"#0000FF\">" + String.valueOf(eve)+ " <br>";
+        System.out.println(str1);
+        if (search){
+            ArrayList<ArrayList<String>> all_data = mydb.getAllRows();
+            sb.append(str1).append(" ");
+            System.out.println(sb);
+            event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
 
-
-        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-        if (exists) {
-            StringBuilder sb = new StringBuilder();
-            try (FileInputStream fis = openFileInput("event_diary.txt");
-                 InputStreamReader isr = new InputStreamReader(fis);
-                 BufferedReader br = new BufferedReader(isr)) {
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    boolean contains = line.contains(sDate);
-                    if (contains) {
-                        String day1 = line.substring(0, 11);
-                        String event1 = line.substring(11);
-                        String str =  "<font color=\"#0000FF\">"  + day1 + "</font>" + event1+ " <br>";
-                        sb.append(str);
-                    }else {
-//                                    delete.setEnabled(false);
-//                                    editor.setEnabled(false);
-                    }
-                }
-
-                event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-                //event.setHint(Html.fromHtml(st, Html.FROM_HTML_MODE_LEGACY));
-                if (sb.length() == 0) {
-                    event.setHint(sDate + " нет событий за этот день!");
-                    event.requestFocus();
-                    event.setSelection(event.getText().length());
-
-                    //дата синяя
-//                                String str = "<font color=\"#0000FF\">" + sDate+": " + "</font>" + " нет событий за этот день!";
-//                                event.setHint(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
-//
-                    //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
-
-
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }else {
             event.setHint(R.string.file_exist);
 
         }
+
+
+
+
+//        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+//        if (exists) {
+//            StringBuilder sb = new StringBuilder();
+//            try (FileInputStream fis = openFileInput("event_diary.txt");
+//                 InputStreamReader isr = new InputStreamReader(fis);
+//                 BufferedReader br = new BufferedReader(isr)) {
+//                String line;
+//
+//                while ((line = br.readLine()) != null) {
+//                    boolean contains = line.contains(sDate);
+//                    if (contains) {
+//                        String day1 = line.substring(0, 11);
+//                        String event1 = line.substring(11);
+//                        String str =  "<font color=\"#0000FF\">"  + day1 + "</font>" + event1+ " <br>";
+//                        sb.append(str);
+//                    }else {
+////                                    delete.setEnabled(false);
+////                                    editor.setEnabled(false);
+//                    }
+//                }
+//
+//                event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+//                //event.setHint(Html.fromHtml(st, Html.FROM_HTML_MODE_LEGACY));
+//                if (sb.length() == 0) {
+//                    event.setHint(sDate + " нет событий за этот день!");
+//                    event.requestFocus();
+//                    event.setSelection(event.getText().length());
+//
+//                    //дата синяя
+////                                String str = "<font color=\"#0000FF\">" + sDate+": " + "</font>" + " нет событий за этот день!";
+////                                event.setHint(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
+////
+//                    //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
+//
+//
+//                }
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }else {
+//            event.setHint(R.string.file_exist);
+//
+//        }
 
 
 //        close.setOnClickListener(new  View.OnClickListener(){

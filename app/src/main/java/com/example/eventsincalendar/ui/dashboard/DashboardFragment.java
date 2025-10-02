@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eventsincalendar.CustomDialogFragment;
 import com.example.eventsincalendar.DatabaseHelper;
+import com.example.eventsincalendar.DatabaseHelperEv;
 import com.example.eventsincalendar.MyWidget2;
 import com.example.eventsincalendar.R;
 import com.example.eventsincalendar.databinding.FragmentDashboardBinding;
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DashboardFragment extends Fragment {
@@ -58,7 +60,7 @@ public class DashboardFragment extends Fragment {
     public int current_month = calendar.get(Calendar.MONTH);
     public int current_day = calendar.get(Calendar.DATE);
 
-    private DatabaseHelper mydb ;
+    private DatabaseHelperEv mydb ;
 
 
 
@@ -98,41 +100,96 @@ public class DashboardFragment extends Fragment {
         getActivity().sendBroadcast(intentq);
 
 
-        mydb = new DatabaseHelper(getContext());
+        mydb = new DatabaseHelperEv(getContext());
         //mydb.AddnewTable("plan3");
         // поиск по слову Set SearchView query text listener
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 StringBuilder sb = new StringBuilder();
-                boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-                if (exists) {
-                    try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
-                         InputStreamReader isr = new InputStreamReader(fis);
-                         BufferedReader br = new BufferedReader(isr)) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            boolean contains = line.contains(query);
-                            if (contains) {
-                                // цвет даты
-                                //textMultiline.setText(Html.fromHtml("<font color=\"#006400\">" + today  + "</font>"));
-                                String day = line.substring(0, 11);
-                                String event = line.substring(11);
-                                String str = String.valueOf(Html.fromHtml( "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>"));
-                                sb.append(str);
-                                //sb.append(line + "\n");
-                            }
+                ArrayList<ArrayList<String>> all_data = mydb.getAllRows();
+                System.out.println(all_data);
+                int size = all_data.size();
+                System.out.println(size);
+                System.out.println(all_data.get(0).get(0));
+                System.out.println(all_data.get(0).get(1));
+                int s = query.length();
+                System.out.println(query);
+                System.out.println(s);
+                int in_1 = s-1;
+                int in_2 = s-2;
+                boolean iskl = false;
+
+
+                try {
+                    String query_1 = query.substring(0, s-1);
+                    String query_2 = query.substring(0, s-2);
+
+                    for (int i = 0; i < size; i++) {
+                        System.out.println(all_data.get(i).get(1));
+                        String mon = all_data.get(i).get(0);
+                        String ev = all_data.get(i).get(1);
+
+
+                        boolean contains_1 = ev.contains(query_1);
+                        boolean contains_2 = ev.contains(query_2);
+                        boolean contains = ev.contains(query);
+                        if ((contains) || (contains_1) || (contains_2)) {
+                            System.out.println(data + "в файле есть");
+                            String str = "<span style=\"background-color:#f3f402;\">" + mon + ": " + "</span>" + ev + " <br>";
+                            System.out.println(str);
+                            sb.append(str);
+
+                            //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
+
                         }
-                        textMultiline.setText(sb.toString());
-                        if (sb.length() == 0) {
-                            textMultiline.setText("По слову '" + query + "' ничего не найдено. Попробуйте ввести первые несколько букв слова.");
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
-                } else {
-                    textMultiline.setText("В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!");
+
+
+
+                }catch (StringIndexOutOfBoundsException e){
+                    System.out.println("pass");
+                    iskl = true;
+
                 }
+                textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+
+                if (sb.length() == 0) {
+                    if (iskl)
+                        textMultiline.setText("Введите слово, а не букву!");
+
+                    else
+                        textMultiline.setText("По слову '" + query + "' ничего не найдено. Попробуйте ввести первые несколько букв слова.");
+                }
+
+//                boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+//                if (exists) {
+//                    try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
+//                         InputStreamReader isr = new InputStreamReader(fis);
+//                         BufferedReader br = new BufferedReader(isr)) {
+//                        String line;
+//                        while ((line = br.readLine()) != null) {
+//                            boolean contains = line.contains(query);
+//                            if (contains) {
+//                                // цвет даты
+//                                //textMultiline.setText(Html.fromHtml("<font color=\"#006400\">" + today  + "</font>"));
+//                                String day = line.substring(0, 11);
+//                                String event = line.substring(11);
+//                                String str = String.valueOf(Html.fromHtml( "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>"));
+//                                sb.append(str);
+//                                //sb.append(line + "\n");
+//                            }
+//                        }
+//                        textMultiline.setText(sb.toString());
+//                        if (sb.length() == 0) {
+//                            textMultiline.setText("По слову '" + query + "' ничего не найдено. Попробуйте ввести первые несколько букв слова.");
+//                        }
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                } else {
+//                    textMultiline.setText("В Вашем календаре пока нет событий! Во вкладке \"Главный\" или \"Календарь\" выберите дату, запишите событие и нажмите на \"ВНЕСТИ\"!");
+//                }
 //                if (myList.contains(query)) {
 //                    adapter.getFilter().filter(query);
 //                }

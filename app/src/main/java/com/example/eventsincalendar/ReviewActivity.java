@@ -50,7 +50,6 @@ public class ReviewActivity extends Activity {
         Button add = findViewById(R.id.button);
         Button close = findViewById(R.id.close);
         Button delete = findViewById(R.id.delete);
-        Button editor = findViewById(R.id.editor);
         TextView number = findViewById(R.id.number);
         TextView year1 = findViewById(R.id.year);
         TextView month1 = findViewById(R.id.month);

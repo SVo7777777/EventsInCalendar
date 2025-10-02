@@ -161,7 +161,7 @@ public class NotificationsFragment extends Fragment {
                 String ev = mydb.getEvents(data1, DatabaseHelperEv.TABLE);
 
                 @SuppressLint("SimpleDateFormat")
-                final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                final SimpleDateFormat sdf = new SimpleDateFormat("EE dd-MM-yyyy");
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth);
                 String sDate = sdf.format(calendar.getTime());
@@ -250,9 +250,9 @@ public class NotificationsFragment extends Fragment {
         button2.setOnClickListener(v -> {
             String data = String.valueOf(textMultiline.getText());
             System.out.println(data);
-            String day_ = data.substring(0, 11);
-            String day = data.substring(0, 10);
-            String event = data.substring(12);
+            String day_ = data.substring(0, 11+3);
+            String day = data.substring(0, 10+3);
+            String event = data.substring(12+3);
 //            int d = Integer.parseInt(data.substring(0, 2));
 //            int m = Integer.parseInt(data.substring(3, 5));
 //            int y = Integer.parseInt(data.substring(6, 10));
@@ -281,12 +281,12 @@ public class NotificationsFragment extends Fragment {
                     boolean search = mydb.checkDataExistOrNot(day, DatabaseHelperEv.TABLE);
                     System.out.println("search: "+search);
                     if (search) {
-                        Toast.makeText(getActivity(), day + " уже есть!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), day + " добавлено", Toast.LENGTH_SHORT).show();
                         System.out.println(data + " уже есть!");
                         String ev = mydb.getEvents(data1, DatabaseHelperEv.TABLE);
 
                         int id = mydb.GetId(data1, DatabaseHelperEv.TABLE);
-                        boolean update_events = mydb.updateEvents(id, data1, String.valueOf(data), "hours");
+                        boolean update_events = mydb.updateEvents(id, data1, String.valueOf(event), DatabaseHelperEv.TABLE);
                         if (update_events){
                             System.out.println("событие изменено");
                         }

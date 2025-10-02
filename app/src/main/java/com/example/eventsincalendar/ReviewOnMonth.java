@@ -26,22 +26,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ReviewOnMonth extends AppCompatActivity {
 
     boolean addRecord;
+    private DatabaseHelperEv mydb;
     TextView textMultiline;
     TextView textView;
     ImageButton btnd;
     ImageButton btn_open;
+    StringBuilder st;
 
     LinearLayout linear;
     Calendar calendar = Calendar.getInstance();
     public int current_year = calendar.get(Calendar.YEAR);
     public int current_month = calendar.get(Calendar.MONTH);
     public int current_day = calendar.get(Calendar.DATE);
-    String current_data = "_"+ current_day +"-"+ (current_month + 1) +"-"+ current_year;
+    String current_data = "-"+ (current_month + 1) +"-"+ current_year;
+    String current_data0 = "_"+ current_day +"-"+ (current_month + 1) +"-"+ current_year;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     String[] name_month = {"month", "ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ","АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"};
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
@@ -67,6 +71,7 @@ public class ReviewOnMonth extends AppCompatActivity {
         btnd = findViewById(R.id.btnd);
         btn_open = findViewById(R.id.btn_open);
         linear = findViewById(R.id.lineard);
+        mydb = new DatabaseHelperEv(getApplicationContext());
 
         btnd.setOnClickListener(v -> {
             System.out.println("hear-btnd");
@@ -109,80 +114,116 @@ public class ReviewOnMonth extends AppCompatActivity {
         //проссмотр за месяц
         addRecord = false;
         Intent intent = getIntent();
-        String   data = intent.getStringExtra("data");;
+        String  data = intent.getStringExtra("data");
+        System.out.println(data);
 
-        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+
+        ArrayList<ArrayList<String>> all_data = mydb.getAllRows();
+        System.out.println(all_data);
+        int size = all_data.size();
+        System.out.println(size);
+        System.out.println(all_data.get(0).get(0));
+        System.out.println(all_data.get(0).get(1));
 
         System.out.println(data.length());
-        if (exists) {
+        StringBuilder sb = new StringBuilder();
+
             if ((data.length() >= 10) && (data.length() <= 12)) {
                 int index_first = data.indexOf("-");
                 int index_second = data.indexOf("-", index_first + 1);
                 String month = data.substring(index_first, index_second + 5);//-1-2025
                 String year = data.substring(index_second + 1, index_second + 5);//-1-2025
-                String number_month = data.substring(index_first+1, index_second);
+                String number_month = data.substring(index_first + 1, index_second);
                 //поиск месяца по виду -01-2025
                 StringBuilder month2 = new StringBuilder(month);
                 month2.insert(1, '0');
-                System.out.println(month2);
+                System.out.println("month2=" + month2);
                 int number = Integer.parseInt(number_month);
-                System.out.println("номер"+number_month+"месяца");
+                System.out.println("номер" + number_month + "месяца");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     System.out.println(name_month[number]);
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    textView.setText("   за " +name_month[number]+" "+year + "г.:");
+                    textView.setText("   за " + name_month[number] + " " + year + "г.:");
                 }
+                for (int i = 0; i < size; i++) {
+                    System.out.println(all_data.get(i).get(1));
+                    String mon = all_data.get(i).get(0);
+                    String ev = all_data.get(i).get(1);
+                    boolean contains = mon.contains(month);
+                    boolean contains2 = mon.contains(month2);
+
+
+                    if ((contains) || (contains2)) {
+                        System.out.println(data + "в файле есть");
+                        String str = "<span style=\"background-color:#f3f402;\">" + mon + ": " + "</span>" + ev + " <br>";
+                        System.out.println(str);
+                        sb.append(str);
+
+                        //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
+
+                    }
+                }
+
+
+
+                textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+                if (sb.length() == 0) {
+                    textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ  МЕСЯЦ!");
+                }
+
+
                 //считываем с файла всё что есть
-                StringBuilder sb = new StringBuilder();
-                try (FileInputStream fis = openFileInput("event_diary.txt");
-                     InputStreamReader isr = new InputStreamReader(fis);
-                     BufferedReader br = new BufferedReader(isr)) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        System.out.println(data + "мы тут");
-                        System.out.println(line);
-                        System.out.println(data);
-                        boolean contains = line.contains(month);
-                        boolean contains2 = line.contains(month2);
-                        if ((contains) || (contains2)) {
-                            System.out.println(data + "в файле есть");
-                            String day = line.substring(0, 11);
-                            String event = line.substring(11);
-                            System.out.println("day="+day);
-                            System.out.println("event="+event);
-                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
-                            System.out.println(str);
-                            sb.append(str);
 
-                            //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
-
-                        }
-
-
-                    }
-                    //textMultiline.setText(sb.toString());
-                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-
-                    //;String str = "<span style=\"background-color:#f3f402;\">" + sb + "</span>" + " нет событий за этот день!";
-                    //textMultiline.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
-
-                    //textMultiline.setText(Html.fromHtml("<font background_color=\"#0000FF\">" + sb.toString()  + "</font>"+ " нет событий за этот день!"));
-
-                    if (sb.length() == 0) {
-                        textMultiline.setText( "   НЕТ СОБЫТИЙ ЗА ЭТОТ  МЕСЯЦ!");
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+//                try (FileInputStream fis = openFileInput("event_diary.txt");
+//                     InputStreamReader isr = new InputStreamReader(fis);
+//                     BufferedReader br = new BufferedReader(isr)) {
+//                    String line;
+//                    while ((line = br.readLine()) != null) {
+//                        System.out.println(data + "мы тут");
+//                        System.out.println(line);
+//                        System.out.println(data);
+////                        boolean contains = line.contains(month);
+////                        boolean contains2 = line.contains(month2);
+//                        if ((contains) || (contains2)) {
+//                            System.out.println(data + "в файле есть");
+//                            String day = line.substring(0, 11);
+//                            String event = line.substring(11);
+//                            System.out.println("day="+day);
+//                            System.out.println("event="+event);
+//                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
+//                            System.out.println(str);
+//                            sb.append(str);
+//
+//                            //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
+//
+//                        }
+//
+//
+//                    }
+//                    //textMultiline.setText(sb.toString());
+//                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+//
+//                    //;String str = "<span style=\"background-color:#f3f402;\">" + sb + "</span>" + " нет событий за этот день!";
+//                    //textMultiline.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
+//
+//                    //textMultiline.setText(Html.fromHtml("<font background_color=\"#0000FF\">" + sb.toString()  + "</font>"+ " нет событий за этот день!"));
+//
+//                    if (sb.length() == 0) {
+//                        textMultiline.setText( "   НЕТ СОБЫТИЙ ЗА ЭТОТ  МЕСЯЦ!");
+//                    }
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
             } else {
                 Toast.makeText(this, "Выберите дату на календаре!", Toast.LENGTH_LONG).show();
                 System.out.println("кнопка не работает");
             }
-        }else {
-            Toast.makeText(this, "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
+//        }else {
+//            Toast.makeText(this, "В Вашем календаре пока нет событий! Выберите дату в календаре" +
+//                    ", запишите событие  и внесите!", Toast.LENGTH_LONG).show();
 
-        }
+
     }
     private void openPdf () {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

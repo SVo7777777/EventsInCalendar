@@ -33,12 +33,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
 public class ReviewOWeek extends AppCompatActivity {
 
     boolean addRecord;
+    DatabaseHelperEv mydb;
     TextView textMultiline;
     TextView textView;
     ImageButton btnd;
@@ -49,7 +51,7 @@ public class ReviewOWeek extends AppCompatActivity {
     public int current_year = calendar.get(Calendar.YEAR);
     public int current_month = calendar.get(Calendar.MONTH);
     public int current_day = calendar.get(Calendar.DATE);
-    String current_data = "_"+ current_day +"-"+ (current_month + 1) +"-"+ current_year;
+    String current_data = "-"+ current_year;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
@@ -76,15 +78,19 @@ public class ReviewOWeek extends AppCompatActivity {
         btnd = findViewById(R.id.btnd);
         btn_open = findViewById(R.id.btn_open);
         linear = findViewById(R.id.lineard);
+        mydb = new DatabaseHelperEv(getApplicationContext());
+        addRecord = false;
+        Intent intent = getIntent();
+        int week = intent.getIntExtra("week", 0);
 
 
         btnd.setOnClickListener(v -> {
             System.out.println("hear-btnd");
             Log.d("size", linear.getWidth() + " " + linear.getWidth());
-            boolean wr = CreatPDF.creatPDF(linear, current_data);
+            boolean wr = CreatPDF.creatPDF(linear,week + current_data);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 if (wr){
-                    String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results"+ current_data + ".pdf";
+                    String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results"+week+ current_data + ".pdf";
                     CustomDialogFragment dialog = new CustomDialogFragment();
                     Bundle args = new Bundle();
                     args.putString("attention", attention);
@@ -114,10 +120,17 @@ public class ReviewOWeek extends AppCompatActivity {
 
         });
 
-        addRecord = false;
-        Intent intent = getIntent();
-        int week = intent.getIntExtra("week", 0);
+
+
         System.out.println("week "+ week);
+
+        ArrayList<ArrayList<String>> all_data = mydb.getAllRows();
+        System.out.println(all_data);
+        int size = all_data.size();
+        System.out.println(size);
+        System.out.println(all_data.get(0).get(0));
+        System.out.println(all_data.get(0).get(1));
+
 
         Bundle args = intent.getBundleExtra("BUNDLE");
         assert args != null;
@@ -127,50 +140,79 @@ public class ReviewOWeek extends AppCompatActivity {
         assert week_days != null;
         String weekDays = Arrays.toString(week_days);
         System.out.println("weekDays "+weekDays);
-        String year = week_days[0].substring(6);;
+        String year = week_days[0].substring(6);
 
-        //System.out.println("week_days[0]"+result);
-        //String data = String.valueOf((new MainActivity().textMultiline.getText()));
+        StringBuilder sb = new StringBuilder();
 
-        //System.out.println(data.length());
-        if (exists) {
-            if ( week_days.equals("")) {
-                Toast.makeText(this, "выберите дату на календаре", Toast.LENGTH_LONG).show();
-                System.out.println("кнопка не работает");
+        if ( !week_days.equals("")) {
+            textView.setText("  за " + week + "ую неделю " +year +"г.:");
+            for (int i = 0; i < size; i++) {
+                System.out.println(all_data.get(i).get(1));
+                String mon = all_data.get(i).get(0);
+                String ev = all_data.get(i).get(1);
 
-            } else {
-                textView.setText("  за " + week + "ую неделю " +year +"г.:");
-                //считываем с файла всё что есть
-                StringBuilder sb = new StringBuilder();
-                try (FileInputStream fis = openFileInput("event_diary.txt");
-                     InputStreamReader isr = new InputStreamReader(fis);
-                     BufferedReader br = new BufferedReader(isr)) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        //есть ли в строке дата из массива дней недели
-                        boolean contains = Arrays.stream(week_days).anyMatch(line::contains);
-                        //boolean contains = line.contains(week_days);
-                        if (contains)  {
-                            String day = line.substring(0, 11);
-                            String event = line.substring(11);
-                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
-                            sb.append(str);
-                        }
+                //есть ли в строке дата из массива дней недели
+                boolean contains = Arrays.stream(week_days).anyMatch(mon::contains);
+                if (contains) {
 
+                    String str = "<span style=\"background-color:#f3f402;\">" + mon + ": " + "</span>" + ev + " <br>";
+                    System.out.println(str);
+                    sb.append(str);
 
-                    }
-                    //
-                    //textMultiline.setText(sb.toString());
-                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+                    //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
 
-                    if (sb.length() == 0) {
-                        textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТУ НЕДЕЛЮ!");
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
-
             }
+
+
+            textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+            if (sb.length() == 0) {
+                textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ  МЕСЯЦ!");
+            }
+//        }
+//
+//        //System.out.println("week_days[0]"+result);
+//        //String data = String.valueOf((new MainActivity().textMultiline.getText()));
+//
+//        //System.out.println(data.length());
+//        if (exists) {
+//            if ( week_days.equals("")) {
+//                Toast.makeText(this, "выберите дату на календаре", Toast.LENGTH_LONG).show();
+//                System.out.println("кнопка не работает");
+//
+//            } else {
+//                textView.setText("  за " + week + "ую неделю " +year +"г.:");
+//                //считываем с файла всё что есть
+//                StringBuilder sb = new StringBuilder();
+//                try (FileInputStream fis = openFileInput("event_diary.txt");
+//                     InputStreamReader isr = new InputStreamReader(fis);
+//                     BufferedReader br = new BufferedReader(isr)) {
+//                    String line;
+//                    while ((line = br.readLine()) != null) {
+//                        //есть ли в строке дата из массива дней недели
+//                        boolean contains = Arrays.stream(week_days).anyMatch(line::contains);
+//                        //boolean contains = line.contains(week_days);
+//                        if (contains)  {
+//                            String day = line.substring(0, 11);
+//                            String event = line.substring(11);
+//                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
+//                            sb.append(str);
+//                        }
+//
+//
+//                    }
+//                    //
+//                    //textMultiline.setText(sb.toString());
+//                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+//
+//                    if (sb.length() == 0) {
+//                        textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТУ НЕДЕЛЮ!");
+//                    }
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//            }
         }else {
             Toast.makeText(this, "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
             System.out.println("pass");

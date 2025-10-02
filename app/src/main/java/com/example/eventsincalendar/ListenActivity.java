@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,6 +29,7 @@ public class ListenActivity extends Activity {
     private TextToSpeech tts;
     private String text;
     private String t;
+    private DatabaseHelperEv mydb;
 
 
     @SuppressLint("MissingInflatedId")
@@ -43,38 +45,49 @@ public class ListenActivity extends Activity {
 
         setContentView(R.layout.listen);
 
+        mydb = new DatabaseHelperEv(getApplicationContext());
+
         Calendar cldr = Calendar.getInstance(Locale.ROOT);
         Date date = cldr.getTime();
 
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("EE dd-MM-yyyy");
         String sDate =  sdf.format(date);
         StringBuilder sb = new StringBuilder();
 
         t = "Мои события за сегодня.";
         boolean ev = false;
-
-        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-        if (exists) {
-
-            try (FileInputStream fis = openFileInput("event_diary.txt");
-                 InputStreamReader isr = new InputStreamReader(fis);
-                 BufferedReader br = new BufferedReader(isr)) {
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    boolean contains = line.contains(sDate);
-                    if (contains) {
-//                         = line.substring(0, 11);
-                        String event = line.substring(11);
-                        sb.append(event).append(" ");
-                        ev = true;
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+        String eve = mydb.getEvents(sDate, DatabaseHelperEv.TABLE);
+        String str = String.valueOf(eve);
+        System.out.println(str);
+        if (search){
+            sb.append(str).append(" ");
+            System.out.println(sb);
+            ev = true;
         }
+
+//        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+//        if (exists) {
+//
+//            try (FileInputStream fis = openFileInput("event_diary.txt");
+//                 InputStreamReader isr = new InputStreamReader(fis);
+//                 BufferedReader br = new BufferedReader(isr)) {
+//                String line;
+//
+//                while ((line = br.readLine()) != null) {
+//                    boolean contains = line.contains(sDate);
+//                    if (contains) {
+////                         = line.substring(0, 11);
+//                        String event = line.substring(11);
+//                        sb.append(event).append(" ");
+//                        ev = true;
+//                    }
+//                }
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         text = t + String.valueOf(sb);
 
         // Initialize TextToSpeech instance

@@ -21,7 +21,7 @@
             android:background="@color/white"
             android:ems="10"
             android:gravity="start|top"
-            android:hint="@string/descript"
+            android:hint="@string/attention"
             android:inputType="textMultiLine"
             android:labelFor="@id/calendarView10"
             android:textColor="@color/Purple"

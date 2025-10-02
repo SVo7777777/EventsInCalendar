@@ -27,6 +27,8 @@ import android.widget.RemoteViews;
 public class MyWidget2 extends AppWidgetProvider {
 
     static final String LOG_TAG = "myLogs";
+    private DatabaseHelperEv mydb;
+
 
 
     @Override
@@ -37,10 +39,12 @@ public class MyWidget2 extends AppWidgetProvider {
     }
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         ArrayList<ArrayList<String>> str;
-        try (DatabaseHelper mydb = new DatabaseHelper(context)) {
+        try (DatabaseHelperEv mydb = new DatabaseHelperEv(context)) {
             str = mydb.getAllRows();
         }
         System.out.println(str);
+        mydb = new DatabaseHelperEv(context.getApplicationContext());
+
 
         Calendar calendar = Calendar.getInstance();
         int current_year = calendar.get(Calendar.YEAR);
@@ -62,55 +66,68 @@ public class MyWidget2 extends AppWidgetProvider {
 
         // Define the desired date format
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("EE dd-MM-yyyy");
         String sDate =  sdf.format(date);
+        System.out.println(sDate);
         StringBuilder sb = new StringBuilder();
 
-        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-        if (exists) {
+        boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+        String eve = mydb.getEvents(sDate, DatabaseHelperEv.TABLE);
+        //String stri = String.valueOf(eve);
+        String str1 =  "<font color=\"#0000FF\">" + String.valueOf(eve)+ " <br>";
+        System.out.println(str);
+        if (search){
 
-            try (FileInputStream fis = context.openFileInput("event_diary.txt");
-                 InputStreamReader isr = new InputStreamReader(fis);
-                 BufferedReader br = new BufferedReader(isr)) {
-                String line;
+            sb.append(str1).append(" ");
+            System.out.println(sb);
 
-                while ((line = br.readLine()) != null) {
-                    boolean contains = line.contains(sDate);
-                    if (contains) {
-                        String day = line.substring(0, 11);
-                        String event1 = line.substring(11);
-                        String str1 =  "<font color=\"#0000FF\">" + event1+ " <br>";
+        }
 
-                        sb.append(str1);
-                        System.out.println("sb"+sb);
-                    }else {
-//                                    delete.setEnabled(false);
-//                                    editor.setEnabled(false);
-                    }
-                }
-
-                //event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-                //event.setHint(Html.fromHtml(st, Html.FROM_HTML_MODE_LEGACY));
-//                if (sb.length() == 0) {
-//                    event.setHint(sDate + " нет событий за этот день!");
-//                    add.setEnabled(true);
-//                    delete.setEnabled(false);
-//                    editor.setEnabled(false);
-//                    event.requestFocus();
-//                    event.setSelection(event.getText().length());
-
-                    //дата синяя
-//                                String str = "<font color=\"#0000FF\">" + sDate+": " + "</font>" + " нет событий за этот день!";
-//                                event.setHint(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
+//        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+//        if (exists) {
 //
-                    //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
-
-
-               // }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-       }
+//            try (FileInputStream fis = context.openFileInput("event_diary.txt");
+//                 InputStreamReader isr = new InputStreamReader(fis);
+//                 BufferedReader br = new BufferedReader(isr)) {
+//                String line;
+//
+//                while ((line = br.readLine()) != null) {
+//                    boolean contains = line.contains(sDate);
+//                    if (contains) {
+//                        String day = line.substring(0, 11);
+//                        String event1 = line.substring(11);
+//                        String str1 =  "<font color=\"#0000FF\">" + event1+ " <br>";
+//
+//                        sb.append(str1);
+//                        System.out.println("sb"+sb);
+//                    }else {
+////                                    delete.setEnabled(false);
+////                                    editor.setEnabled(false);
+//                    }
+//                }
+//
+//                //event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+//                //event.setHint(Html.fromHtml(st, Html.FROM_HTML_MODE_LEGACY));
+////                if (sb.length() == 0) {
+////                    event.setHint(sDate + " нет событий за этот день!");
+////                    add.setEnabled(true);
+////                    delete.setEnabled(false);
+////                    editor.setEnabled(false);
+////                    event.requestFocus();
+////                    event.setSelection(event.getText().length());
+//
+//                    //дата синяя
+////                                String str = "<font color=\"#0000FF\">" + sDate+": " + "</font>" + " нет событий за этот день!";
+////                                event.setHint(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
+////
+//                    //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
+//
+//
+//               // }
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//       }
 //        else {
 //            event.setHint(R.string.file_exist);
 //

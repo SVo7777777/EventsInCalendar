@@ -10,15 +10,7 @@
     android:background="@color/Wheat"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="1"
-        android:background="@color/Wheat"
-        android:textColor="#3F51B5"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,6 +23,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/Wheat"
+                android:textColor="#3F51B5"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/editTextTextMultiLine2"
@@ -73,7 +74,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/Wheat"
             app:srcCompat="@drawable/pdf_generate_icon_216173"
-            tools:ignore="NestedWeights" />
+            tools:ignore="NestedWeights,SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/btn_open"
@@ -82,7 +83,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:backgroundTint="@color/Wheat"
-            app:srcCompat="@drawable/open_envelope_svgrepo_com" />
+            app:srcCompat="@drawable/open_envelope_svgrepo_com"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
 

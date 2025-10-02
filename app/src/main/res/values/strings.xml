@@ -4,7 +4,7 @@
     <string name="title_dashboard">Поиск</string>
     <string name="title_notifications">Главный</string>
     <string name="monday">пн</string>
-    <string name="attention">"Запишите событие, а потом внесите! "</string>
+    <string name="attention">"Нажмите на дату, запишите событие и нажмите на "ВНЕСТИ"! "</string>
     <string name="file_exist">В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!</string>
     <string name="salary">з/п</string>
     <string name="result_salary">Всего заработано :</string>
@@ -22,7 +22,7 @@
     <string name="ok">Ok</string>
     <string name="my_hours_widget">мои события</string>
     <string name="atantion">"Запишите событие, а потом внесите! "</string>
-    <string name="descript">Выберите дату и запишите событие.</string>
+    <string name="descript">Во вкладке "Главный" или "Календарь" выберите дату, запишите событие и нажмите на "ВНЕСТИ".</string>
     <string name="add">ВНЕСТИ</string>
     <string name="review">ПРОССМОТРЕТЬ</string>
     <string name="reset">СБРОСИТЬ</string>

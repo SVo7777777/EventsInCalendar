@@ -30,12 +30,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
 public class ReviewOYear extends AppCompatActivity {
 
     boolean addRecord;
+    private DatabaseHelperEv mydb;
     TextView textMultiline;
     TextView textView;
     ImageButton btnd;
@@ -46,7 +48,7 @@ public class ReviewOYear extends AppCompatActivity {
     public int current_year = calendar.get(Calendar.YEAR);
     public int current_month = calendar.get(Calendar.MONTH);
     public int current_day = calendar.get(Calendar.DATE);
-    String current_data = "_"+ current_day +"-"+ (current_month + 1) +"-"+ current_year;
+    String current_data = "-"+ current_year;
 
     @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
@@ -73,6 +75,7 @@ public class ReviewOYear extends AppCompatActivity {
         btnd = findViewById(R.id.btnd);
         btn_open = findViewById(R.id.btn_open);
         linear = findViewById(R.id.lineard);
+        mydb = new DatabaseHelperEv(getApplicationContext());
 
         btnd.setOnClickListener(v -> {
             System.out.println("hear-btnd");
@@ -117,52 +120,90 @@ public class ReviewOYear extends AppCompatActivity {
         Intent intent = getIntent();
         String   data = intent.getStringExtra("data");
 
-        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-        //String data = String.valueOf((new MainActivity().textMultiline.getText()));
-        System.out.println(data);
+        ArrayList<ArrayList<String>> all_data = mydb.getAllRows();
+        System.out.println(all_data);
+        int size = all_data.size();
+        System.out.println(size);
+        System.out.println(all_data.get(0).get(0));
+        System.out.println(all_data.get(0).get(1));
+
         System.out.println(data.length());
-        if (exists) {
-            if ((data.length() >= 10) && (data.length() <= 12)) {
-                int index_first = data.indexOf("-");
-                int index_second = data.indexOf("-", index_first + 1);
-                String year = data.substring(index_second + 1, index_second + 5);//-1-2025
-                System.out.println("выбранный год: "+year);
-                textView.setText("   за " + year + "г.:");
+        StringBuilder sb = new StringBuilder();
 
+        if ((data.length() >= 10) && (data.length() <= 12)) {
+            int index_first = data.indexOf("-");
+            int index_second = data.indexOf("-", index_first + 1);
+            String year = data.substring(index_second + 1, index_second + 5);//-1-2025
+            System.out.println("выбранный год: "+year);
+            textView.setText("   за " + year + "г.:");
+            for (int i = 0; i < size; i++) {
+                System.out.println(all_data.get(i).get(1));
+                String mon = all_data.get(i).get(0);
+                String ev = all_data.get(i).get(1);
+                boolean contains = mon.contains(year);
+                if (contains) {
+                    System.out.println(data + "в файле есть");
+                    String str = "<span style=\"background-color:#f3f402;\">" + mon + ": " + "</span>" + ev + " <br>";
+                    System.out.println(str);
+                    sb.append(str);
 
-                //считываем с файла всё что есть
-                StringBuilder sb = new StringBuilder();
-                try (FileInputStream fis = openFileInput("event_diary.txt");
-                     InputStreamReader isr = new InputStreamReader(fis);
-                     BufferedReader br = new BufferedReader(isr)) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        boolean contains = line.contains(year);
-                        if (contains)  {
-                            String day = line.substring(0, 11);
-                            String event = line.substring(11);
-                            System.out.println("day="+day);
-                            System.out.println("event="+event);
-                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
-                            System.out.println(str);
-                            sb.append(str);
-                            //sb.append(line).append("\n");
-                        }
+                    //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
 
-
-                    }
-                    //
-                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-                    if (sb.length() == 0) {
-                        textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ ГОД!");
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
-            } else {
-                Toast.makeText(this, "выберите дату на календаре", Toast.LENGTH_LONG).show();
-                System.out.println("кнопка не работает");
             }
+
+
+            textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+            if (sb.length() == 0) {
+                textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ  МЕСЯЦ!");
+            }
+//        }
+//        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+//        //String data = String.valueOf((new MainActivity().textMultiline.getText()));
+//        System.out.println(data);
+//        System.out.println(data.length());
+//        if (exists) {
+//            if ((data.length() >= 10) && (data.length() <= 12)) {
+//                int index_first = data.indexOf("-");
+//                int index_second = data.indexOf("-", index_first + 1);
+//                String year = data.substring(index_second + 1, index_second + 5);//-1-2025
+//                System.out.println("выбранный год: "+year);
+//                textView.setText("   за " + year + "г.:");
+//
+//
+//                //считываем с файла всё что есть
+//                StringBuilder sb = new StringBuilder();
+//                try (FileInputStream fis = openFileInput("event_diary.txt");
+//                     InputStreamReader isr = new InputStreamReader(fis);
+//                     BufferedReader br = new BufferedReader(isr)) {
+//                    String line;
+//                    while ((line = br.readLine()) != null) {
+//                        boolean contains = line.contains(year);
+//                        if (contains)  {
+//                            String day = line.substring(0, 11);
+//                            String event = line.substring(11);
+//                            System.out.println("day="+day);
+//                            System.out.println("event="+event);
+//                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
+//                            System.out.println(str);
+//                            sb.append(str);
+//                            //sb.append(line).append("\n");
+//                        }
+//
+//
+//                    }
+//                    //
+//                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+//                    if (sb.length() == 0) {
+//                        textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ ГОД!");
+//                    }
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            } else {
+//                Toast.makeText(this, "выберите дату на календаре", Toast.LENGTH_LONG).show();
+//                System.out.println("кнопка не работает");
+//            }
         }else {
             Toast.makeText(this, "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
             System.out.println("pass");

@@ -336,7 +336,7 @@ public class HomeFragment extends Fragment {
 //        events[6][6].setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
         @SuppressLint("SimpleDateFormat")
-        final SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+        final SimpleDateFormat sdf1 = new SimpleDateFormat("EE dd-MM-yyyy");
 
         calendar.set(current_year, current_month, current_day);
         String sDate_now = sdf1.format(calendar.getTime());
@@ -629,7 +629,6 @@ public class HomeFragment extends Fragment {
                     Button add = view.findViewById(R.id.button);
                     Button close = view.findViewById(R.id.close);
                     Button delete = view.findViewById(R.id.delete);
-                    Button editor = view.findViewById(R.id.editor);
                     TextView number = view.findViewById(R.id.number);
                     number.setText(day1.getText());
                     TextView year1 = view.findViewById(R.id.year);
@@ -650,15 +649,17 @@ public class HomeFragment extends Fragment {
                     //выводится событие, если оно есть
                     boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
                     String ev = mydb.getEvents(sDate, DatabaseHelperEv.TABLE);
-                    String str =  "<font color=\"#0000FF\">"  + sDate+ ": " + "</font>" + ev+ " <br>";
+                    //String str =  "<font color=\"#0000FF\">"  + sDate+ ": " + "</font>" + ev+ " <br>";
+
                     if (search){
-                        event.setText(Html.fromHtml(String.valueOf(str), Html.FROM_HTML_MODE_LEGACY));
-                        add.setEnabled(false);
+                        event.setText(Html.fromHtml(String.valueOf(ev), Html.FROM_HTML_MODE_LEGACY));
+                        //add.setEnabled(false);
+                        delete.setEnabled(true);
                     }else {
                         event.setHint(sDate + ": нет событий за этот день!");
-                        add.setEnabled(true);
+                        //add.setEnabled(true);
                         delete.setEnabled(false);
-                        editor.setEnabled(false);
+
                         event.requestFocus();
                         event.setSelection(event.getText().length());
                     }
@@ -734,7 +735,7 @@ public class HomeFragment extends Fragment {
                             //event1.setCompoundDrawablesWithIntrinsicBounds(R.id.checkbox_on_background, 0, 0, 0);
 
                             //сохранение события в (базу данных) пока в текстовый файл
-                            if  (data.length() > 13){
+                            if  (data.length() > 1){
                                 //mydb = new DatabaseHelperEv(getContext());
                                 boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
                                 System.out.println("search: "+search);
@@ -754,12 +755,12 @@ public class HomeFragment extends Fragment {
                                     //addHoursInCalendar(h);
                                 }else {
                                     System.out.println(sDate);
-                                    System.out.println(event);
-                                    mydb.insertContact(sDate, String.valueOf(event), null,null,null,null, DatabaseHelperEv.TABLE);
+                                    System.out.println(data);
+                                    mydb.insertContact(sDate, String.valueOf(data), null,null,null,null, DatabaseHelperEv.TABLE);
                                     //mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan1");
                                     //mydb.insertContact(data, hours.toString(), "0.0","0.0","0.0","plan2");
                                     //Toast.makeText(getActivity(), "За " + day + "\n добавлено событие:\n" + event, Toast.LENGTH_SHORT).show();
-                                    String attention = "За " + sDate + "\nдобавлено событие:\n" + event;
+                                    String attention = "За " + sDate + "\nдобавлено событие:\n" + data;
                                     CustomDialogFragment dialog = new CustomDialogFragment();
                                     Bundle args = new Bundle();
                                     args.putString("attention", attention);
