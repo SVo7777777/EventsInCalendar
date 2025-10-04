@@ -45,7 +45,7 @@ public class ReviewOWeek extends AppCompatActivity {
     TextView textView;
     ImageButton btnd;
     ImageButton btn_open;
-    private int width, height;
+    private int week;
     LinearLayout linear;
     Calendar calendar = Calendar.getInstance();
     public int current_year = calendar.get(Calendar.YEAR);
@@ -81,7 +81,7 @@ public class ReviewOWeek extends AppCompatActivity {
         mydb = new DatabaseHelperEv(getApplicationContext());
         addRecord = false;
         Intent intent = getIntent();
-        int week = intent.getIntExtra("week", 0);
+        week = intent.getIntExtra("week", 0);
 
 
         btnd.setOnClickListener(v -> {
@@ -227,7 +227,7 @@ public class ReviewOWeek extends AppCompatActivity {
         String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
 
 
-        String sFile=downloadDir+"/itogi_results"+current_data+".pdf";
+        String sFile=downloadDir+"/itogi_results"+week+current_data+".pdf";
 
         //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
         File path = new File(sFile);

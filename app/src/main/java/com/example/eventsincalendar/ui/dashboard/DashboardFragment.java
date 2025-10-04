@@ -6,13 +6,20 @@ import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -22,7 +29,9 @@ import androidx.fragment.app.Fragment;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.eventsincalendar.CreatPDF;
 import com.example.eventsincalendar.CustomDialogFragment;
+import com.example.eventsincalendar.CustomDialogFragmentOkNo;
 import com.example.eventsincalendar.DatabaseHelper;
 import com.example.eventsincalendar.DatabaseHelperEv;
 import com.example.eventsincalendar.MyWidget2;
@@ -32,6 +41,7 @@ import com.example.eventsincalendar.FileEmpty;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -46,26 +56,27 @@ public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
     CalendarView calendarView;
-    String curDate;
+
     public EditText textMultiline;
-    EditText editTextInput;
+    public LinearLayout linear;
     SearchView simpleSearchView;
-    private Object MotionEvent;
+    ImageButton btnd;
+    ImageButton btn_open;
     boolean addRecord;
-    public String chosesData;
-    String[] data = {"ПРОССМОТРЕТЬ", "ПРОССМОТРЕТЬ ЗА ДЕНЬ", "ПРОССМОТРЕТЬ ЗА МЕСЯЦ", "ПРОССМОТРЕТЬ ЗА НЕДЕЛЮ"};
-    //private ActivityMain2Binding binding;
     Calendar calendar = Calendar.getInstance();
     public int current_year = calendar.get(Calendar.YEAR);
     public int current_month = calendar.get(Calendar.MONTH);
     public int current_day = calendar.get(Calendar.DATE);
 
+    String current_data = "_"+ current_day +"-"+ (current_month + 1) +"-"+ current_year;
+
+    String[] data = {"ПРОССМОТРЕТЬ", "ПРОССМОТРЕТЬ ЗА ДЕНЬ", "ПРОССМОТРЕТЬ ЗА МЕСЯЦ", "ПРОССМОТРЕТЬ ЗА НЕДЕЛЮ"};
+    //private ActivityMain2Binding binding;
+
+
     private DatabaseHelperEv mydb ;
 
-
-
-
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "CutPasteId"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel =
@@ -76,7 +87,52 @@ public class DashboardFragment extends Fragment {
         simpleSearchView = root.findViewById(R.id.simpleSearchView);
         calendarView = root.findViewById(R.id.calendarView10);
         textMultiline = root.findViewById(R.id.editTextTextMultiLine8);
+        btnd = root.findViewById(R.id.btnd);
+        btn_open = root.findViewById(R.id.btn_open);
+        linear = root.findViewById(R.id.lineard);
 
+        btnd.setOnClickListener(v -> {
+            CustomDialogFragmentOkNo dialog0 = new CustomDialogFragmentOkNo();
+            Bundle args0 = new Bundle();
+            String attention0 = " Вы уверены, что хотите закачать итоги поиска?";
+            args0.putString("attention", attention0);
+            dialog0.setArguments(args0);
+            dialog0.show(getParentFragmentManager(), "custom");
+            System.out.println("hear-btnd");
+            Log.d("size", linear.getWidth() + " " + linear.getWidth());
+            @SuppressLint({"NewApi", "LocalSuppress"})
+            boolean wr = CreatPDF.creatPDF(linear,"_search" + current_data);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (wr){
+                    String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results_search"+ current_data + ".pdf";
+                    CustomDialogFragment dialog = new CustomDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString("attention", attention);
+                    dialog.setArguments(args);
+                    dialog.show(getParentFragmentManager(), "custom");
+                }else{
+                    String attention = "Включите разрешение ПАМЯТЬ для этого приложения (Настройки-->Приложения-->Календарь рабочих часов-->Разрешение-->Память--> Разрешить)";
+                    CustomDialogFragment dialog = new CustomDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString("attention", attention);
+                    dialog.setArguments(args);
+                    dialog.show(getParentFragmentManager(), "custom");
+                }
+                //creatPDF();
+            }else {
+                System.out.println("hear0000");
+            }
+
+        });
+
+        btn_open.setOnClickListener(v -> {
+            System.out.println("hear-btn_open");
+            Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                openPdf();
+            }
+
+        });
         Calendar ci = Calendar.getInstance();
         //вывод текущей даты в поле информации при запуске приложения
         @SuppressLint("SimpleDateFormat")
@@ -89,17 +145,12 @@ public class DashboardFragment extends Fragment {
         String s = "Сегодня " + today + ". " + hint;
         textMultiline.setHint(s);
 
-        //курсор в конце строки
-//        textMultiline.requestFocus();
-//        textMultiline.setSelection(textMultiline.getText().length());
 //обновление виджета
         Intent intentq = new Intent(getActivity(), MyWidget2.class);
         intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
         int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
         intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         getActivity().sendBroadcast(intentq);
-
-
         mydb = new DatabaseHelperEv(getContext());
         //mydb.AddnewTable("plan3");
         // поиск по слову Set SearchView query text listener
@@ -116,11 +167,8 @@ public class DashboardFragment extends Fragment {
                 int s = query.length();
                 System.out.println(query);
                 System.out.println(s);
-                int in_1 = s-1;
-                int in_2 = s-2;
+
                 boolean iskl = false;
-
-
                 try {
                     String query_1 = query.substring(0, s-1);
                     String query_2 = query.substring(0, s-2);
@@ -129,8 +177,6 @@ public class DashboardFragment extends Fragment {
                         System.out.println(all_data.get(i).get(1));
                         String mon = all_data.get(i).get(0);
                         String ev = all_data.get(i).get(1);
-
-
                         boolean contains_1 = ev.contains(query_1);
                         boolean contains_2 = ev.contains(query_2);
                         boolean contains = ev.contains(query);
@@ -139,170 +185,49 @@ public class DashboardFragment extends Fragment {
                             String str = "<span style=\"background-color:#f3f402;\">" + mon + ": " + "</span>" + ev + " <br>";
                             System.out.println(str);
                             sb.append(str);
-
-                            //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
-
                         }
                     }
-
-
-
                 }catch (StringIndexOutOfBoundsException e){
                     System.out.println("pass");
                     iskl = true;
-
                 }
                 textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-
                 if (sb.length() == 0) {
                     if (iskl)
                         textMultiline.setText("Введите слово, а не букву!");
-
                     else
                         textMultiline.setText("По слову '" + query + "' ничего не найдено. Попробуйте ввести первые несколько букв слова.");
                 }
-
-//                boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-//                if (exists) {
-//                    try (FileInputStream fis = requireContext().openFileInput("event_diary.txt");
-//                         InputStreamReader isr = new InputStreamReader(fis);
-//                         BufferedReader br = new BufferedReader(isr)) {
-//                        String line;
-//                        while ((line = br.readLine()) != null) {
-//                            boolean contains = line.contains(query);
-//                            if (contains) {
-//                                // цвет даты
-//                                //textMultiline.setText(Html.fromHtml("<font color=\"#006400\">" + today  + "</font>"));
-//                                String day = line.substring(0, 11);
-//                                String event = line.substring(11);
-//                                String str = String.valueOf(Html.fromHtml( "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>"));
-//                                sb.append(str);
-//                                //sb.append(line + "\n");
-//                            }
-//                        }
-//                        textMultiline.setText(sb.toString());
-//                        if (sb.length() == 0) {
-//                            textMultiline.setText("По слову '" + query + "' ничего не найдено. Попробуйте ввести первые несколько букв слова.");
-//                        }
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                } else {
-//                    textMultiline.setText("В Вашем календаре пока нет событий! Во вкладке \"Главный\" или \"Календарь\" выберите дату, запишите событие и нажмите на \"ВНЕСТИ\"!");
-//                }
-//                if (myList.contains(query)) {
-//                    adapter.getFilter().filter(query);
-//                }
-//                else {
-//                    Toast.makeText(MainActivity.this, "No Match found", Toast.LENGTH_LONG).show();
-//                }
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
-
-
-
-
-
         //public void setGravity (int gravity, int xOffset, int yOffset);
         addRecord = true;
         return root;
     }
+    private void openPdf () {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
-    //Например, MODE_PRIVATE — файл доступен только этому приложению, MODE_WORLD_READABLE — файл доступен для чтения всем, MODE_WORLD_WRITEABLE — файл доступен для записи всем, MODE_APPEND — файл будет дописан, а не начат заново.
-    //добавяем запись в файл "event_diary.txt"
-    public AlertDialog clickAdd(View view) throws FileNotFoundException {
-        String data = String.valueOf(textMultiline.getText());
-        System.out.println(data);
-        if (!addRecord) {
-            Toast.makeText(getContext(), "Выберите дату, запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
-        } else {
-            if  (data.length() >= 20){
-                try (FileOutputStream fos = requireContext().openFileOutput("event_diary.txt", MODE_APPEND);
-                     OutputStreamWriter osw = new OutputStreamWriter(fos)) {
-                    //String data = String.valueOf(textMultiline.getText());
-                    osw.write(data+"\n");
-                    //вывод диалогового окна, что запись внесена
-                    String attention = "запись внесена";
-                    CustomDialogFragment dialog = new CustomDialogFragment();
-                    Bundle args = new Bundle();
-                    args.putString("attention", attention);
-                    dialog.setArguments(args);
-                    dialog.show(getParentFragmentManager(), "custom");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                addRecord = false;
-            } else {
-                Toast.makeText(getContext(), "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
-            }
-        }
-        return null;
+        String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+
+
+        String sFile=downloadDir+"/itogi_results_search"+current_data+".pdf";
+
+        //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
+        File path = new File(sFile);
+        Uri uri = Uri.fromFile(path);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "text/plain");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
     }
-    //проссмотр по дате
-    @SuppressLint("SetTextI18n")
-    public void clickReviewData(String data, String data2) {
-        addRecord = false;
-
-
-        //считываем с файла всё что есть
-        StringBuilder sb = new StringBuilder();
-        try (FileInputStream fis = new FileInputStream("event_diary.txt");
-             InputStreamReader isr = new InputStreamReader(fis);
-             BufferedReader br = new BufferedReader(isr)) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                boolean contains = line.contains(data);
-                boolean contains2 = line.contains(data2);
-                if ((contains) || (contains2)) {
-                    String day = line.substring(0, 11);
-                    String event = line.substring(11);
-                    String str =  "<font color=\"#0000FF\">"  + day + "</font>" + event+ " <br>";
-                    sb.append(str);
-                }
-
-
-
-            }
-            textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-            if (sb.length() == 0) {
-                //textMultiline.setText(data + " нет событий за этот день!");
-                //дата синяя
-                String str = "<font color=\"#0000FF\">" + data + "</font>" + " нет событий за этот день!";
-                textMultiline.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
-
-                //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
-
-
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    //кнопка СБРОС-удаление всего из поля информации и запись текущей даты
-
-    public void clickReset(View view) {
-        addRecord = false;
-        Calendar ci = Calendar.getInstance();
-        textMultiline.setText("");
-        //simpleSearchView.setQuery("", false);
-        //searchView.setQuery("", false);
-        //simpleSearchView.setIconified(true);
-        //simpleSearchView.setQueryHint("Поиск по слову. Введите слово.");
-
-//        String CiDateTime = ci.get(Calendar.DAY_OF_MONTH) + "-" + (ci.get(Calendar.MONTH) + 1) + "-" + ci.get(Calendar.YEAR) + ": ";
-//        textMultiline.setText(CiDateTime);
-        //курсор в конце строки
-        textMultiline.requestFocus();
-        textMultiline.setSelection(textMultiline.getText().length());
-    }
-
 
     @Override
     public void onDestroyView() {
