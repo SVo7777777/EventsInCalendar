@@ -115,21 +115,11 @@ public class ReviewActivity extends Activity {
                 //Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();//display the text of button1
             }
         });
-
-
         close.setOnClickListener(new  View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 finishAffinity();
             }
         });
-
-
-
     }
-
-
-
-
-
 }

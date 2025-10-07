@@ -67,27 +67,7 @@ public class ListenActivity extends Activity {
             ev = true;
         }
 
-//        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-//        if (exists) {
 //
-//            try (FileInputStream fis = openFileInput("event_diary.txt");
-//                 InputStreamReader isr = new InputStreamReader(fis);
-//                 BufferedReader br = new BufferedReader(isr)) {
-//                String line;
-//
-//                while ((line = br.readLine()) != null) {
-//                    boolean contains = line.contains(sDate);
-//                    if (contains) {
-////                         = line.substring(0, 11);
-//                        String event = line.substring(11);
-//                        sb.append(event).append(" ");
-//                        ev = true;
-//                    }
-//                }
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
         text = t + String.valueOf(sb);
 
         // Initialize TextToSpeech instance

@@ -28,9 +28,6 @@ public class MyWidget2 extends AppWidgetProvider {
 
     static final String LOG_TAG = "myLogs";
     private DatabaseHelperEv mydb;
-
-
-
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
@@ -82,59 +79,6 @@ public class MyWidget2 extends AppWidgetProvider {
             System.out.println(sb);
 
         }
-
-//        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-//        if (exists) {
-//
-//            try (FileInputStream fis = context.openFileInput("event_diary.txt");
-//                 InputStreamReader isr = new InputStreamReader(fis);
-//                 BufferedReader br = new BufferedReader(isr)) {
-//                String line;
-//
-//                while ((line = br.readLine()) != null) {
-//                    boolean contains = line.contains(sDate);
-//                    if (contains) {
-//                        String day = line.substring(0, 11);
-//                        String event1 = line.substring(11);
-//                        String str1 =  "<font color=\"#0000FF\">" + event1+ " <br>";
-//
-//                        sb.append(str1);
-//                        System.out.println("sb"+sb);
-//                    }else {
-////                                    delete.setEnabled(false);
-////                                    editor.setEnabled(false);
-//                    }
-//                }
-//
-//                //event.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-//                //event.setHint(Html.fromHtml(st, Html.FROM_HTML_MODE_LEGACY));
-////                if (sb.length() == 0) {
-////                    event.setHint(sDate + " нет событий за этот день!");
-////                    add.setEnabled(true);
-////                    delete.setEnabled(false);
-////                    editor.setEnabled(false);
-////                    event.requestFocus();
-////                    event.setSelection(event.getText().length());
-//
-//                    //дата синяя
-////                                String str = "<font color=\"#0000FF\">" + sDate+": " + "</font>" + " нет событий за этот день!";
-////                                event.setHint(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
-////
-//                    //textMultiline.setText(Html.fromHtml("<font color=\"#0000FF\">" + data  + "</font>"+ " нет событий за этот день!"));
-//
-//
-//               // }
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//       }
-//        else {
-//            event.setHint(R.string.file_exist);
-//
-//        }
-
-
-
         String weekday =  daysOfWeek[dayOfWeek-1];
         System.out.println(month[current_month]+" "+ current_year);
         String searchElement = month[current_month]+" "+ current_year;
@@ -179,13 +123,6 @@ public class MyWidget2 extends AppWidgetProvider {
                     remoteViews.setTextViewText(R.id.date, Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
                 }
             }
-
-
-
-            String h = str.get(index_i).get(2);
-            //remoteViews.setTextViewText(R.id.hours, "всего часов: " + h);//всего часов
-            String sa = str.get(index_i).get(3);
-            //remoteViews.setTextViewText(R.id.salary, "заработано: " + sa);//всего заработано
             remoteViews.setTextViewText(R.id.summary, "за сегодня: " + weekday + " " + data);//цена за час
 
             // обновление виджета при нажатии на дату
@@ -217,11 +154,7 @@ public class MyWidget2 extends AppWidgetProvider {
             //открываем календарь при нажатии на "мои события"
             Intent intent2 = new Intent(context, MainActivity.class); // Запускаем главную активность (можно другую)
             PendingIntent pIntentMainActivity = PendingIntent.getActivity(context, 0, intent2, PendingIntent.FLAG_IMMUTABLE);
-            //открываем календарь при нажатии на строку "мои рабочие часы"
-            //remoteViews.setOnClickPendingIntent(R.id.my_hours, pIntentMainActivity); // R.id.appwidget_startMainActivity — название кнопки в форме виджета
             remoteViews.setOnClickPendingIntent(R.id.my_events, pIntentMainActivity);
-            //Toast.makeText(context, "Widget has been updated! ", Toast.LENGTH_SHORT).show();
-
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
     }

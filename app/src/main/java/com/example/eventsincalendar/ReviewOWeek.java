@@ -46,6 +46,7 @@ public class ReviewOWeek extends AppCompatActivity {
     ImageButton btnd;
     ImageButton btn_open;
     private int week;
+    String year;
     LinearLayout linear;
     Calendar calendar = Calendar.getInstance();
     public int current_year = calendar.get(Calendar.YEAR);
@@ -82,6 +83,7 @@ public class ReviewOWeek extends AppCompatActivity {
         addRecord = false;
         Intent intent = getIntent();
         week = intent.getIntExtra("week", 0);
+        year = intent.getStringExtra("year");
 
 
         btnd.setOnClickListener(v -> {
@@ -108,7 +110,6 @@ public class ReviewOWeek extends AppCompatActivity {
             }else {
                 System.out.println("hear0000");
             }
-
         });
 
         btn_open.setOnClickListener(v -> {
@@ -117,11 +118,7 @@ public class ReviewOWeek extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 openPdf();
             }
-
         });
-
-
-
         System.out.println("week "+ week);
 
         ArrayList<ArrayList<String>> all_data = mydb.getAllRows();
@@ -140,7 +137,7 @@ public class ReviewOWeek extends AppCompatActivity {
         assert week_days != null;
         String weekDays = Arrays.toString(week_days);
         System.out.println("weekDays "+weekDays);
-        String year = week_days[0].substring(6);
+        //String year = week_days[0].substring(6);
 
         StringBuilder sb = new StringBuilder();
 
@@ -154,82 +151,27 @@ public class ReviewOWeek extends AppCompatActivity {
                 //есть ли в строке дата из массива дней недели
                 boolean contains = Arrays.stream(week_days).anyMatch(mon::contains);
                 if (contains) {
-
                     String str = "<span style=\"background-color:#f3f402;\">" + mon + ": " + "</span>" + ev + " <br>";
                     System.out.println(str);
                     sb.append(str);
-
-                    //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
-
                 }
             }
-
-
             textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
             if (sb.length() == 0) {
-                textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ  МЕСЯЦ!");
+                textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТУ  НЕДЕЛЮ!");
             }
-//        }
-//
-//        //System.out.println("week_days[0]"+result);
-//        //String data = String.valueOf((new MainActivity().textMultiline.getText()));
-//
-//        //System.out.println(data.length());
-//        if (exists) {
-//            if ( week_days.equals("")) {
-//                Toast.makeText(this, "выберите дату на календаре", Toast.LENGTH_LONG).show();
-//                System.out.println("кнопка не работает");
-//
-//            } else {
-//                textView.setText("  за " + week + "ую неделю " +year +"г.:");
-//                //считываем с файла всё что есть
-//                StringBuilder sb = new StringBuilder();
-//                try (FileInputStream fis = openFileInput("event_diary.txt");
-//                     InputStreamReader isr = new InputStreamReader(fis);
-//                     BufferedReader br = new BufferedReader(isr)) {
-//                    String line;
-//                    while ((line = br.readLine()) != null) {
-//                        //есть ли в строке дата из массива дней недели
-//                        boolean contains = Arrays.stream(week_days).anyMatch(line::contains);
-//                        //boolean contains = line.contains(week_days);
-//                        if (contains)  {
-//                            String day = line.substring(0, 11);
-//                            String event = line.substring(11);
-//                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
-//                            sb.append(str);
-//                        }
-//
-//
-//                    }
-//                    //
-//                    //textMultiline.setText(sb.toString());
-//                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-//
-//                    if (sb.length() == 0) {
-//                        textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТУ НЕДЕЛЮ!");
-//                    }
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//            }
         }else {
             Toast.makeText(this, "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
             System.out.println("pass");
         }
     }
 
-
     private void openPdf () {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
         String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
-
-
         String sFile=downloadDir+"/itogi_results"+week+current_data+".pdf";
-
-        //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
         File path = new File(sFile);
         Uri uri = Uri.fromFile(path);
 
@@ -237,32 +179,5 @@ public class ReviewOWeek extends AppCompatActivity {
         intent.setDataAndType(uri, "text/plain");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
     }
-    //меню три точки вверху справа
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu); // Replace 'menu_main' with your menu resource name
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (R.id.action_settings == id) {
-//            // Handle settings action
-//            Intent intent = new Intent(ReviewOWeek.this, SettingsActivity.class);
-//            startActivity(intent);
-//            return true;
-//        }
-//        else if (R.id.action_about == id) {
-//            // Handle about action
-//            Intent intent = new Intent(ReviewOWeek.this, AboutActivity.class);
-//            startActivity(intent);
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
-
-
 }

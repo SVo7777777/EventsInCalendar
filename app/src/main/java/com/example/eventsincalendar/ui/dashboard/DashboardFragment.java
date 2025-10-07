@@ -82,6 +82,7 @@ public class DashboardFragment extends Fragment {
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
 
+
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         simpleSearchView = root.findViewById(R.id.simpleSearchView);
@@ -91,13 +92,29 @@ public class DashboardFragment extends Fragment {
         btn_open = root.findViewById(R.id.btn_open);
         linear = root.findViewById(R.id.lineard);
 
+
         btnd.setOnClickListener(v -> {
-            CustomDialogFragmentOkNo dialog0 = new CustomDialogFragmentOkNo();
-            Bundle args0 = new Bundle();
-            String attention0 = " Вы уверены, что хотите закачать итоги поиска?";
-            args0.putString("attention", attention0);
-            dialog0.setArguments(args0);
-            dialog0.show(getParentFragmentManager(), "custom");
+//            CustomDialogFragmentOkNo dialog0 = new CustomDialogFragmentOkNo();
+//            Bundle args0 = new Bundle();
+//            String attention0 = " Вы уверены, что хотите закачать итоги поиска?";
+//            args0.putString("attention", attention0);
+//            dialog0.setArguments(args0);
+//            dialog0.show(getParentFragmentManager(), "custom");
+//
+//            Bundle bundle = this.getArguments();
+//            if (bundle != null) {
+//                Boolean download = bundle.getBoolean("down"); // Key, default value
+//            }
+//            if (download)
+
+//            assert getArguments() != null;
+//            boolean download = getArguments().getBoolean("down");
+//            if (download){
+//                System.out.println("down="+download);
+//            }else {
+//                System.out.println("down="+download);
+//            }
+
             System.out.println("hear-btnd");
             Log.d("size", linear.getWidth() + " " + linear.getWidth());
             @SuppressLint({"NewApi", "LocalSuppress"})
@@ -196,7 +213,7 @@ public class DashboardFragment extends Fragment {
                     if (iskl)
                         textMultiline.setText("Введите слово, а не букву!");
                     else
-                        textMultiline.setText("По слову '" + query + "' ничего не найдено. Попробуйте ввести первые несколько букв слова.");
+                        textMultiline.setText("По слову '" + query + "' ничего не найдено.");
                 }
                 return false;
             }

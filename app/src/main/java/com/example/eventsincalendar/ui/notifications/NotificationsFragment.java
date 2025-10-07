@@ -71,6 +71,15 @@ public class NotificationsFragment extends Fragment {
         getActivity().sendBroadcast(intentq);
 
         mydb = new DatabaseHelperEv(getContext());
+
+        boolean empty = mydb.checkBaseEmptyOrNot(DatabaseHelperEv.TABLE);
+        if (empty){
+            System.out.println("empty="+empty);
+            mydb.insertContact("пн 01-01-2000", "", null, null, null, null, DatabaseHelperEv.TABLE);
+        }else {
+            System.out.println("empty="+empty);
+        }
+
         //вывод текущей даты в поле информации при запуске приложения
         currentData();
         //вывод даты  в поле информации при нажатии на календаре

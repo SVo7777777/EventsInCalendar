@@ -219,6 +219,7 @@ public class HomeFragment extends Fragment {
                 args.putSerializable("ARRAYLIST",(Serializable)week_days);
                 intent.putExtra("BUNDLE",args);
                 intent.putExtra("week", week);
+                intent.putExtra("year", year.getText().toString());
                 //intent.putExtra("week_days", week_days);
 
                 startActivity(intent);
@@ -228,6 +229,7 @@ public class HomeFragment extends Fragment {
     }
     public void onReviewMonthClick(Button button2) {
         button2.setOnClickListener(v -> {
+
             Intent intent2 = new Intent(getContext(), ReviewOnMonth.class);
             @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Calendar c = Calendar.getInstance();

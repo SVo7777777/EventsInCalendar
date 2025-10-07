@@ -167,6 +167,25 @@ public class DatabaseHelperEv extends SQLiteOpenHelper {
         return true;  // return true if value exists in database
     }
 
+
+    public boolean checkBaseEmptyOrNot(String TABLE3) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        //String query = "SELECT * FROM " + TABLE3;
+
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE3, null);
+        //Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+        if (cursor.getCount() == 0) {
+            // для пустого возвращает true
+            cursor.close();
+            return true;
+        } else {
+            // не пустой возвращает false
+            cursor.close();
+            return false;
+        }
+
+    }
+
     public String getEvents(String month_year, String TABLE3) {
         SQLiteDatabase db = this.getReadableDatabase();
         //String query = "select * from hours" + " where " + COLUMN_MONTH_YEAR + " like ?";

@@ -173,56 +173,11 @@ public class ReviewOnMonth extends AppCompatActivity {
                 }
 
 
-                //считываем с файла всё что есть
 
-//                try (FileInputStream fis = openFileInput("event_diary.txt");
-//                     InputStreamReader isr = new InputStreamReader(fis);
-//                     BufferedReader br = new BufferedReader(isr)) {
-//                    String line;
-//                    while ((line = br.readLine()) != null) {
-//                        System.out.println(data + "мы тут");
-//                        System.out.println(line);
-//                        System.out.println(data);
-////                        boolean contains = line.contains(month);
-////                        boolean contains2 = line.contains(month2);
-//                        if ((contains) || (contains2)) {
-//                            System.out.println(data + "в файле есть");
-//                            String day = line.substring(0, 11);
-//                            String event = line.substring(11);
-//                            System.out.println("day="+day);
-//                            System.out.println("event="+event);
-//                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
-//                            System.out.println(str);
-//                            sb.append(str);
-//
-//                            //textMultiline.setText(Html.fromHtml(textMultiline.getText() + str, Html.FROM_HTML_MODE_LEGACY));
-//
-//                        }
-//
-//
-//                    }
-//                    //textMultiline.setText(sb.toString());
-//                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-//
-//                    //;String str = "<span style=\"background-color:#f3f402;\">" + sb + "</span>" + " нет событий за этот день!";
-//                    //textMultiline.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
-//
-//                    //textMultiline.setText(Html.fromHtml("<font background_color=\"#0000FF\">" + sb.toString()  + "</font>"+ " нет событий за этот день!"));
-//
-//                    if (sb.length() == 0) {
-//                        textMultiline.setText( "   НЕТ СОБЫТИЙ ЗА ЭТОТ  МЕСЯЦ!");
-//                    }
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
             } else {
                 Toast.makeText(this, "Выберите дату на календаре!", Toast.LENGTH_LONG).show();
                 System.out.println("кнопка не работает");
             }
-//        }else {
-//            Toast.makeText(this, "В Вашем календаре пока нет событий! Выберите дату в календаре" +
-//                    ", запишите событие  и внесите!", Toast.LENGTH_LONG).show();
-
 
     }
     private void openPdf () {

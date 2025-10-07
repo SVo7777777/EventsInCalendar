@@ -155,55 +155,8 @@ public class ReviewOYear extends AppCompatActivity {
 
             textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
             if (sb.length() == 0) {
-                textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ  МЕСЯЦ!");
+                textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ  ГОД!");
             }
-//        }
-//        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
-//        //String data = String.valueOf((new MainActivity().textMultiline.getText()));
-//        System.out.println(data);
-//        System.out.println(data.length());
-//        if (exists) {
-//            if ((data.length() >= 10) && (data.length() <= 12)) {
-//                int index_first = data.indexOf("-");
-//                int index_second = data.indexOf("-", index_first + 1);
-//                String year = data.substring(index_second + 1, index_second + 5);//-1-2025
-//                System.out.println("выбранный год: "+year);
-//                textView.setText("   за " + year + "г.:");
-//
-//
-//                //считываем с файла всё что есть
-//                StringBuilder sb = new StringBuilder();
-//                try (FileInputStream fis = openFileInput("event_diary.txt");
-//                     InputStreamReader isr = new InputStreamReader(fis);
-//                     BufferedReader br = new BufferedReader(isr)) {
-//                    String line;
-//                    while ((line = br.readLine()) != null) {
-//                        boolean contains = line.contains(year);
-//                        if (contains)  {
-//                            String day = line.substring(0, 11);
-//                            String event = line.substring(11);
-//                            System.out.println("day="+day);
-//                            System.out.println("event="+event);
-//                            String str =  "<span style=\"background-color:#f3f402;\">" + day + "</span>" + event+ " <br>";
-//                            System.out.println(str);
-//                            sb.append(str);
-//                            //sb.append(line).append("\n");
-//                        }
-//
-//
-//                    }
-//                    //
-//                    textMultiline.setText(Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
-//                    if (sb.length() == 0) {
-//                        textMultiline.setText("   НЕТ СОБЫТИЙ ЗА ЭТОТ ГОД!");
-//                    }
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            } else {
-//                Toast.makeText(this, "выберите дату на календаре", Toast.LENGTH_LONG).show();
-//                System.out.println("кнопка не работает");
-//            }
         }else {
             Toast.makeText(this, "В Вашем календаре пока нет событий! Выберите дату, запишите событие  и внесите!", Toast.LENGTH_LONG).show();
             System.out.println("pass");
@@ -253,7 +206,4 @@ public class ReviewOYear extends AppCompatActivity {
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }
-
-
-
 }

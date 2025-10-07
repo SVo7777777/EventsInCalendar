@@ -13,6 +13,7 @@ public class CustomDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         assert getArguments() != null;
         String attention = getArguments().getString("attention");
+
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         return builder
                 .setTitle("ВНИМАНИЕ!")
