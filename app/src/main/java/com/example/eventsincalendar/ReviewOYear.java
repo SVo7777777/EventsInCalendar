@@ -86,7 +86,7 @@ public class ReviewOYear extends AppCompatActivity {
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 if (wr){
-                    String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results"+ current_data + ".pdf";
+                    String attention = "События загружены в телефон, в папку Download, в файл events_for"+ current_data + ".pdf";
                     CustomDialogFragment dialog = new CustomDialogFragment();
                     Bundle args = new Bundle();
                     args.putString("attention", attention);
@@ -171,7 +171,7 @@ public class ReviewOYear extends AppCompatActivity {
         String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
 
 
-        String sFile=downloadDir+"/itogi_results"+current_data+".pdf";
+        String sFile=downloadDir+"/events_for"+current_data+".pdf";
 
         //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
         File path = new File(sFile);

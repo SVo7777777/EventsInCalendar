@@ -39,7 +39,7 @@ public class MyWidget2 extends AppWidgetProvider {
         try (DatabaseHelperEv mydb = new DatabaseHelperEv(context)) {
             str = mydb.getAllRows();
         }
-        System.out.println(str);
+        //System.out.println(str);
         mydb = new DatabaseHelperEv(context.getApplicationContext());
 
 
@@ -72,7 +72,7 @@ public class MyWidget2 extends AppWidgetProvider {
         String eve = mydb.getEvents(sDate, DatabaseHelperEv.TABLE);
         //String stri = String.valueOf(eve);
         String str1 =  "<font color=\"#0000FF\">" + String.valueOf(eve)+ " <br>";
-        System.out.println(str);
+        //System.out.println(str);
         if (search){
 
             sb.append(str1).append(" ");

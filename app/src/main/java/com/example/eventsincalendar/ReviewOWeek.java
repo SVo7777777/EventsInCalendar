@@ -92,7 +92,7 @@ public class ReviewOWeek extends AppCompatActivity {
             boolean wr = CreatPDF.creatPDF(linear,week + current_data);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 if (wr){
-                    String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results"+week+ current_data + ".pdf";
+                    String attention = "События загружены в телефон, в папку Download, в файл events_for"+week+ current_data + ".pdf";
                     CustomDialogFragment dialog = new CustomDialogFragment();
                     Bundle args = new Bundle();
                     args.putString("attention", attention);
@@ -171,7 +171,7 @@ public class ReviewOWeek extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
 
         String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
-        String sFile=downloadDir+"/itogi_results"+week+current_data+".pdf";
+        String sFile=downloadDir+"/events_for"+week+current_data+".pdf";
         File path = new File(sFile);
         Uri uri = Uri.fromFile(path);
 

@@ -23,7 +23,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="-6dp"
             android:text="@string/my_hours_widget"
-            android:textSize="26sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
@@ -66,7 +66,7 @@
             android:paddingRight="5dp"
             android:text="нет событий"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="20sp"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -84,7 +84,7 @@
             android:paddingBottom="0dp"
             android:text="...Читать полностью"
             android:textColor="@color/purple_700"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:cornerRadius="0dp"
             tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
@@ -106,7 +106,7 @@
             android:layout_marginStart="5dp"
             android:drawableEnd="@android:drawable/ic_lock_silent_mode_off"
             android:text=""
-            android:textSize="38sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
 
@@ -118,7 +118,7 @@
             android:layout_marginEnd="5dp"
             android:drawableEnd="@drawable/car_ui_icon_settings"
             android:text=""
-            android:textSize="38sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
 

@@ -1,19 +1,16 @@
 package com.example.eventsincalendar;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,11 +18,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 
-public class CreatPDF {
+public class CreatEditPDF {
     static boolean wr;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    public static boolean creatPDF(LinearLayout linear, String current_data) {
+    public static boolean creatEditPDF(EditText linear, String current_data) {
         //super.onCreate();
         int width = linear.getWidth();
         int height = linear.getHeight();

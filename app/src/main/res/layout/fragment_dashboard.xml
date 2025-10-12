@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/Wheat"
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
@@ -21,6 +22,7 @@
         android:id="@+id/simpleSearchView"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:background="@color/white"
         android:iconifiedByDefault="false"
         android:queryHint="@string/editTextInput">
 
@@ -36,7 +38,7 @@
         <EditText
             android:id="@+id/editTextTextMultiLine8"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"

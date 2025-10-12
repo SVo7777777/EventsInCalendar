@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.eventsincalendar.CreatEditPDF;
 import com.example.eventsincalendar.CreatPDF;
 import com.example.eventsincalendar.CustomDialogFragment;
 import com.example.eventsincalendar.CustomDialogFragmentOkNo;
@@ -117,11 +118,12 @@ public class DashboardFragment extends Fragment {
 
             System.out.println("hear-btnd");
             Log.d("size", linear.getWidth() + " " + linear.getWidth());
+
             @SuppressLint({"NewApi", "LocalSuppress"})
             boolean wr = CreatPDF.creatPDF(linear,"_search" + current_data);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 if (wr){
-                    String attention = "Итоги загружены в телефон в папку Download. В файл itogi_results_search"+ current_data + ".pdf";
+                    String attention = "События загружены в телефон, в папку Download, в файл events_for_search"+ current_data + ".pdf";
                     CustomDialogFragment dialog = new CustomDialogFragment();
                     Bundle args = new Bundle();
                     args.putString("attention", attention);
@@ -144,7 +146,7 @@ public class DashboardFragment extends Fragment {
 
         btn_open.setOnClickListener(v -> {
             System.out.println("hear-btn_open");
-            Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
+            //Log.d("size", "размер" + linear.getWidth() + " " + linear.getWidth());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 openPdf();
             }
@@ -191,14 +193,14 @@ public class DashboardFragment extends Fragment {
                     String query_2 = query.substring(0, s-2);
 
                     for (int i = 0; i < size; i++) {
-                        System.out.println(all_data.get(i).get(1));
+                        //System.out.println(all_data.get(i).get(1));
                         String mon = all_data.get(i).get(0);
                         String ev = all_data.get(i).get(1);
                         boolean contains_1 = ev.contains(query_1);
                         boolean contains_2 = ev.contains(query_2);
                         boolean contains = ev.contains(query);
                         if ((contains) || (contains_1) || (contains_2)) {
-                            System.out.println(data + "в файле есть");
+                            //System.out.println(data + "в файле есть");
                             String str = "<span style=\"background-color:#f3f402;\">" + mon + ": " + "</span>" + ev + " <br>";
                             System.out.println(str);
                             sb.append(str);
@@ -233,7 +235,7 @@ public class DashboardFragment extends Fragment {
         String downloadDir = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
 
 
-        String sFile=downloadDir+"/itogi_results_search"+current_data+".pdf";
+        String sFile=downloadDir+"/events_for_search"+current_data+".pdf";
 
         //File path = new File(Environment.getExternalStorageDirectory() + "/" + "ParentDirectory" + "/" + "ChildDirectory");
         File path = new File(sFile);
