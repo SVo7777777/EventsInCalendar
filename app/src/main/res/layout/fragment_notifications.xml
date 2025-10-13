@@ -11,83 +11,93 @@
     android:backgroundTintMode="multiply"
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
-
-        <EditText
-            android:id="@+id/editTextTextMultiLine8"
-            android:layout_width="match_parent"
-            android:layout_height="247dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="1dp"
-            android:background="@color/white"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/attention"
-            android:inputType="textMultiLine"
-            android:labelFor="@id/calendarView10"
-            android:textColor="@color/Purple"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.363"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
         <LinearLayout
-            android:id="@+id/button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editTextTextMultiLine8"
+                android:layout_width="match_parent"
+                android:layout_height="247dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/attention"
+                android:inputType="textMultiLine"
+                android:labelFor="@id/calendarView10"
+                android:textColor="@color/Purple"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.363"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <LinearLayout
+                android:id="@+id/button_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
 
-            <Button
-                android:id="@+id/buttonAdd"
-                style="@style/ShapeAppearanceOverlay.Material3.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/add"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                app:cornerRadius="0dp"
-                tools:ignore="OnClick,TouchTargetSizeCheck" />
+                <Button
+                    android:id="@+id/buttonAdd"
+                    style="@style/ShapeAppearanceOverlay.Material3.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/add"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    app:cornerRadius="0dp"
+                    tools:ignore="OnClick,TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/buttonReset"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_marginRight="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:onClick="clickReset"
-                android:text="@string/reset"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                app:cornerRadius="0dp"
-                tools:ignore="TouchTargetSizeCheck" />
+                <Button
+                    android:id="@+id/buttonReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="clickReset"
+                    android:text="@string/reset"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    app:cornerRadius="0dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <CalendarView
+                android:id="@+id/calendarView10"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/Wheat"
+                android:backgroundTint="@color/Wheat"
+                android:dateTextAppearance="@style/TextAppearance.AppCompat.Large"
+                android:drawingCacheQuality="auto"
+                android:focusedMonthDateColor="#ff0"
+                android:selectedWeekBackgroundColor="#ff0000"
+                android:textDirection="locale"
+                android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:weekNumberColor="#0000ff"
+                android:weekSeparatorLineColor="#00ff00"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine8"
+                app:layout_constraintVertical_bias="0.971" />
         </LinearLayout>
-
-        <CalendarView
-            android:id="@+id/calendarView10"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/Wheat"
-            android:backgroundTint="@color/Wheat"
-            android:dateTextAppearance="@style/TextAppearance.AppCompat.Large"
-            android:drawingCacheQuality="auto"
-            android:focusedMonthDateColor="#ff0"
-            android:selectedWeekBackgroundColor="#ff0000"
-            android:textDirection="locale"
-            android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:weekNumberColor="#0000ff"
-            android:weekSeparatorLineColor="#00ff00"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine8"
-            app:layout_constraintVertical_bias="0.971" />
+    </ScrollView>
 
 </LinearLayout>

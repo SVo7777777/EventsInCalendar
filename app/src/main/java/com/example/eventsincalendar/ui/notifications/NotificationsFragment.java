@@ -1,13 +1,17 @@
 package com.example.eventsincalendar.ui.notifications;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -118,6 +122,10 @@ public class NotificationsFragment extends Fragment {
                     //фокус в конце даты
                     textMultiline.requestFocus();
                     textMultiline.setSelection(textMultiline.getText().length());
+                    //вывод клавиатуры после нажатия на дату
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    assert imm != null;
+                    imm.showSoftInput(textMultiline, InputMethodManager.SHOW_IMPLICIT);
                 }
             }
         });
@@ -221,7 +229,7 @@ public class NotificationsFragment extends Fragment {
             textMultiline.setHint(s);
 
             //курсор в конце строки
-            textMultiline.requestFocus();
+            //textMultiline.requestFocus();
             textMultiline.setSelection(textMultiline.getText().length());
         }
     }

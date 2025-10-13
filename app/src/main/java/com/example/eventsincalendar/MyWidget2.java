@@ -115,7 +115,7 @@ public class MyWidget2 extends AppWidgetProvider {
                 remoteViews.setTextViewText(R.id.date, "нет событий ");//го
                 remoteViews.setTextViewText(R.id.btnListen, "");
             }else {
-                if (sb.length() < 15) {
+                if (sb.length() < 10) {
                     remoteViews.setTextViewText(R.id.btnListen, "");
                     remoteViews.setTextViewText(R.id.date, Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
 
