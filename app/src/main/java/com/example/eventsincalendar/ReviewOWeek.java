@@ -122,7 +122,7 @@ public class ReviewOWeek extends AppCompatActivity {
         System.out.println("week "+ week);
 
         ArrayList<ArrayList<String>> all_data = mydb.getAllRows();
-        System.out.println(all_data);
+        //System.out.println(all_data);
         int size = all_data.size();
         System.out.println(size);
         System.out.println(all_data.get(0).get(0));
@@ -133,7 +133,7 @@ public class ReviewOWeek extends AppCompatActivity {
         assert args != null;
         String[] week_days = (String[]) args.getSerializable("ARRAYLIST");
         System.out.println((Arrays.toString(week_days))+" week_days");
-        boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
+        //boolean exists = FileEmpty.fileExistsInSD("event_diary.txt");
         assert week_days != null;
         String weekDays = Arrays.toString(week_days);
         System.out.println("weekDays "+weekDays);
@@ -144,7 +144,7 @@ public class ReviewOWeek extends AppCompatActivity {
         if ( !week_days.equals("")) {
             textView.setText("  за " + week + "ую неделю " +year +"г.:");
             for (int i = 0; i < size; i++) {
-                System.out.println(all_data.get(i).get(1));
+                //System.out.println(all_data.get(i).get(1));
                 String mon = all_data.get(i).get(0);
                 String ev = all_data.get(i).get(1);
 
@@ -152,7 +152,7 @@ public class ReviewOWeek extends AppCompatActivity {
                 boolean contains = Arrays.stream(week_days).anyMatch(mon::contains);
                 if (contains) {
                     String str = "<span style=\"background-color:#f3f402;\">" + mon + ": " + "</span>" + ev + " <br>";
-                    System.out.println(str);
+                    //System.out.println(str);
                     sb.append(str);
                 }
             }

@@ -6,6 +6,7 @@ import static android.graphics.Color.LTGRAY;
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -204,6 +206,7 @@ public class HomeFragment extends Fragment {
                 int week = Integer.parseInt((String) btn.getText());
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.WEEK_OF_YEAR, week);
+                cal.set(Calendar.YEAR, Integer.parseInt((String) year.getText()));
                 cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
                 int week_start_day = cal.getFirstDayOfWeek();
                 System.out.println(format.format(cal.getTime()));
@@ -483,6 +486,10 @@ public class HomeFragment extends Fragment {
 
                         event.requestFocus();
                         event.setSelection(event.getText().length());
+                        //вывод клавиатуры после нажатия на дату
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        assert imm != null;
+                        imm.showSoftInput(event, InputMethodManager.SHOW_IMPLICIT);
                     }
                     add.setOnClickListener(new View.OnClickListener() {
                         @SuppressLint("SetTextI18n")
@@ -501,7 +508,7 @@ public class HomeFragment extends Fragment {
                                 boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
                                 System.out.println("search: "+search);
                                 if (search) {
-                                    Toast.makeText(getActivity(), sDate + " уже есть!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(),  " Событие добавлено!", Toast.LENGTH_SHORT).show();
                                     System.out.println(data + " уже есть!");
                                     String ev = mydb.getEvents(sDate, DatabaseHelperEv.TABLE);
 
