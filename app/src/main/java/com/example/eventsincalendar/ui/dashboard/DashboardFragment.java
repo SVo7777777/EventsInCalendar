@@ -3,6 +3,7 @@ package com.example.eventsincalendar.ui.dashboard;
 import static android.content.Context.MODE_APPEND;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -12,10 +13,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,6 +27,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -39,6 +43,12 @@ import com.example.eventsincalendar.MyWidget2;
 import com.example.eventsincalendar.R;
 import com.example.eventsincalendar.databinding.FragmentDashboardBinding;
 import com.example.eventsincalendar.FileEmpty;
+import com.yandex.mobile.ads.banner.BannerAdEventListener;
+import com.yandex.mobile.ads.banner.BannerAdSize;
+import com.yandex.mobile.ads.banner.BannerAdView;
+import com.yandex.mobile.ads.common.AdRequest;
+import com.yandex.mobile.ads.common.AdRequestError;
+import com.yandex.mobile.ads.common.ImpressionData;
 
 
 import java.io.BufferedReader;
@@ -76,6 +86,7 @@ public class DashboardFragment extends Fragment {
 
 
     private DatabaseHelperEv mydb ;
+    private BannerAdView mBannerAd = null;
 
     @SuppressLint({"SetTextI18n", "CutPasteId"})
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -224,10 +235,12 @@ public class DashboardFragment extends Fragment {
                 return false;
             }
         });
+
         //public void setGravity (int gravity, int xOffset, int yOffset);
         addRecord = true;
         return root;
     }
+
     private void openPdf () {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());

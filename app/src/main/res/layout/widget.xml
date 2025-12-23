@@ -23,7 +23,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="-6dp"
             android:text="@string/my_hours_widget"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="за сегодня"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
@@ -106,7 +106,7 @@
             android:layout_marginStart="5dp"
             android:drawableEnd="@android:drawable/ic_lock_silent_mode_off"
             android:text=""
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
 
@@ -118,7 +118,7 @@
             android:layout_marginEnd="5dp"
             android:drawableEnd="@drawable/car_ui_icon_settings"
             android:text=""
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
 

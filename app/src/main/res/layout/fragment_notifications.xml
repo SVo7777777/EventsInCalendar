@@ -11,6 +11,14 @@
     android:backgroundTintMode="multiply"
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
+
+    <com.yandex.mobile.ads.banner.BannerAdView
+        android:id="@+id/ad_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
+    <!-- android:layout_marginBottom="@dimen/car_ui_dialog_icon_size"-->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,7 +32,7 @@
             <EditText
                 android:id="@+id/editTextTextMultiLine8"
                 android:layout_width="match_parent"
-                android:layout_height="247dp"
+                android:layout_height="147dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="1dp"
                 android:background="@color/white"
