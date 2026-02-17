@@ -9,10 +9,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.eventsincalendar.databinding.ActivityMainBinding;
+import com.example.eventsincalendar.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yandex.mobile.ads.common.MobileAds;
 
-public class MainActivity extends AppCompatActivity {
+public  class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
             // now you can use ads
             System.out.println("yandex secseful");
         });
+    }
+    public void onDeleteData() {
+        System.out.println("here");
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.navigation_home);
+        System.out.println(fragment);
+        if (fragment != null)
+            fragment.eventDelete();
     }
 
 }

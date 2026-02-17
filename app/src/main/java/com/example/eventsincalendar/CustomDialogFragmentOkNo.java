@@ -1,22 +1,37 @@
 package com.example.eventsincalendar;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.eventsincalendar.ui.home.HomeFragment;
+
 
 public class CustomDialogFragmentOkNo extends DialogFragment {
+    private DatabaseHelperEv mydb;
+
 
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+
         assert getArguments() != null;
         Bundle args0 = new Bundle();
-
+        mydb = new DatabaseHelperEv(getContext());
 
         String attention = getArguments().getString("attention");
+        int id = getArguments().getInt("id");
+        Boolean search= getArguments().getBoolean("search");
 
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         return builder
@@ -27,6 +42,13 @@ public class CustomDialogFragmentOkNo extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         CustomDialogFragmentOkNo fragment = new CustomDialogFragmentOkNo(); //Your Fragment
                         Bundle bundle = new Bundle();
+                        mydb.deleteContact(id);
+                        Toast.makeText(getActivity(), "запись удалена!", Toast.LENGTH_LONG).show();
+
+                        //удаляем запись и галочку
+                        assert getParentFragment() != null;
+                        ((HomeFragment) getParentFragment()).eventDelete();
+
                         bundle.putBoolean("down", true); // Key, value
                         fragment.setArguments(bundle);
 

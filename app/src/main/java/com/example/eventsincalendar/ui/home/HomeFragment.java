@@ -33,6 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eventsincalendar.CustomDialogFragment;
+import com.example.eventsincalendar.CustomDialogFragmentOkNo;
 import com.example.eventsincalendar.DatabaseHelperEv;
 
 import com.example.eventsincalendar.FileEmpty;
@@ -67,7 +68,9 @@ public class HomeFragment extends Fragment {
     public TextView[][] days= new TextView[7][8];
     public TextView[][] events= new TextView[7][8];
     TextView[] number_of_week= new TextView[7];
-    TextView text_home;
+    public  TextView text_home, event10;
+    public EditText event00;
+    public Button delete;
 
     String[] monthNames = new String[]{"ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"};
     String[] day_of_weeks = new String[]{"","ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА", "ВОСКРЕСЕНЬЕ"};
@@ -452,7 +455,7 @@ public class HomeFragment extends Fragment {
                     EditText event = view.findViewById(R.id.editTextTextMultiLine);
                     Button add = view.findViewById(R.id.button);
                     Button close = view.findViewById(R.id.close);
-                    Button delete = view.findViewById(R.id.delete);
+                    delete = view.findViewById(R.id.delete);
                     TextView number = view.findViewById(R.id.number);
                     number.setText(day1.getText());
                     TextView year1 = view.findViewById(R.id.year);
@@ -537,7 +540,7 @@ public class HomeFragment extends Fragment {
                             } else {
                                 Toast.makeText(getContext(), "Запишите событие, а потом внесите! ", Toast.LENGTH_LONG).show();
                             }
-
+                            delete.setEnabled(true);
                             //обновление виджета
                             Intent intentq = new Intent(getActivity(), MyWidget2.class);
                             intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
@@ -556,18 +559,33 @@ public class HomeFragment extends Fragment {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void onClick(View view) {
+
 //
 //                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
-
+                            String attention = "Удалить событие? ";
                             int id = mydb.GetId(sDate, DatabaseHelperEv.TABLE);
-                            mydb.deleteContact(id);
-                            event1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
                             boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
-                            if (!search) {
-                                Toast.makeText(getActivity(), "запись удалена!", Toast.LENGTH_LONG).show();
-                                event.setText("");
-                            }
+                            event10 = event1;
+                            event00 = event;
+                            CustomDialogFragmentOkNo dialog = new CustomDialogFragmentOkNo();
+                            Bundle args = new Bundle();
+                            args.putString("attention", attention);
+                            args.putInt("id", id);
+                            args.putBoolean("search", search);
+                            dialog.setArguments(args);
+                            dialog.show(getChildFragmentManager(), "custom");
+
+
+//                            int id = mydb.GetId(sDate, DatabaseHelperEv.TABLE);
+//                            mydb.deleteContact(id);
+//                            event1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+//
+//                            boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+//                            if (!search) {
+//                                //Toast.makeText(getActivity(), "запись удалена!", Toast.LENGTH_LONG).show();
+//                                event.setText("");
+//                                event1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+//                            }
 
                             //обновление виджета
                             Intent intentq = new Intent(getActivity(), MyWidget2.class);
@@ -585,6 +603,12 @@ public class HomeFragment extends Fragment {
                     });
                 }
             });
+    }
+    public void eventDelete() {
+        System.out.println("event00.getText() = "+event00.getText());
+        event00.setText("");
+        event10.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        delete.setEnabled(false);
     }
 
     @Override
