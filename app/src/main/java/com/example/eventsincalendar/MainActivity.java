@@ -37,13 +37,6 @@ public  class MainActivity extends AppCompatActivity{
             System.out.println("yandex secseful");
         });
     }
-    public void onDeleteData() {
-        System.out.println("here");
-        HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_home);
-        System.out.println(fragment);
-        if (fragment != null)
-            fragment.eventDelete();
-    }
+
 
 }

@@ -37,13 +37,13 @@ public class CustomDialogFragmentOkNo extends DialogFragment {
         return builder
                 .setTitle("ВНИМАНИЕ!")
                 .setMessage(attention)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         CustomDialogFragmentOkNo fragment = new CustomDialogFragmentOkNo(); //Your Fragment
                         Bundle bundle = new Bundle();
                         mydb.deleteContact(id);
-                        Toast.makeText(getActivity(), "запись удалена!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Событие удалено!", Toast.LENGTH_LONG).show();
 
                         //удаляем запись и галочку
                         assert getParentFragment() != null;
@@ -54,7 +54,7 @@ public class CustomDialogFragmentOkNo extends DialogFragment {
 
                     }
                 })
-                .setNegativeButton("Отмена",new DialogInterface.OnClickListener() {
+                .setNegativeButton("Нет",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         CustomDialogFragmentOkNo fragment = new CustomDialogFragmentOkNo(); //Your Fragment
