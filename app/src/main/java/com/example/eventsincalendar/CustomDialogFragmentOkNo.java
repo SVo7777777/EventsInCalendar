@@ -30,6 +30,8 @@ public class CustomDialogFragmentOkNo extends DialogFragment {
         mydb = new DatabaseHelperEv(getContext());
 
         String attention = getArguments().getString("attention");
+        String sDate_new = getArguments().getString("sDate_new");
+        String data = getArguments().getString("data");
         int id = getArguments().getInt("id");
         Boolean search= getArguments().getBoolean("search");
 
@@ -42,16 +44,22 @@ public class CustomDialogFragmentOkNo extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         CustomDialogFragmentOkNo fragment = new CustomDialogFragmentOkNo(); //Your Fragment
                         Bundle bundle = new Bundle();
-                        mydb.deleteContact(id);
-                        Toast.makeText(getActivity(), "Событие удалено!", Toast.LENGTH_LONG).show();
+                        if (id==0){
+                            mydb.insertContact(sDate_new, String.valueOf(data), null,null,null,null, DatabaseHelperEv.TABLE);
+                            Toast.makeText(getActivity(), "Событие внесено!", Toast.LENGTH_LONG).show();
+                        }else {
+                            mydb.deleteContact(id);
+                            Toast.makeText(getActivity(), "Событие удалено!", Toast.LENGTH_LONG).show();
 
-                        //удаляем запись и галочку
-                        assert getParentFragment() != null;
-                        ((HomeFragment) getParentFragment()).eventDelete();
+                            //удаляем запись и галочку
+                            assert getParentFragment() != null;
+                            ((HomeFragment) getParentFragment()).eventDelete();
+
+
+                        }
 
                         bundle.putBoolean("down", true); // Key, value
                         fragment.setArguments(bundle);
-
                     }
                 })
                 .setNegativeButton("Нет",new DialogInterface.OnClickListener() {

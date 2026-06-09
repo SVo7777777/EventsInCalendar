@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
     TextView[] number_of_week= new TextView[7];
     public  TextView text_home, event10;
     public EditText event00;
-    public Button delete;
+    public Button delete, add_year;
 
     String[] monthNames = new String[]{"ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"};
     String[] day_of_weeks = new String[]{"","ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА", "ВОСКРЕСЕНЬЕ"};
@@ -459,6 +459,7 @@ public class HomeFragment extends Fragment {
                     TextView number = view.findViewById(R.id.number);
                     number.setText(day1.getText());
                     TextView year1 = view.findViewById(R.id.year);
+                    add_year = view.findViewById(R.id.add_year);
 
 
 
@@ -555,6 +556,54 @@ public class HomeFragment extends Fragment {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
 
+
+                    add_year.setOnClickListener(new View.OnClickListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onClick(View view) {
+
+//
+//                            Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.free_icon_check_mark_5290982);
+                            String attention = "Внести событие на следующий год? ";
+                            String data = String.valueOf(event.getText());
+//                            int id = mydb.GetId(sDate, DatabaseHelperEv.TABLE);
+//                            boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+//                            event10 = event1;
+//                            event00 = event;
+                            Calendar c = Calendar.getInstance();
+                            c.set(Integer.parseInt(year.getText().toString())+1, Arrays.asList(monthNames).indexOf((String) month.getText()), Integer.parseInt((String) number.getText()));
+                            String sDate_new = sdf.format(c.getTime());
+                            System.out.println(sDate_new);
+                            CustomDialogFragmentOkNo dialog = new CustomDialogFragmentOkNo();
+                            Bundle args = new Bundle();
+                            args.putString("attention", attention);
+                            args.putString("sDate_new", sDate_new);
+                            args.putString("data", data);
+                            args.putInt("id", 0);
+                            args.putBoolean("search", search);
+                            dialog.setArguments(args);
+                            dialog.show(getChildFragmentManager(), "custom");
+
+
+//                            int id = mydb.GetId(sDate, DatabaseHelperEv.TABLE);
+//                            mydb.deleteContact(id);
+//                            event1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+//
+//                            boolean search = mydb.checkDataExistOrNot(sDate, DatabaseHelperEv.TABLE);
+//                            if (!search) {
+//                                //Toast.makeText(getActivity(), "запись удалена!", Toast.LENGTH_LONG).show();
+//                                event.setText("");
+//                                event1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+//                            }
+
+                            //обновление виджета
+                            Intent intentq = new Intent(getActivity(), MyWidget2.class);
+                            intentq.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                            int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), MyWidget2.class));
+                            intentq.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                            getActivity().sendBroadcast(intentq);
+                        }
+                    });
                     delete.setOnClickListener(new View.OnClickListener() {
                         @SuppressLint("SetTextI18n")
                         @Override
@@ -609,6 +658,12 @@ public class HomeFragment extends Fragment {
         event00.setText("");
         event10.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         delete.setEnabled(false);
+    }
+    public void eventAdd() {
+        System.out.println("event00.getText() = "+event00.getText());
+        //event00.setText("");
+        //event10.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        add_year.setEnabled(false);
     }
 
     @Override
