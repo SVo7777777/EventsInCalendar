@@ -121,6 +121,7 @@ public class MyWidget2 extends AppWidgetProvider {
 
                 }else{
                     remoteViews.setTextViewText(R.id.date, Html.fromHtml(String.valueOf(sb), Html.FROM_HTML_MODE_LEGACY));
+                    remoteViews.setTextViewText(R.id.btnListen, "...Читать полностью");
                 }
             }
             remoteViews.setTextViewText(R.id.summary, "за сегодня: " + weekday + " " + data);//цена за час
