@@ -161,13 +161,13 @@ public class NotificationsFragment extends Fragment {
         }
         final int adWidth = Math.round(adWidthPixels / displayMetrics.density);
 
-        return BannerAdSize.stickySize(requireActivity(), adWidth);
+        return BannerAdSize.sticky(requireActivity(), adWidth);
     }
     @NonNull
     private BannerAdView loadBannerAd(@NonNull final BannerAdSize adSize) {
         final BannerAdView bannerAd = binding.adContainerView;
         bannerAd.setAdSize(adSize);
-        bannerAd.setAdUnitId("R-M-18141747-1");//R-M-18141747-1
+        //bannerAd.setAdUnitId("R-M-18141747-1");//R-M-18141747-1
         bannerAd.setBannerAdEventListener(new BannerAdEventListener() {
             @Override
             public void onAdLoaded() {
@@ -202,13 +202,13 @@ public class NotificationsFragment extends Fragment {
                 System.out.println("onAdClicked");
             }
 
-            @Override
+            //@Override
             public void onLeftApplication() {
                 // Called when user is about to leave application (e.g., to go to the browser), as a result of clicking on the ad.
                 System.out.println("onLeftApplication");
             }
 
-            @Override
+            //@Override
             public void onReturnedToApplication() {
                 // Called when user returned to application after click.
                 System.out.println("onReturnedToApplication");
@@ -221,7 +221,7 @@ public class NotificationsFragment extends Fragment {
                     System.out.println("onImpression");
             }
         });
-        final AdRequest adRequest = new AdRequest.Builder()
+        final AdRequest adRequest = new AdRequest.Builder("R-M-18141747-1")
                 // Methods in the AdRequest.Builder class can be used here to specify individual options settings.
                 .build();
         bannerAd.loadAd(adRequest);

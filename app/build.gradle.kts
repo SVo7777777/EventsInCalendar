@@ -10,8 +10,8 @@ android {
         applicationId = "com.example.eventsincalendar"
         minSdk = 28
         targetSdk = 34
-        versionCode = 5
-        versionName = "2.3"
+        versionCode = 6
+        versionName = "2.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,7 +48,7 @@ dependencies {
     implementation(libs.gridlayout)
     implementation(libs.car.ui.lib)
     implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.19")
-    implementation ("com.yandex.android:mobileads:7.18.1")
+    implementation ("com.yandex.android:mobileads:8.2.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -1,5 +1,6 @@
 package com.example.eventsincalendar;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,14 +12,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.eventsincalendar.databinding.ActivityMainBinding;
 import com.example.eventsincalendar.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.yandex.mobile.ads.common.MobileAds;
+import com.yandex.mobile.ads.common.YandexAds;
 
 public  class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);// для поворота экрана на 180 градусов
         com.example.eventsincalendar.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -32,7 +33,7 @@ public  class MainActivity extends AppCompatActivity{
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        MobileAds.initialize(this, () -> {
+        YandexAds.initialize(this, () -> {
             // now you can use ads
             System.out.println("yandex secseful");
         });
